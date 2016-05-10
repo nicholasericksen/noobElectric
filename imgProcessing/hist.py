@@ -1,65 +1,52 @@
-#import numpy as np
-#import matplotlib.pyplot as plt
-#import Image
-
-#from skimage import io
-#from skimage import color
-
-#img = io.imread('imgs/10cm.png')
-
-#image = Image.open('imgs/10cm.png')
-#image.show
-#print(img)
-#img = color.rgb2gray(img)
-#bins = range(0, 256, 10)
-
-#bin_counts, bin_edges, patches = plt.hist(img.ravel())
-
-#plt.show()
-
-
-
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 
 from skimage.filters import threshold_otsu
 
-imgs = ['imgs/10cm.jpg', 'imgs/20cm.png']
+imgs = [
+    {'name': 'imgs/10um.jpg', 'title': 'Tumor at 10um'},
+    {'name': 'imgs/30um.jpg', 'title': 'Tumor at 30um'},
+    {'name': 'imgs/40um.jpg', 'title': 'Tumor at 40um'},
+    {'name': 'imgs/60um.jpg', 'title': 'Tumor at 60um'},
+    {'name': 'imgs/100um.jpg', 'title': 'Tumor at 100um'},
+    {'name': 'imgs/110um.jpg', 'title': 'Tumor at 110um'},
+    {'name': 'imgs/120um.jpg', 'title': 'Tumor at 120um'},
+    {'name': 'imgs/140um.jpg', 'title': 'Tumor at 140um'},
+    {'name': 'imgs/160um.jpg', 'title': 'Tumor at 160um'}
+]
 
 
+def processImg(img, title):
+        plt.imshow(img)
+        plt.title(title, fontsize=18)
+        plt.xlabel('X-Coordinate', fontsize=14)
+        plt.ylabel('Y-Coordinate', fontsize=14)
+        plt.show()
 
+        plt.hist(img.ravel(), bins=256, range=(0.0, 256.0))
+        plt.title('Histogram ' + title)
+        plt.show()
 
+def processOtsuImg(img, title):
+        threshold = threshold_otsu(img)
+        print(threshold)
+        binary = img >= threshold
 
+        plt.imshow(binary)
+        plt.title('Outsu ' + title, fontsize=18)
+        plt.xlabel('X-Coordinate', fontsize=14)
+        plt.ylabel('Y-Coordinate', fontsize=14)
+        plt.show()
 
-img = mpimg.imread('imgs/10cm.jpg')
+        plt.hist(binary.ravel())
+        plt.title('Outsu Histogram ' + title, fontsize=18)
+        plt.xlabel('X-Coordinate', fontsize=14)
+        plt.ylabel('Y-Coordinate', fontsize=14)
+        plt.show()
 
-plt.imshow(img)
-plt.title('10cm Tumor Depth', fontsize=18)
-plt.xlabel('X-Coordinates', fontsize=14)
-plt.ylabel('Y-Coordinates', fontsize=14)
-plt.show()
-
-plt.hist(img.ravel(), bins=256)
-plt.title('10cm Tumor Histogram', fontsize=18)
-plt.xlabel('Pixel Intensity', fontsize=14)
-plt.ylabel('Frequency')
-
-plt.show()
-
-threshold = threshold_otsu(img)
-print("threshold: ", threshold)
-binary = img >= threshold
-
-plt.imshow(binary)
-plt.title('10cm Otsu Processed Tumor', fontsize=18)
-plt.xlabel('X-Coordinate')
-plt.ylabel('Y-Coordinate')
-plt.show()
-
-plt.hist(binary.ravel())
-plt.title('10cm Otsu Processed Histogram', fontsize=18)
-plt.xlabel('Pixel Intensity')
-plt.ylabel('Frequency')
-
-plt.show()
+for img in imgs:
+        image = mpimg.imread(str(img['name']))
+        title = str(img['title'])
+        processImg(image, title)
+        processOtsuImg(image, title)
