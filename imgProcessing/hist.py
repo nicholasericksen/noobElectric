@@ -18,35 +18,39 @@ imgs = [
 
 
 def processImg(img, title):
+        plt.subplot(221)
         plt.imshow(img)
-        plt.title(title, fontsize=18)
-        plt.xlabel('X-Coordinate', fontsize=14)
-        plt.ylabel('Y-Coordinate', fontsize=14)
-        plt.show()
+        plt.title(title)
+        plt.xlabel('X-Coordinate', fontsize=10)
+        plt.ylabel('Y-Coordinate', fontsize=10)
 
-        plt.hist(img.ravel(), bins=256, range=(0.0, 256.0))
+        plt.subplot(222)
+        plt.hist(img.ravel())
         plt.title('Histogram ' + title)
-        plt.show()
+        plt.xlabel('Pixel Intensity', fontsize=10)
+        plt.ylabel('Frequency', fontsize=10)
 
 def processOtsuImg(img, title):
         threshold = threshold_otsu(img)
         print(threshold)
         binary = img >= threshold
 
+        plt.subplot(223)
         plt.imshow(binary)
-        plt.title('Outsu ' + title, fontsize=18)
-        plt.xlabel('X-Coordinate', fontsize=14)
-        plt.ylabel('Y-Coordinate', fontsize=14)
-        plt.show()
+        plt.title('Outsu ' + title)
+        plt.xlabel('X-Coordinate', fontsize=10)
+        plt.ylabel('Y-Coordinate', fontsize=10)
 
+        plt.subplot(224)
         plt.hist(binary.ravel())
-        plt.title('Outsu Histogram ' + title, fontsize=18)
-        plt.xlabel('X-Coordinate', fontsize=14)
-        plt.ylabel('Y-Coordinate', fontsize=14)
-        plt.show()
+        plt.title('Outsu Histogram ' + title)
+        plt.xlabel('Pixel Intensity', fontsize=10)
+        plt.ylabel('Frequency', fontsize=10)
 
 for img in imgs:
         image = mpimg.imread(str(img['name']))
         title = str(img['title'])
         processImg(image, title)
         processOtsuImg(image, title)
+        plt.tight_layout()
+        plt.show()
