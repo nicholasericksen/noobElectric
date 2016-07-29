@@ -2,7 +2,7 @@
 This is a package for Electrical Engineering principals.
 It is designed for aiding study, as well as practical application.  
 
-### Current Topics Covered
+### Topics Covered
 * Mueller Matrices
 
 ### Background
