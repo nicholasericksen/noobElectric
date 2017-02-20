@@ -1,6 +1,25 @@
 import math
 import numpy as np
 
+
+def decompose(mm):
+        dvector = np.matrix([mm[0,1], mm[0,2], mm[0,3]])
+        print dvector;
+
+        pvector = np.matrix([mm[1,0], mm[2,0], mm[3,0]])
+        print pvector
+
+        udvector = dvector / mm[0,0]
+        print udvector
+
+        singulardiatten = ((mm[0,1]**2 + mm[0,2]**2 + mm[0,3]**2)**(1/2)) / mm[0,0]
+        print diatten
+
+        udvector2 = udvector/singulardiatten
+        print udvector2
+
+        # resimm =
+
 def absorb(a):
         return np.matrix([
         [a, 0, 0, 0],
