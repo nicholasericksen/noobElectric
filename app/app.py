@@ -1,5 +1,13 @@
+from __future__ import absolute_import
+
 import os
+import serial
+import time
+
+# from LMP import sensor_reading
+
 from flask import Flask, render_template, request, redirect, url_for
+from flask_socketio import SocketIO
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'uploads'
@@ -7,6 +15,12 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+socketio = SocketIO(app)
+
+port = "/dev/cu.usbmodem1411"
+baudrate = 9600
+# angle = [0, 90, 45, -45, "LCP", "RCP"]
+ser = serial.Serial(port, baudrate)
 
 @app.route('/')
 def hello_world():
@@ -36,10 +50,51 @@ def file_upload():
         print 'File Upload Successful'
         return redirect('/')
 
+
+@app.route('/lightsensor')
+def get_reading():
+    # sensor_reading()
+
+    time.sleep(2)
+
+    ser.flush()
+    ser.write('3')
+
+    time.sleep(1)
+
+    measurement = ser.readline()
+
+    return measurement
+
+
+@app.route('/motor', methods=['POST'])
+def motor():
+    data = request.get_json()
+    direction = data.get('dir')
+
+    time.sleep(2)
+    ser.flush()
+
+    if direction == 'left':
+        ser.write('4')
+    if direction == 'right':
+        ser.write('5')
+    # ser.write('4')
+    time.sleep(1)
+
+    return 'successful'
+
+# @socketio.on('sensor reading', namespace='/test')
+# def sensor_reading():
+#     num = 0
+#     while True:
+#         num = num + 1
+#         socketio.emit('reading', {'num': num}, namespace='/test')
+
 @app.route('/<path:path>')
 def catch_all(path):
     return render_template('index.html')
 
 if __name__ == '__main__':
   app.run(debug=True)
-
+  # socketio.run(app)
