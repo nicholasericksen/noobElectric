@@ -79,7 +79,7 @@ export default class Form extends React.Component {
 
     render() {
         return (
-            <div>
+            <div>docker cp nicholas_ericksen:/var/www/app/database /app/bakdocker cp nicholas_ericksen:/var/www/app/database /app/bak
                 <div className='header-container'>
                     <h1 className='header'>Optics Dashboard</h1>
                     <span className='date-time'>Date: {this.state.date.toLocaleTimeString()}</span>

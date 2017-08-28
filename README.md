@@ -10,3 +10,6 @@ There are scientific computing packages for a wide variety of applications in Py
 but none that attempt to host topics specifically related to Electrical Engineering.
 This package will attempt to cover most topics found during one's study at a university.
 Hopefully there are some practical applications as well.
+
+
+`from noobee.lmp import classical`
