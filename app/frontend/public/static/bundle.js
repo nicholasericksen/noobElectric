@@ -61,7 +61,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(166);
+	var _reactDom = __webpack_require__(167);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -89,11 +89,11 @@
 
 	var _Experiment2 = _interopRequireDefault(_Experiment);
 
-	var _Menu = __webpack_require__(161);
+	var _Menu = __webpack_require__(162);
 
 	var _Menu2 = _interopRequireDefault(_Menu);
 
-	__webpack_require__(162);
+	__webpack_require__(163);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19896,7 +19896,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Histogram = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./Histogram\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _Histogram = __webpack_require__(161);
 
 	var _Histogram2 = _interopRequireDefault(_Histogram);
 
@@ -19917,14 +19917,13 @@
 	        var _this = _possibleConstructorReturn(this, (Experiment.__proto__ || Object.getPrototypeOf(Experiment)).call(this, props));
 
 	        _this.state = {
-	            title: 'Experiment',
-	            description: 'This is an excperiment.',
 	            data: null,
 	            activeIndex: 0
 	        };
 
 	        _this.requestData = _this.requestData.bind(_this);
-	        _this.renderExperiments = _this.renderExperiments.bind(_this);
+	        _this.renderExperiment = _this.renderExperiment.bind(_this);
+	        _this.setExperimentData = _this.setExperimentData.bind(_this);
 	        return _this;
 	    }
 
@@ -19963,82 +19962,44 @@
 	            request.send();
 	        }
 	    }, {
-	        key: 'renderExperiments',
-	        value: function renderExperiments() {
-	            this.state.data.map(function (experiment, index) {
-	                console.log("EXpERIMENT", experiment);
-	                // const { date, description, title, _id } = experiment;
+	        key: 'renderExperiment',
+	        value: function renderExperiment(data, targetElement, width, height) {
+	            if (this.state.data) {
+	                console.log("IN the rendering process");
+	                return _react2.default.createElement(_Histogram2.default, {
+	                    data: data,
+	                    targetElement: targetElement,
+	                    width: width,
+	                    height: height
+	                });
+	            }
 
-	                return _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'hey'
-	                );
-
-	                // return (
-	                //     <div>
-	                //         <div>Hello</div>
-	                //         <div>{experiment.title}</div>
-	                //         <div>{experiment.date}</div>
-	                //         <div>{experiment.description}</div>
-	                //     </div>
-	                // );
-	            });
+	            return;
+	        }
+	    }, {
+	        key: 'setExperimentData',
+	        value: function setExperimentData(index) {
+	            // d3.select(".histogram").remove();
+	            console.log('index', index);
+	            this.setState({ activeIndex: index });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this3 = this;
 
-	            // Initialize Axis and dimensions
-	            var margin = { top: 20, right: 20, bottom: 70, left: 40 },
-	                width = 600 - margin.left - margin.right,
-	                height = 300 - margin.top - margin.bottom;
-
-	            // Parse the date / time
-	            // var	parseDate = d3.time.format("%Y-%m").parse;
-	            if (this.state.data) {
-	                var x = d3.scale.linear().range([0, width]);
-	                // var x = d3.scale.linear().range([width, 0]);
-	                var y = d3.scale.linear().range([height, 0]);
-
-	                var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
-
-	                var yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
-
-	                var svg = d3.select(".exp-s1-histogram").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	                svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
-
-	                svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
-
-	                if (this.state.data) {
-	                    x.domain([-1, d3.max(this.state.data[this.state.activeIndex].histograms.stokes.S1, function (d) {
-	                        return d[0];
-	                    })]);
-	                    y.domain([0, d3.max(this.state.data[this.state.activeIndex].histograms.stokes.S1, function (d) {
-	                        return d[1];
-	                    })]);
-
-	                    svg.selectAll("bar").data(this.state.data[this.state.activeIndex].histograms.stokes.S1).enter().append("rect").style("fill", "steelblue").attr("x", function (d) {
-	                        return x(d[0]);
-	                    }).attr("width", 2).attr("y", function (d) {
-	                        return y(d[1]);
-	                    }).attr("height", function (d) {
-	                        return height - y(d[1]);
-	                    });
-	                }
-	            }
-
-	            // console.log("D3", d3);
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'exp' },
-	                this.state.data ? this.renderExperiments() : _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'Hey'
-	                ),
+	                this.state.data ? this.state.data.map(function (experiment, index) {
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { onClick: function onClick() {
+	                                return _this3.setExperimentData(index);
+	                            } },
+	                        experiment.title
+	                    );
+	                }) : null,
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'exp-header' },
@@ -20048,7 +20009,7 @@
 	                        _react2.default.createElement(
 	                            'h3',
 	                            null,
-	                            this.state.title
+	                            this.state.data ? this.state.data[this.state.activeIndex].title : null
 	                        )
 	                    ),
 	                    _react2.default.createElement('hr', null),
@@ -20064,25 +20025,20 @@
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    'span',
-	                    { onClick: function onClick() {
-	                            return _this3.setState({ activeIndex: 1 });
-	                        } },
-	                    'clapapapa'
-	                ),
-	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'exp-introduction' },
 	                    _react2.default.createElement(
 	                        'p',
 	                        null,
-	                        this.state.description
+	                        this.state.data ? this.state.data[this.state.activeIndex].description : null
 	                    )
 	                ),
-	                _react2.default.createElement(_Histogram2.default, {
-	                    data: this.state.data
-	                }),
-	                _react2.default.createElement('div', { className: 'exp-s1-histogram' })
+	                _react2.default.createElement(
+	                    'h5',
+	                    null,
+	                    'S1 Histograms'
+	                ),
+	                this.state.data ? this.renderExperiment(this.state.data[this.state.activeIndex].histograms.stokes.S1, 'exp-s1-histogram', 600, 300) : null
 	            );
 	        }
 	    }]);
@@ -20094,6 +20050,131 @@
 
 /***/ }),
 /* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Hisotgram = function (_Component) {
+	    _inherits(Hisotgram, _Component);
+
+	    function Hisotgram(props) {
+	        _classCallCheck(this, Hisotgram);
+
+	        var _this = _possibleConstructorReturn(this, (Hisotgram.__proto__ || Object.getPrototypeOf(Hisotgram)).call(this, props));
+
+	        _this.state = {
+	            g: null
+	        };
+
+	        _this.onRef = _this.onRef.bind(_this);
+	        _this.renderHistogram = _this.renderHistogram.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Hisotgram, [{
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            if (nextProps.data !== this.props.data) {
+	                console.log("update");
+	                console.log('nextProps', nextProps.data);
+	                this.renderHistogram(nextProps.data);
+	            }
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate() {
+	            return false;
+	        }
+	    }, {
+	        key: 'onRef',
+	        value: function onRef(ref) {
+	            var _this2 = this;
+
+	            this.setState({ g: d3.select(ref) }, function () {
+	                return _this2.renderHistogram(_this2.props.data);
+	            });
+	        }
+	    }, {
+	        key: 'renderHistogram',
+	        value: function renderHistogram(data) {
+	            // Initialize Axis and dimensions
+	            var margin = { top: 20, right: 20, bottom: 70, left: 40 },
+	                width = this.props.width - margin.left - margin.right,
+	                height = this.props.height - margin.top - margin.bottom;
+
+	            // Parse the date / time
+	            // var	parseDate = d3.time.format("%Y-%m").parse;
+	            var x = d3.scale.linear().range([-1, width]);
+	            // var x = d3.scale.linear().range([width, 0]);
+	            var y = d3.scale.linear().range([height, 0]);
+
+	            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
+
+	            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
+
+	            var targetElement = '.' + this.props.targetElement;
+
+	            d3.selectAll("svg > *").remove();
+
+	            var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
+
+	            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
+
+	            x.domain([-1, d3.max(data, function (d) {
+	                return d[0];
+	            })]);
+	            y.domain([0, d3.max(data, function (d) {
+	                return d[1];
+	            })]);
+
+	            svg.selectAll("bar").data(data).enter().append("rect").style("fill", "steelblue").attr("x", function (d) {
+	                return x(d[0]);
+	            }).attr("width", 2).attr("y", function (d) {
+	                return y(d[1]);
+	            }).attr("height", function (d) {
+	                return height - y(d[1]);
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            this.renderHistogram(this.props.data);
+	            console.log("Rendered HIstogram");
+	            return _react2.default.createElement(
+	                'svg',
+	                { width: this.props.width, height: this.props.height, className: this.props.targetElement },
+	                _react2.default.createElement('g', { ref: this.onRef })
+	            );
+	        }
+	    }]);
+
+	    return Hisotgram;
+	}(_react.Component);
+
+	exports.default = Hisotgram;
+
+/***/ }),
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20152,16 +20233,16 @@
 	exports.default = Menu;
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(163);
+	var content = __webpack_require__(164);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(165)(content, {});
+	var update = __webpack_require__(166)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20178,10 +20259,10 @@
 	}
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(164)();
+	exports = module.exports = __webpack_require__(165)();
 	// imports
 
 
@@ -20192,7 +20273,7 @@
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports) {
 
 	/*
@@ -20248,7 +20329,7 @@
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -20500,7 +20581,7 @@
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';

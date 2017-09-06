@@ -56,6 +56,8 @@ def datasummary(data):
     maxValue = np.amax(data)
     minValue = np.amin(data)
     length = len(data)
+    mean = np.mean(data)
+    std = np.std(data)
 
     #TODO Add median and mean and variance
     print '\n==========Summary==========='
@@ -67,27 +69,19 @@ def datasummary(data):
     return {
         maxValue: maxValue,
         minValue: minValue,
-        length: length
+        mean: mean,
+        std: std,
+        num_of_data_pts: length
     }
 
 def createhistogram(data, bins):
     hist = np.histogram(data, bins=bins)
-    # rawbins = hist[1]
-    # rawbins.round(decimals=2)
     bins = hist[1].tolist()
     values = hist[0].tolist()
-    # values = [ '%.2f' % elem for elem in unformattedvalues ]
 
     # Convert the tuples into arrays for smaller formatting
     zipped = [list(t) for t in zip(bins, values)]
     print "zipped", zipped
-
-    # Print Summary
-    # print '\n==========Summary==========='
-    # print 'histo: ', hist
-    # print 'bins: ', bins
-    # print 'values: ', values
-    # print '==============================\n'
 
     return zipped
 
@@ -104,12 +98,6 @@ Hzipped = createhistogram(H, np.arange(0, 256, 1))
 Vzipped = createhistogram(V, np.arange(0, 256, 1))
 Pzipped = createhistogram(P, np.arange(0, 256, 1))
 Mzipped = createhistogram(M, np.arange(0, 256, 1))
-
-# plt.hist(S1)
-# plt.show()
-# plt.hist(S2)
-#
-# plt.show()
 
 result = db.discrete.insert_one(
     {
