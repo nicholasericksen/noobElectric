@@ -1,21 +1,69 @@
 html, body {
   height: 100%;
   margin: 0;
-  padding: 5%;
+  padding: 0;
 }
 
-.header {
-    position: relative;
-    padding-bottom: 25px;
+
+// axis styles for D3
+.axis {
+  font: 10px sans-serif;
 }
 
-.exp {
-    .sub-heading {
-        color: #868585;
-        font-size: 10px;
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.noobelectric {
+    .header{
+        // position: absolute;
+        // top: 0;
+        width: 115px;
+        // right: 10px;
+        float: right;
+
+
+        .title {
+            padding-right: 10px;
+            //color: #e6e6e6;
+        }
+
+        .home-btn {
+            font-size: 25px;
+        }
     }
-    .exp-date {
-        position: absolute;
-        right: 0;
+    .main-content {
+        clear: both;
+        padding: 5%;
+
+        .home-menu
+        .button {
+            text-align: center;
+            height: 75px;
+            border: 0 5px;
+            border-bottom: 1px solid black;
+            line-height: 75px;
+        }
+        .quote {
+            padding: 0 40px;
+            font-style: italic;
+        }
+        .exp {
+            .sub-heading {
+                color: #868585;
+                font-size: 10px;
+            }
+            .exp-header {
+                position: relative;
+                padding-bottom: 25px;
+            }
+            .exp-date {
+                position: absolute;
+                right: 0;
+            }
+        }
     }
 }

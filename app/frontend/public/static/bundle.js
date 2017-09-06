@@ -61,7 +61,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(160);
+	var _reactDom = __webpack_require__(166);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -85,11 +85,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Experiment = __webpack_require__(165);
+	var _Experiment = __webpack_require__(160);
 
 	var _Experiment2 = _interopRequireDefault(_Experiment);
 
-	__webpack_require__(161);
+	var _Menu = __webpack_require__(161);
+
+	var _Menu2 = _interopRequireDefault(_Menu);
+
+	__webpack_require__(162);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -102,16 +106,83 @@
 	var App = function (_Component) {
 	    _inherits(App, _Component);
 
-	    function App() {
+	    function App(props) {
 	        _classCallCheck(this, App);
 
-	        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+	        _this.state = {
+	            activeTab: 0
+	        };
+
+	        _this.handleMenuButtonClick = _this.handleMenuButtonClick.bind(_this);
+	        // this.renderContent = this.renderContent.bind(this);
+	        return _this;
 	    }
 
 	    _createClass(App, [{
+	        key: 'handleMenuButtonClick',
+	        value: function handleMenuButtonClick(index) {
+	            this.setState({ activeTab: index });
+	            console.log("STASTE", this.state.activeTab);
+	        }
+	    }, {
+	        key: 'renderContent',
+	        value: function renderContent() {
+	            // const TABS = ['Main', 'Experiment'];
+	            //
+	            // let content;
+	            //
+	            // switch(TABS[this.state.activeTab]) {
+	            //     case('Main'): {
+	            //         this.setState({activeTab: 0});
+	            //         content = <HomeMenu />;
+	            //     }
+	            //     case('Experiment'): {
+	            //         this.setState({activeTab: 1});
+	            //         content = <Experiment />;
+	            //     }
+	            //     default: {
+	            //         this.setState({activeTab: 0});
+	            //         content = <HomeMenu />;
+	            //     }
+	            // }
+	            //
+	            // return content;
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement(_Experiment2.default, null);
+	            var HOME_MENU = ['Data Acquisition', 'Experimental Results', 'Information', 'About'];
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'noobelectric' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'header' },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'title' },
+	                        'noobelectric'
+	                    ),
+	                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-home home-btn' })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'main-content' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        { className: 'quote' },
+	                        '"The motion of a pendulum has exerted a fascination for human minds, \\ since the first savage watched the swaying of the first tree branch.\\ The smooth sinusoidal motion, back and forth, seems to express some\\ secret of the universe..."'
+	                    ),
+	                    _react2.default.createElement(_Menu2.default, {
+	                        onClick: this.handleMenuButtonClick,
+	                        labels: HOME_MENU
+	                    })
+	                ),
+	                _react2.default.createElement(_Experiment2.default, null)
+	            );
 	        }
 	    }]);
 
@@ -19815,20 +19886,282 @@
 
 	'use strict';
 
-	module.exports = __webpack_require__(5);
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Histogram = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./Histogram\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _Histogram2 = _interopRequireDefault(_Histogram);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Experiment = function (_Component) {
+	    _inherits(Experiment, _Component);
+
+	    function Experiment(props) {
+	        _classCallCheck(this, Experiment);
+
+	        var _this = _possibleConstructorReturn(this, (Experiment.__proto__ || Object.getPrototypeOf(Experiment)).call(this, props));
+
+	        _this.state = {
+	            title: 'Experiment',
+	            description: 'This is an excperiment.',
+	            data: null,
+	            activeIndex: 0
+	        };
+
+	        _this.requestData = _this.requestData.bind(_this);
+	        _this.renderExperiments = _this.renderExperiments.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Experiment, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.requestData();
+	        }
+	    }, {
+	        key: 'requestData',
+	        value: function requestData() {
+	            var _this2 = this;
+
+	            var request = new XMLHttpRequest();
+	            request.open('GET', 'http://localhost:5000/api', true);
+
+	            request.onload = function () {
+	                if (request.status >= 200 && request.status < 400) {
+	                    var rawdata = JSON.parse(request.responseText);
+	                    var data = rawdata.exp;
+	                    _this2.setState({
+	                        title: rawdata.exp[_this2.state.activeIndex].title,
+	                        description: rawdata.exp[_this2.state.activeIndex].description,
+	                        data: data
+	                    });
+	                    console.log("DATAS", _this2.state.data);
+	                } else {
+	                    // We reached our target server, but it returned an error
+	                }
+	            };
+
+	            request.onerror = function () {
+	                // There was a connection error of some sort
+	            };
+
+	            request.send();
+	        }
+	    }, {
+	        key: 'renderExperiments',
+	        value: function renderExperiments() {
+	            this.state.data.map(function (experiment, index) {
+	                console.log("EXpERIMENT", experiment);
+	                // const { date, description, title, _id } = experiment;
+
+	                return _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'hey'
+	                );
+
+	                // return (
+	                //     <div>
+	                //         <div>Hello</div>
+	                //         <div>{experiment.title}</div>
+	                //         <div>{experiment.date}</div>
+	                //         <div>{experiment.description}</div>
+	                //     </div>
+	                // );
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this3 = this;
+
+	            // Initialize Axis and dimensions
+	            var margin = { top: 20, right: 20, bottom: 70, left: 40 },
+	                width = 600 - margin.left - margin.right,
+	                height = 300 - margin.top - margin.bottom;
+
+	            // Parse the date / time
+	            // var	parseDate = d3.time.format("%Y-%m").parse;
+	            if (this.state.data) {
+	                var x = d3.scale.linear().range([0, width]);
+	                // var x = d3.scale.linear().range([width, 0]);
+	                var y = d3.scale.linear().range([height, 0]);
+
+	                var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
+
+	                var yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
+
+	                var svg = d3.select(".exp-s1-histogram").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	                svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
+
+	                svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
+
+	                if (this.state.data) {
+	                    x.domain([-1, d3.max(this.state.data[this.state.activeIndex].histograms.stokes.S1, function (d) {
+	                        return d[0];
+	                    })]);
+	                    y.domain([0, d3.max(this.state.data[this.state.activeIndex].histograms.stokes.S1, function (d) {
+	                        return d[1];
+	                    })]);
+
+	                    svg.selectAll("bar").data(this.state.data[this.state.activeIndex].histograms.stokes.S1).enter().append("rect").style("fill", "steelblue").attr("x", function (d) {
+	                        return x(d[0]);
+	                    }).attr("width", 2).attr("y", function (d) {
+	                        return y(d[1]);
+	                    }).attr("height", function (d) {
+	                        return height - y(d[1]);
+	                    });
+	                }
+	            }
+
+	            // console.log("D3", d3);
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'exp' },
+	                this.state.data ? this.renderExperiments() : _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'Hey'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'exp-header' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'title' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            this.state.title
+	                        )
+	                    ),
+	                    _react2.default.createElement('hr', null),
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'exp-date' },
+	                        '10.24.17'
+	                    ),
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'exp-id' },
+	                        'ID: 00001'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'span',
+	                    { onClick: function onClick() {
+	                            return _this3.setState({ activeIndex: 1 });
+	                        } },
+	                    'clapapapa'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'exp-introduction' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        this.state.description
+	                    )
+	                ),
+	                _react2.default.createElement(_Histogram2.default, {
+	                    data: this.state.data
+	                }),
+	                _react2.default.createElement('div', { className: 'exp-s1-histogram' })
+	            );
+	        }
+	    }]);
+
+	    return Experiment;
+	}(_react.Component);
+
+	exports.default = Experiment;
 
 /***/ }),
 /* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Menu = function (_Component) {
+	    _inherits(Menu, _Component);
+
+	    function Menu() {
+	        _classCallCheck(this, Menu);
+
+	        return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).apply(this, arguments));
+	    }
+
+	    _createClass(Menu, [{
+	        key: "render",
+	        value: function render() {
+	            var _this2 = this;
+
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "home-menu" },
+	                this.props.labels.map(function (label, index) {
+	                    return _react2.default.createElement(
+	                        "div",
+	                        { key: index, onClick: function onClick() {
+	                                return _this2.props.onClick(index);
+	                            }, className: "button" },
+	                        label
+	                    );
+	                })
+	            );
+	        }
+	    }]);
+
+	    return Menu;
+	}(_react.Component);
+
+	exports.default = Menu;
+
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(162);
+	var content = __webpack_require__(163);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(164)(content, {});
+	var update = __webpack_require__(165)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -19845,21 +20178,21 @@
 	}
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(163)();
+	exports = module.exports = __webpack_require__(164)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "html,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 5%;\n}\n.header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.exp .exp-date {\n  position: absolute;\n  right: 0;\n}\n", ""]);
+	exports.push([module.id, "html,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis path,\n.axis line {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.noobelectric .header {\n  width: 115px;\n  float: right;\n}\n.noobelectric .header .title {\n  padding-right: 10px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .main-content .home-menu .button {\n  text-align: center;\n  height: 75px;\n  border: 0 5px;\n  border-bottom: 1px solid black;\n  line-height: 75px;\n}\n.noobelectric .main-content .quote {\n  padding: 0 40px;\n  font-style: italic;\n}\n.noobelectric .main-content .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .main-content .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .main-content .exp .exp-date {\n  position: absolute;\n  right: 0;\n}\n", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports) {
 
 	/*
@@ -19915,7 +20248,7 @@
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -20167,85 +20500,13 @@
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+	module.exports = __webpack_require__(5);
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Experiment = function (_Component) {
-	    _inherits(Experiment, _Component);
-
-	    function Experiment() {
-	        _classCallCheck(this, Experiment);
-
-	        return _possibleConstructorReturn(this, (Experiment.__proto__ || Object.getPrototypeOf(Experiment)).apply(this, arguments));
-	    }
-
-	    _createClass(Experiment, [{
-	        key: "render",
-	        value: function render() {
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "exp" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "header" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "title" },
-	                        _react2.default.createElement(
-	                            "h3",
-	                            null,
-	                            "Polarization Response of Invasive Species"
-	                        )
-	                    ),
-	                    _react2.default.createElement("hr", null),
-	                    _react2.default.createElement(
-	                        "span",
-	                        { className: "exp-date" },
-	                        "10.24.17"
-	                    ),
-	                    _react2.default.createElement(
-	                        "span",
-	                        { className: "exp-id" },
-	                        "ID: 00001"
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "exp-introduction" },
-	                    _react2.default.createElement(
-	                        "p",
-	                        null,
-	                        "This exploratory study into how invasive Species utilize polarization to perform certain actics within nature. It is shown tyhat the longer a weed remains in the sun, the more it adjusts its ability to absord polarized light."
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Experiment;
-	}(_react.Component);
-
-	exports.default = Experiment;
 
 /***/ })
 /******/ ]);

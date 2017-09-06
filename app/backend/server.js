@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
 var config = require('./config');
-var Pin = require('./models/pins');
+var Experiments = require('./models');
 
 var app = express();
 
@@ -18,9 +18,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join('../frontend/public')));
 
-const pinRoutes = require('./pin/routes');
+const routes = require('./routes');
 
-app.use('/api', pinRoutes);
+app.use('/api', routes);
 
 app.listen(app.get('port'), function() {
     console.log('Express listening on port ' + app.get('port'));
