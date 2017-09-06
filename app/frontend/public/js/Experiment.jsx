@@ -9,7 +9,7 @@ export default class Experiment extends Component {
         this.renderExperiment = this.renderExperiment.bind(this);
     }
 
-    renderExperiment(data, targetElement, width, height) {
+    renderExperiment(data, targetElement, width, height, yTicks) {
         if (this.props.data) {
             return(
                 <Histogram
@@ -17,6 +17,7 @@ export default class Experiment extends Component {
                     targetElement={targetElement}
                     width={width}
                     height={height}
+                    yTicks={yTicks}
                 />
             );
         }
@@ -43,22 +44,22 @@ export default class Experiment extends Component {
                 </div>
 
                 <h5>S1 Histograms</h5>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300) : null}
+                {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null}
 
                 <p>H Histogram</p>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150) : null}
+                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null}
 
                 <p>V Histogram</p>
                 {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150) : null}
 
                 <h5>S2 Histograms</h5>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300) : null}
+                {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null}
 
                 <p>P Histogram</p>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150) : null}
+                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null}
 
                 <p>M Histogram</p>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150) : null}
+                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null}
             </div>
         );
     }

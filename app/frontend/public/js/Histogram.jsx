@@ -45,7 +45,7 @@ export default class Hisotgram extends Component {
                 var yAxis = d3.svg.axis()
                     .scale(y)
                     .orient("left")
-                    .ticks(10);
+                    .ticks(this.props.yTicks);
 
                 var targetElement = '.' + this.props.targetElement;
 
@@ -55,6 +55,9 @@ export default class Hisotgram extends Component {
                   .append("g")
                     .attr("transform",
                           "translate(" + margin.left + "," + margin.top + ")");
+
+                  x.domain([-1, d3.max(data, function(d) { return d[0]; })]);
+                  y.domain([0, d3.max(data, function(d) { return d[1]; })]);
 
                   svg.append("g")
                       .attr("class", "x axis")
@@ -76,8 +79,7 @@ export default class Hisotgram extends Component {
                       .style("text-anchor", "end")
                       .text("Value");
 
-                      x.domain([-1, d3.max(data, function(d) { return d[0]; })]);
-                      y.domain([0, d3.max(data, function(d) { return d[1]; })]);
+
 
                   svg.selectAll("bar")
                       .data(data)

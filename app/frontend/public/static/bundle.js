@@ -19935,23 +19935,18 @@
 	    _createClass(Experiments, [{
 	        key: 'setExperimentData',
 	        value: function setExperimentData(index) {
-	            // this.renderExperiment();
-	            this.setState({ expIndex: index });
-	            console.log("index", this.state.expIndex);
-	            // this.renderExperiment();
+	            if (index !== this.state.expIndex) {
+	                this.setState({ expIndex: index });
+	            }
 	        }
 	    }, {
 	        key: 'renderExperiment',
 	        value: function renderExperiment() {
-	            // if (this.state.expIndex) {
-	            console.log("rendering exper");
-	            console.log("data", this.props.data);
+	            // This remove all previous data points
 	            d3.selectAll("svg > *").remove();
 	            return _react2.default.createElement(_Experiment2.default, {
 	                data: this.props.data[this.state.expIndex]
 	            });
-	            // }
-
 	        }
 	    }, {
 	        key: 'render',
@@ -20022,13 +20017,14 @@
 
 	    _createClass(Experiment, [{
 	        key: 'renderExperiment',
-	        value: function renderExperiment(data, targetElement, width, height) {
+	        value: function renderExperiment(data, targetElement, width, height, yTicks) {
 	            if (this.props.data) {
 	                return _react2.default.createElement(_Histogram2.default, {
 	                    data: data,
 	                    targetElement: targetElement,
 	                    width: width,
-	                    height: height
+	                    height: height,
+	                    yTicks: yTicks
 	                });
 	            }
 
@@ -20079,13 +20075,13 @@
 	                    null,
 	                    'S1 Histograms'
 	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300) : null,
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null,
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
 	                    'H Histogram'
 	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150) : null,
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null,
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
@@ -20097,19 +20093,19 @@
 	                    null,
 	                    'S2 Histograms'
 	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300) : null,
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null,
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
 	                    'P Histogram'
 	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150) : null,
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null,
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
 	                    'M Histogram'
 	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150) : null
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null
 	            );
 	        }
 	    }]);
@@ -20199,15 +20195,11 @@
 
 	            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
 
-	            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
+	            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(this.props.yTicks);
 
 	            var targetElement = '.' + this.props.targetElement;
 
 	            var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
-
-	            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
 
 	            x.domain([-1, d3.max(data, function (d) {
 	                return d[0];
@@ -20215,6 +20207,10 @@
 	            y.domain([0, d3.max(data, function (d) {
 	                return d[1];
 	            })]);
+
+	            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
+
+	            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
 
 	            svg.selectAll("bar").data(data).enter().append("rect").style("fill", "steelblue").attr("x", function (d) {
 	                return x(d[0]);

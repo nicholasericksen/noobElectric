@@ -14,25 +14,19 @@ export default class Experiments extends Component {
     }
 
     setExperimentData(index) {
-        // this.renderExperiment();
-        this.setState({expIndex: index});
-        console.log("index", this.state.expIndex);
-        // this.renderExperiment();
+        if (index !== this.state.expIndex) {
+            this.setState({expIndex: index});
+        }
     }
 
     renderExperiment() {
-        // if (this.state.expIndex) {
-            console.log("rendering exper");
-            console.log("data", this.props.data);
-            d3.selectAll("svg > *").remove();
-            return (
-                <Experiment
-                    data={this.props.data[this.state.expIndex]}
-                />
-            );
-        // }
-
-
+        // This remove all previous data points
+        d3.selectAll("svg > *").remove();
+        return (
+            <Experiment
+                data={this.props.data[this.state.expIndex]}
+            />
+        );
     }
 
     render() {
