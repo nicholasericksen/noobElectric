@@ -49,8 +49,6 @@ export default class Hisotgram extends Component {
 
                 var targetElement = '.' + this.props.targetElement;
 
-                d3.selectAll("svg > *").remove();
-
                 var svg = d3.select(targetElement).append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)

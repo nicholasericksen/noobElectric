@@ -61,7 +61,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(167);
+	var _reactDom = __webpack_require__(168);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -85,15 +85,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Experiment = __webpack_require__(160);
+	var _Experiments = __webpack_require__(160);
 
-	var _Experiment2 = _interopRequireDefault(_Experiment);
+	var _Experiments2 = _interopRequireDefault(_Experiments);
 
-	var _Menu = __webpack_require__(162);
+	var _Menu = __webpack_require__(163);
 
 	var _Menu2 = _interopRequireDefault(_Menu);
 
-	__webpack_require__(163);
+	__webpack_require__(164);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -112,49 +112,55 @@
 	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 	        _this.state = {
-	            activeTab: 0
+	            activeTab: 0,
+	            data: null
 	        };
 
 	        _this.handleMenuButtonClick = _this.handleMenuButtonClick.bind(_this);
-	        // this.renderContent = this.renderContent.bind(this);
+	        _this.requestData = _this.requestData.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(App, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.requestData();
+	        }
+	    }, {
+	        key: 'requestData',
+	        value: function requestData() {
+	            var _this2 = this;
+
+	            var request = new XMLHttpRequest();
+	            request.open('GET', 'http://localhost:5000/api', true);
+
+	            request.onload = function () {
+	                if (request.status >= 200 && request.status < 400) {
+	                    var rawdata = JSON.parse(request.responseText);
+	                    var data = rawdata.exp;
+	                    _this2.setState({
+	                        data: data
+	                    });
+	                } else {
+	                    // We reached our target server, but it returned an error
+	                }
+	            };
+
+	            request.onerror = function () {
+	                // There was a connection error of some sort
+	            };
+
+	            request.send();
+	        }
+	    }, {
 	        key: 'handleMenuButtonClick',
 	        value: function handleMenuButtonClick(index) {
 	            this.setState({ activeTab: index });
-	            console.log("STASTE", this.state.activeTab);
-	        }
-	    }, {
-	        key: 'renderContent',
-	        value: function renderContent() {
-	            // const TABS = ['Main', 'Experiment'];
-	            //
-	            // let content;
-	            //
-	            // switch(TABS[this.state.activeTab]) {
-	            //     case('Main'): {
-	            //         this.setState({activeTab: 0});
-	            //         content = <HomeMenu />;
-	            //     }
-	            //     case('Experiment'): {
-	            //         this.setState({activeTab: 1});
-	            //         content = <Experiment />;
-	            //     }
-	            //     default: {
-	            //         this.setState({activeTab: 0});
-	            //         content = <HomeMenu />;
-	            //     }
-	            // }
-	            //
-	            // return content;
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var HOME_MENU = ['Data Acquisition', 'Experimental Results', 'Information', 'About'];
-
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'noobelectric' },
@@ -181,7 +187,9 @@
 	                        labels: HOME_MENU
 	                    })
 	                ),
-	                _react2.default.createElement(_Experiment2.default, null)
+	                this.state.data ? _react2.default.createElement(_Experiments2.default, {
+	                    data: this.state.data
+	                }) : null
 	            );
 	        }
 	    }]);
@@ -19896,7 +19904,99 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Histogram = __webpack_require__(161);
+	var _Experiment = __webpack_require__(161);
+
+	var _Experiment2 = _interopRequireDefault(_Experiment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Experiments = function (_Component) {
+	    _inherits(Experiments, _Component);
+
+	    function Experiments(props) {
+	        _classCallCheck(this, Experiments);
+
+	        var _this = _possibleConstructorReturn(this, (Experiments.__proto__ || Object.getPrototypeOf(Experiments)).call(this, props));
+
+	        _this.state = {
+	            expIndex: 0
+	        };
+
+	        _this.setExperimentData = _this.setExperimentData.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Experiments, [{
+	        key: 'setExperimentData',
+	        value: function setExperimentData(index) {
+	            // this.renderExperiment();
+	            this.setState({ expIndex: index });
+	            console.log("index", this.state.expIndex);
+	            // this.renderExperiment();
+	        }
+	    }, {
+	        key: 'renderExperiment',
+	        value: function renderExperiment() {
+	            // if (this.state.expIndex) {
+	            console.log("rendering exper");
+	            console.log("data", this.props.data);
+	            d3.selectAll("svg > *").remove();
+	            return _react2.default.createElement(_Experiment2.default, {
+	                data: this.props.data[this.state.expIndex]
+	            });
+	            // }
+
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'exp' },
+	                this.props.data ? this.props.data.map(function (experiment, index) {
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { key: index, onClick: function onClick() {
+	                                return _this2.setExperimentData(index);
+	                            } },
+	                        experiment.title
+	                    );
+	                }) : null,
+	                this.renderExperiment()
+	            );
+	        }
+	    }]);
+
+	    return Experiments;
+	}(_react.Component);
+
+	exports.default = Experiments;
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Histogram = __webpack_require__(162);
 
 	var _Histogram2 = _interopRequireDefault(_Histogram);
 
@@ -19916,56 +20016,14 @@
 
 	        var _this = _possibleConstructorReturn(this, (Experiment.__proto__ || Object.getPrototypeOf(Experiment)).call(this, props));
 
-	        _this.state = {
-	            data: null,
-	            activeIndex: 0
-	        };
-
-	        _this.requestData = _this.requestData.bind(_this);
 	        _this.renderExperiment = _this.renderExperiment.bind(_this);
-	        _this.setExperimentData = _this.setExperimentData.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(Experiment, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            this.requestData();
-	        }
-	    }, {
-	        key: 'requestData',
-	        value: function requestData() {
-	            var _this2 = this;
-
-	            var request = new XMLHttpRequest();
-	            request.open('GET', 'http://localhost:5000/api', true);
-
-	            request.onload = function () {
-	                if (request.status >= 200 && request.status < 400) {
-	                    var rawdata = JSON.parse(request.responseText);
-	                    var data = rawdata.exp;
-	                    _this2.setState({
-	                        title: rawdata.exp[_this2.state.activeIndex].title,
-	                        description: rawdata.exp[_this2.state.activeIndex].description,
-	                        data: data
-	                    });
-	                    console.log("DATAS", _this2.state.data);
-	                } else {
-	                    // We reached our target server, but it returned an error
-	                }
-	            };
-
-	            request.onerror = function () {
-	                // There was a connection error of some sort
-	            };
-
-	            request.send();
-	        }
-	    }, {
 	        key: 'renderExperiment',
 	        value: function renderExperiment(data, targetElement, width, height) {
-	            if (this.state.data) {
-	                console.log("IN the rendering process");
+	            if (this.props.data) {
 	                return _react2.default.createElement(_Histogram2.default, {
 	                    data: data,
 	                    targetElement: targetElement,
@@ -19977,29 +20035,12 @@
 	            return;
 	        }
 	    }, {
-	        key: 'setExperimentData',
-	        value: function setExperimentData(index) {
-	            // d3.select(".histogram").remove();
-	            console.log('index', index);
-	            this.setState({ activeIndex: index });
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
-
+	            console.log('exp data', this.props.data);
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'exp' },
-	                this.state.data ? this.state.data.map(function (experiment, index) {
-	                    return _react2.default.createElement(
-	                        'div',
-	                        { onClick: function onClick() {
-	                                return _this3.setExperimentData(index);
-	                            } },
-	                        experiment.title
-	                    );
-	                }) : null,
+	                null,
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'exp-header' },
@@ -20009,7 +20050,7 @@
 	                        _react2.default.createElement(
 	                            'h3',
 	                            null,
-	                            this.state.data ? this.state.data[this.state.activeIndex].title : null
+	                            this.props.data ? this.props.data.title : null
 	                        )
 	                    ),
 	                    _react2.default.createElement('hr', null),
@@ -20030,7 +20071,7 @@
 	                    _react2.default.createElement(
 	                        'p',
 	                        null,
-	                        this.state.data ? this.state.data[this.state.activeIndex].description : null
+	                        this.props.data ? this.props.data.description : null
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -20038,7 +20079,37 @@
 	                    null,
 	                    'S1 Histograms'
 	                ),
-	                this.state.data ? this.renderExperiment(this.state.data[this.state.activeIndex].histograms.stokes.S1, 'exp-s1-histogram', 600, 300) : null
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300) : null,
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'H Histogram'
+	                ),
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150) : null,
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'V Histogram'
+	                ),
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150) : null,
+	                _react2.default.createElement(
+	                    'h5',
+	                    null,
+	                    'S2 Histograms'
+	                ),
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300) : null,
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'P Histogram'
+	                ),
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150) : null,
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'M Histogram'
+	                ),
+	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150) : null
 	            );
 	        }
 	    }]);
@@ -20049,7 +20120,7 @@
 	exports.default = Experiment;
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20132,8 +20203,6 @@
 
 	            var targetElement = '.' + this.props.targetElement;
 
-	            d3.selectAll("svg > *").remove();
-
 	            var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
@@ -20174,7 +20243,7 @@
 	exports.default = Hisotgram;
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20233,16 +20302,16 @@
 	exports.default = Menu;
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(164);
+	var content = __webpack_require__(165);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(166)(content, {});
+	var update = __webpack_require__(167)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20259,10 +20328,10 @@
 	}
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(165)();
+	exports = module.exports = __webpack_require__(166)();
 	// imports
 
 
@@ -20273,7 +20342,7 @@
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports) {
 
 	/*
@@ -20329,7 +20398,7 @@
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -20581,7 +20650,7 @@
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import Experiment from './Experiment';
+import Experiments from './Experiments';
 import Menu from './Menu';
 
 import '../style.less';
@@ -11,41 +11,46 @@ export default class App extends Component {
 
         this.state = {
             activeTab: 0,
+            data: null
         }
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
-        // this.renderContent = this.renderContent.bind(this);
+        this.requestData = this.requestData.bind(this);
     }
+
+    componentDidMount() {
+        this.requestData();
+    }
+
+    requestData() {
+        var request = new XMLHttpRequest();
+        request.open('GET', 'http://localhost:5000/api', true);
+
+        request.onload = () => {
+          if (request.status >= 200 && request.status < 400) {
+            var rawdata = JSON.parse(request.responseText);
+            var data = rawdata.exp;
+            this.setState({
+                data: data
+            });
+          } else {
+            // We reached our target server, but it returned an error
+          }
+        };
+
+        request.onerror = function() {
+          // There was a connection error of some sort
+        };
+
+        request.send();
+    }
+
     handleMenuButtonClick(index) {
         this.setState({activeTab: index});
-        console.log("STASTE", this.state.activeTab);
     }
 
-    renderContent() {
-        // const TABS = ['Main', 'Experiment'];
-        //
-        // let content;
-        //
-        // switch(TABS[this.state.activeTab]) {
-        //     case('Main'): {
-        //         this.setState({activeTab: 0});
-        //         content = <HomeMenu />;
-        //     }
-        //     case('Experiment'): {
-        //         this.setState({activeTab: 1});
-        //         content = <Experiment />;
-        //     }
-        //     default: {
-        //         this.setState({activeTab: 0});
-        //         content = <HomeMenu />;
-        //     }
-        // }
-        //
-        // return content;
-    }
     render() {
         const HOME_MENU = ['Data Acquisition', 'Experimental Results', 'Information', 'About'];
-
         return (
             <div className="noobelectric">
                 <div className="header">
@@ -64,7 +69,12 @@ export default class App extends Component {
                         labels={HOME_MENU}
                     />
                 </div>
-                <Experiment />
+                {
+                    this.state.data ?
+                    <Experiments
+                        data={this.state.data}
+                    /> : null
+                }
             </div>
         );
     }
