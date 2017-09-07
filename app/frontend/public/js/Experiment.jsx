@@ -30,7 +30,7 @@ export default class Experiment extends Component {
         return(
             <div>
                 <div className="exp-header">
-                    <div className="title">
+                    <div className="exp-title">
                         <h3>{this.props.data ? this.props.data.title : null}</h3>
                     </div>
                     <hr/>
@@ -42,24 +42,35 @@ export default class Experiment extends Component {
                         {this.props.data ? this.props.data.description : null}
                     </p>
                 </div>
+                <div className="stokes-container">
+                    <h4>S1 Histograms</h4>
+                    {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null}
+                    <div className="histogram-measurements">
+                        <div className="histogram-small-container">
+                            <h5>H Histogram</h5>
+                            {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null}
+                        </div>
+                        <div className="histogram-small-container">
+                            <h5>V Histogram</h5>
+                            {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150, 5) : null}
+                        </div>
+                    </div>
+                </div>
+                <div className="stokes-container">
+                    <h4>S2 Histograms</h4>
+                    {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null}
 
-                <h5>S1 Histograms</h5>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null}
-
-                <p>H Histogram</p>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null}
-
-                <p>V Histogram</p>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150) : null}
-
-                <h5>S2 Histograms</h5>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null}
-
-                <p>P Histogram</p>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null}
-
-                <p>M Histogram</p>
-                {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null}
+                    <div className="histogram-measurements">
+                        <div className="histogram-small-container">
+                            <h5>P Histogram</h5>
+                            {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null}
+                        </div>
+                        <div className="histogram-small-container">
+                            <h5>M Histogram</h5>
+                            {this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null}
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

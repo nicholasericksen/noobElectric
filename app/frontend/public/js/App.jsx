@@ -50,24 +50,22 @@ export default class App extends Component {
     }
 
     render() {
-        const HOME_MENU = ['Data Acquisition', 'Experimental Results', 'Information', 'About'];
+        const HOME_MENU = ['Data Acquisition', 'Experiments', 'Information', 'About'];
         return (
             <div className="noobelectric">
+                <h1 className="title">noobelectric</h1>
                 <div className="header">
-                    <span className="title">noobelectric</span>
-                    <span className="glyphicon glyphicon-home home-btn"></span>
-                </div>
-                <div className="main-content">
-                    <p className="quote">
-                        "The motion of a pendulum has exerted a fascination for human minds, \
-                        since the first savage watched the swaying of the first tree branch.\
-                        The smooth sinusoidal motion, back and forth, seems to express some\
-                        secret of the universe..."
-                    </p>
                     <Menu
                         onClick={this.handleMenuButtonClick}
                         labels={HOME_MENU}
                     />
+
+                {/* <span className="glyphicon glyphicon-home home-btn"></span> */}
+                </div>
+                <div className="main-content">
+                    <p className="quote">
+                        "The motion of a pendulum has exerted a fascination for human minds, since the first savage watched the swaying of the first tree branch.  The smooth sinusoidal motion, back and forth, seems to express some secret of the universe..."
+                    </p>
                 </div>
                 {
                     this.state.data ?

@@ -160,19 +160,22 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var HOME_MENU = ['Data Acquisition', 'Experimental Results', 'Information', 'About'];
+	            var HOME_MENU = ['Data Acquisition', 'Experiments', 'Information', 'About'];
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'noobelectric' },
 	                _react2.default.createElement(
+	                    'h1',
+	                    { className: 'title' },
+	                    'noobelectric'
+	                ),
+	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'header' },
-	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'title' },
-	                        'noobelectric'
-	                    ),
-	                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-home home-btn' })
+	                    _react2.default.createElement(_Menu2.default, {
+	                        onClick: this.handleMenuButtonClick,
+	                        labels: HOME_MENU
+	                    })
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -180,12 +183,8 @@
 	                    _react2.default.createElement(
 	                        'p',
 	                        { className: 'quote' },
-	                        '"The motion of a pendulum has exerted a fascination for human minds, \\ since the first savage watched the swaying of the first tree branch.\\ The smooth sinusoidal motion, back and forth, seems to express some\\ secret of the universe..."'
-	                    ),
-	                    _react2.default.createElement(_Menu2.default, {
-	                        onClick: this.handleMenuButtonClick,
-	                        labels: HOME_MENU
-	                    })
+	                        '"The motion of a pendulum has exerted a fascination for human minds, since the first savage watched the swaying of the first tree branch.  The smooth sinusoidal motion, back and forth, seems to express some secret of the universe..."'
+	                    )
 	                ),
 	                this.state.data ? _react2.default.createElement(_Experiments2.default, {
 	                    data: this.state.data
@@ -20042,7 +20041,7 @@
 	                    { className: 'exp-header' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'title' },
+	                        { className: 'exp-title' },
 	                        _react2.default.createElement(
 	                            'h3',
 	                            null,
@@ -20071,41 +20070,73 @@
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    'h5',
-	                    null,
-	                    'S1 Histograms'
+	                    'div',
+	                    { className: 'stokes-container' },
+	                    _react2.default.createElement(
+	                        'h4',
+	                        null,
+	                        'S1 Histograms'
+	                    ),
+	                    this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'histogram-measurements' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'H Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'V Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150, 5) : null
+	                        )
+	                    )
 	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null,
 	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    'H Histogram'
-	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null,
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    'V Histogram'
-	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150) : null,
-	                _react2.default.createElement(
-	                    'h5',
-	                    null,
-	                    'S2 Histograms'
-	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null,
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    'P Histogram'
-	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null,
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    'M Histogram'
-	                ),
-	                this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null
+	                    'div',
+	                    { className: 'stokes-container' },
+	                    _react2.default.createElement(
+	                        'h4',
+	                        null,
+	                        'S2 Histograms'
+	                    ),
+	                    this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'histogram-measurements' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'P Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'M Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null
+	                        )
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -20332,7 +20363,7 @@
 
 
 	// module
-	exports.push([module.id, "html,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis path,\n.axis line {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.noobelectric .header {\n  width: 115px;\n  float: right;\n}\n.noobelectric .header .title {\n  padding-right: 10px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .main-content .home-menu .button {\n  text-align: center;\n  height: 75px;\n  border: 0 5px;\n  border-bottom: 1px solid black;\n  line-height: 75px;\n}\n.noobelectric .main-content .quote {\n  padding: 0 40px;\n  font-style: italic;\n}\n.noobelectric .main-content .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .main-content .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .main-content .exp .exp-date {\n  position: absolute;\n  right: 0;\n}\n", ""]);
+	exports.push([module.id, "html,\nbody {\n  height: 100%;\n  margin: 30px;\n  padding: 0;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis path,\n.axis line {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.noobelectric .title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  width: 115px;\n  float: right;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .home-menu {\n  position: absolute;\n  left: 508px;\n  width: 600px;\n  text-align: center;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding-right: 68px;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n}\n", ""]);
 
 	// exports
 
