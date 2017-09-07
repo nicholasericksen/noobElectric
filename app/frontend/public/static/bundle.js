@@ -89,9 +89,17 @@
 
 	var _Experiments2 = _interopRequireDefault(_Experiments);
 
-	var _Menu = __webpack_require__(163);
+	var _Menu = __webpack_require__(161);
 
 	var _Menu2 = _interopRequireDefault(_Menu);
+
+	var _Home = __webpack_require__(162);
+
+	var _Home2 = _interopRequireDefault(_Home);
+
+	var _Header = __webpack_require__(163);
+
+	var _Header2 = _interopRequireDefault(_Header);
 
 	__webpack_require__(164);
 
@@ -112,11 +120,11 @@
 	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 	        _this.state = {
-	            activeTab: 0,
+	            activeIndex: 0,
 	            data: null
 	        };
-
 	        _this.handleMenuButtonClick = _this.handleMenuButtonClick.bind(_this);
+	        _this.renderContent = _this.renderContent.bind(_this);
 	        _this.requestData = _this.requestData.bind(_this);
 	        return _this;
 	    }
@@ -155,40 +163,34 @@
 	    }, {
 	        key: 'handleMenuButtonClick',
 	        value: function handleMenuButtonClick(index) {
-	            this.setState({ activeTab: index });
+	            this.setState({ activeIndex: index });
+	        }
+	    }, {
+	        key: 'renderContent',
+	        value: function renderContent() {
+	            var content = void 0;
+
+	            if (this.state.activeIndex === 0) {
+	                return _react2.default.createElement(_Home2.default, null);
+	            } else if (this.state.activeIndex === 1) {
+	                return _react2.default.createElement(_Experiments2.default, {
+	                    data: this.state.data
+	                });
+	            } else {
+	                return _react2.default.createElement(_Home2.default, null);
+	            }
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var HOME_MENU = ['Data Acquisition', 'Experiments', 'Information', 'About'];
+
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'noobelectric' },
-	                _react2.default.createElement(
-	                    'h1',
-	                    { className: 'title' },
-	                    'noobelectric'
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'header' },
-	                    _react2.default.createElement(_Menu2.default, {
-	                        onClick: this.handleMenuButtonClick,
-	                        labels: HOME_MENU
-	                    })
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'main-content' },
-	                    _react2.default.createElement(
-	                        'p',
-	                        { className: 'quote' },
-	                        '"The motion of a pendulum has exerted a fascination for human minds, since the first savage watched the swaying of the first tree branch.  The smooth sinusoidal motion, back and forth, seems to express some secret of the universe..."'
-	                    )
-	                ),
-	                this.state.data ? _react2.default.createElement(_Experiments2.default, {
-	                    data: this.state.data
-	                }) : null
+	                _react2.default.createElement(_Header2.default, {
+	                    onClick: this.handleMenuButtonClick
+	                }),
+	                this.renderContent()
 	            );
 	        }
 	    }]);
@@ -19903,9 +19905,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Experiment = __webpack_require__(161);
+	var _Experiment = __webpack_require__(169);
 
 	var _Experiment2 = _interopRequireDefault(_Experiment);
+
+	var _ExperimentsMenu = __webpack_require__(171);
+
+	var _ExperimentsMenu2 = _interopRequireDefault(_ExperimentsMenu);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19924,47 +19930,52 @@
 	        var _this = _possibleConstructorReturn(this, (Experiments.__proto__ || Object.getPrototypeOf(Experiments)).call(this, props));
 
 	        _this.state = {
-	            expIndex: 0
+	            expIndex: null
 	        };
 
 	        _this.setExperimentData = _this.setExperimentData.bind(_this);
+	        _this.renderContent = _this.renderContent.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(Experiments, [{
 	        key: 'setExperimentData',
 	        value: function setExperimentData(index) {
-	            if (index !== this.state.expIndex) {
-	                this.setState({ expIndex: index });
-	            }
+	            console.log("index", index
+	            //    if (index !== this.state.expIndex) {
+	            );console.log("set experiment", this.state.expIndex);
+	            this.setState({ expIndex: index });
+	            //    }
+	            // this.renderContent();
 	        }
 	    }, {
-	        key: 'renderExperiment',
-	        value: function renderExperiment() {
+	        key: 'renderContent',
+	        value: function renderContent() {
 	            // This remove all previous data points
-	            d3.selectAll("svg > *").remove();
-	            return _react2.default.createElement(_Experiment2.default, {
-	                data: this.props.data[this.state.expIndex]
-	            });
+	            var data = this.props.data;
+	            console.log("render content");
+	            console.log("ExpIndex", this.state.expIndex);
+	            if (this.state.expIndex !== null) {
+	                // d3.selectAll("svg > *").remove();
+	                console.log("HELPP");
+	                return _react2.default.createElement(_Experiment2.default, {
+	                    data: data[this.state.expIndex]
+	                });
+	            } else {
+	                console.log("render menu", this.props.data);
+	                return _react2.default.createElement(_ExperimentsMenu2.default, {
+	                    data: this.props.data,
+	                    onClick: this.setExperimentData
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'exp' },
-	                this.props.data ? this.props.data.map(function (experiment, index) {
-	                    return _react2.default.createElement(
-	                        'div',
-	                        { key: index, onClick: function onClick() {
-	                                return _this2.setExperimentData(index);
-	                            } },
-	                        experiment.title
-	                    );
-	                }) : null,
-	                this.renderExperiment()
+	                this.renderContent()
 	            );
 	        }
 	    }]);
@@ -19976,301 +19987,6 @@
 
 /***/ }),
 /* 161 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Histogram = __webpack_require__(162);
-
-	var _Histogram2 = _interopRequireDefault(_Histogram);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Experiment = function (_Component) {
-	    _inherits(Experiment, _Component);
-
-	    function Experiment(props) {
-	        _classCallCheck(this, Experiment);
-
-	        var _this = _possibleConstructorReturn(this, (Experiment.__proto__ || Object.getPrototypeOf(Experiment)).call(this, props));
-
-	        _this.renderExperiment = _this.renderExperiment.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Experiment, [{
-	        key: 'renderExperiment',
-	        value: function renderExperiment(data, targetElement, width, height, yTicks) {
-	            if (this.props.data) {
-	                return _react2.default.createElement(_Histogram2.default, {
-	                    data: data,
-	                    targetElement: targetElement,
-	                    width: width,
-	                    height: height,
-	                    yTicks: yTicks
-	                });
-	            }
-
-	            return;
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            console.log('exp data', this.props.data);
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'exp-header' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'exp-title' },
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            this.props.data ? this.props.data.title : null
-	                        )
-	                    ),
-	                    _react2.default.createElement('hr', null),
-	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'exp-date' },
-	                        '10.24.17'
-	                    ),
-	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'exp-id' },
-	                        'ID: 00001'
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'exp-introduction' },
-	                    _react2.default.createElement(
-	                        'p',
-	                        null,
-	                        this.props.data ? this.props.data.description : null
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'stokes-container' },
-	                    _react2.default.createElement(
-	                        'h4',
-	                        null,
-	                        'S1 Histograms'
-	                    ),
-	                    this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null,
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'histogram-measurements' },
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'histogram-small-container' },
-	                            _react2.default.createElement(
-	                                'h5',
-	                                null,
-	                                'H Histogram'
-	                            ),
-	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'histogram-small-container' },
-	                            _react2.default.createElement(
-	                                'h5',
-	                                null,
-	                                'V Histogram'
-	                            ),
-	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150, 5) : null
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'stokes-container' },
-	                    _react2.default.createElement(
-	                        'h4',
-	                        null,
-	                        'S2 Histograms'
-	                    ),
-	                    this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null,
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'histogram-measurements' },
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'histogram-small-container' },
-	                            _react2.default.createElement(
-	                                'h5',
-	                                null,
-	                                'P Histogram'
-	                            ),
-	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'histogram-small-container' },
-	                            _react2.default.createElement(
-	                                'h5',
-	                                null,
-	                                'M Histogram'
-	                            ),
-	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Experiment;
-	}(_react.Component);
-
-	exports.default = Experiment;
-
-/***/ }),
-/* 162 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Hisotgram = function (_Component) {
-	    _inherits(Hisotgram, _Component);
-
-	    function Hisotgram(props) {
-	        _classCallCheck(this, Hisotgram);
-
-	        var _this = _possibleConstructorReturn(this, (Hisotgram.__proto__ || Object.getPrototypeOf(Hisotgram)).call(this, props));
-
-	        _this.state = {
-	            g: null
-	        };
-
-	        _this.onRef = _this.onRef.bind(_this);
-	        _this.renderHistogram = _this.renderHistogram.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Hisotgram, [{
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(nextProps) {
-	            if (nextProps.data !== this.props.data) {
-	                console.log("update");
-	                console.log('nextProps', nextProps.data);
-	                this.renderHistogram(nextProps.data);
-	            }
-	        }
-	    }, {
-	        key: 'shouldComponentUpdate',
-	        value: function shouldComponentUpdate() {
-	            return false;
-	        }
-	    }, {
-	        key: 'onRef',
-	        value: function onRef(ref) {
-	            var _this2 = this;
-
-	            this.setState({ g: d3.select(ref) }, function () {
-	                return _this2.renderHistogram(_this2.props.data);
-	            });
-	        }
-	    }, {
-	        key: 'renderHistogram',
-	        value: function renderHistogram(data) {
-	            // Initialize Axis and dimensions
-	            var margin = { top: 20, right: 20, bottom: 70, left: 40 },
-	                width = this.props.width - margin.left - margin.right,
-	                height = this.props.height - margin.top - margin.bottom;
-
-	            // Parse the date / time
-	            // var	parseDate = d3.time.format("%Y-%m").parse;
-	            var x = d3.scale.linear().range([-1, width]);
-	            // var x = d3.scale.linear().range([width, 0]);
-	            var y = d3.scale.linear().range([height, 0]);
-
-	            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
-
-	            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(this.props.yTicks);
-
-	            var targetElement = '.' + this.props.targetElement;
-
-	            var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	            x.domain([-1, d3.max(data, function (d) {
-	                return d[0];
-	            })]);
-	            y.domain([0, d3.max(data, function (d) {
-	                return d[1];
-	            })]);
-
-	            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
-
-	            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
-
-	            svg.selectAll("bar").data(data).enter().append("rect").style("fill", "steelblue").attr("x", function (d) {
-	                return x(d[0]);
-	            }).attr("width", 2).attr("y", function (d) {
-	                return y(d[1]);
-	            }).attr("height", function (d) {
-	                return height - y(d[1]);
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            this.renderHistogram(this.props.data);
-	            console.log("Rendered HIstogram");
-	            return _react2.default.createElement(
-	                'svg',
-	                { width: this.props.width, height: this.props.height, className: this.props.targetElement },
-	                _react2.default.createElement('g', { ref: this.onRef })
-	            );
-	        }
-	    }]);
-
-	    return Hisotgram;
-	}(_react.Component);
-
-	exports.default = Hisotgram;
-
-/***/ }),
-/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20329,6 +20045,126 @@
 	exports.default = Menu;
 
 /***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Home = function (_Component) {
+	    _inherits(Home, _Component);
+
+	    function Home() {
+	        _classCallCheck(this, Home);
+
+	        return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+	    }
+
+	    _createClass(Home, [{
+	        key: "render",
+	        value: function render() {
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "main-content" },
+	                _react2.default.createElement(
+	                    "p",
+	                    { className: "quote" },
+	                    "\"The motion of a pendulum has exerted a fascination for human minds, since the first savage watched the swaying of the first tree branch.  The smooth sinusoidal motion, back and forth, seems to express some secret of the universe...\""
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Home;
+	}(_react.Component);
+
+	exports.default = Home;
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Menu = __webpack_require__(161);
+
+	var _Menu2 = _interopRequireDefault(_Menu);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Header = function (_Component) {
+	    _inherits(Header, _Component);
+
+	    function Header() {
+	        _classCallCheck(this, Header);
+
+	        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+	    }
+
+	    _createClass(Header, [{
+	        key: 'render',
+	        value: function render() {
+	            var HOME_MENU = ['Data Acquisition', 'Experiments', 'Information', 'About'];
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'h1',
+	                    { className: 'main-title' },
+	                    'noobelectric'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'header' },
+	                    _react2.default.createElement(_Menu2.default, {
+	                        onClick: this.props.onClick,
+	                        labels: HOME_MENU
+	                    })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Header;
+	}(_react.Component);
+
+	exports.default = Header;
+
+/***/ }),
 /* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20363,7 +20199,7 @@
 
 
 	// module
-	exports.push([module.id, "html,\nbody {\n  height: 100%;\n  margin: 30px;\n  padding: 0;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis path,\n.axis line {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.noobelectric .title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  width: 115px;\n  float: right;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .home-menu {\n  position: absolute;\n  left: 508px;\n  width: 600px;\n  text-align: center;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding-right: 68px;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n}\n", ""]);
+	exports.push([module.id, "body,\nhtml {\n  height: 100%;\n  margin: 30px;\n  padding: 0;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 557px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n}\n", ""]);
 
 	// exports
 
@@ -20684,6 +20520,384 @@
 
 	module.exports = __webpack_require__(5);
 
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Histogram = __webpack_require__(170);
+
+	var _Histogram2 = _interopRequireDefault(_Histogram);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Experiment = function (_Component) {
+	    _inherits(Experiment, _Component);
+
+	    function Experiment(props) {
+	        _classCallCheck(this, Experiment);
+
+	        var _this = _possibleConstructorReturn(this, (Experiment.__proto__ || Object.getPrototypeOf(Experiment)).call(this, props));
+
+	        _this.renderExperiment = _this.renderExperiment.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Experiment, [{
+	        key: 'renderExperiment',
+	        value: function renderExperiment(data, targetElement, width, height, yTicks) {
+	            if (this.props.data) {
+	                return _react2.default.createElement(_Histogram2.default, {
+	                    data: data,
+	                    targetElement: targetElement,
+	                    width: width,
+	                    height: height,
+	                    yTicks: yTicks
+	                });
+	            }
+
+	            return;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            console.log('exp data', this.props.data);
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'exp-header' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'exp-title' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            this.props.data ? this.props.data.title : null
+	                        )
+	                    ),
+	                    _react2.default.createElement('hr', null),
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'exp-date' },
+	                        '10.24.17'
+	                    ),
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'exp-id' },
+	                        'ID: 00001'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'exp-introduction' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        this.props.data ? this.props.data.description : null
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'stokes-container' },
+	                    _react2.default.createElement(
+	                        'h4',
+	                        null,
+	                        'S1 Histograms'
+	                    ),
+	                    this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S1, 'exp-s1-histogram', 600, 300, 10) : null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'histogram-measurements' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'H Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.H, 'exp-H-histogram', 300, 150, 5) : null
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'V Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.V, 'exp-V-histogram', 300, 150, 5) : null
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'stokes-container' },
+	                    _react2.default.createElement(
+	                        'h4',
+	                        null,
+	                        'S2 Histograms'
+	                    ),
+	                    this.props.data ? this.renderExperiment(this.props.data.histograms.stokes.S2, 'exp-s2-histogram', 600, 300, 10) : null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'histogram-measurements' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'P Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.P, 'exp-P-histogram', 300, 150, 5) : null
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'histogram-small-container' },
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'M Histogram'
+	                            ),
+	                            this.props.data ? this.renderExperiment(this.props.data.histograms.measurements.M, 'exp-M-histogram', 300, 150, 5) : null
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Experiment;
+	}(_react.Component);
+
+	exports.default = Experiment;
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Hisotgram = function (_Component) {
+	    _inherits(Hisotgram, _Component);
+
+	    function Hisotgram(props) {
+	        _classCallCheck(this, Hisotgram);
+
+	        var _this = _possibleConstructorReturn(this, (Hisotgram.__proto__ || Object.getPrototypeOf(Hisotgram)).call(this, props));
+
+	        _this.state = {
+	            g: null
+	        };
+
+	        _this.onRef = _this.onRef.bind(_this);
+	        _this.renderHistogram = _this.renderHistogram.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Hisotgram, [{
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            if (nextProps.data !== this.props.data) {
+	                console.log("update");
+	                console.log('nextProps', nextProps.data);
+	                this.renderHistogram(nextProps.data);
+	            }
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate() {
+	            return false;
+	        }
+	    }, {
+	        key: 'onRef',
+	        value: function onRef(ref) {
+	            var _this2 = this;
+
+	            this.setState({ g: d3.select(ref) }, function () {
+	                return _this2.renderHistogram(_this2.props.data);
+	            });
+	        }
+	    }, {
+	        key: 'renderHistogram',
+	        value: function renderHistogram(data) {
+	            // Initialize Axis and dimensions
+	            var margin = { top: 20, right: 20, bottom: 70, left: 40 },
+	                width = this.props.width - margin.left - margin.right,
+	                height = this.props.height - margin.top - margin.bottom;
+
+	            // Parse the date / time
+	            // var	parseDate = d3.time.format("%Y-%m").parse;
+	            var x = d3.scale.linear().range([-1, width]);
+	            // var x = d3.scale.linear().range([width, 0]);
+	            var y = d3.scale.linear().range([height, 0]);
+
+	            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
+
+	            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(this.props.yTicks);
+
+	            var targetElement = '.' + this.props.targetElement;
+
+	            var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	            x.domain([-1, d3.max(data, function (d) {
+	                return d[0];
+	            })]);
+	            y.domain([0, d3.max(data, function (d) {
+	                return d[1];
+	            })]);
+
+	            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
+
+	            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
+
+	            svg.selectAll("bar").data(data).enter().append("rect").style("fill", "steelblue").attr("x", function (d) {
+	                return x(d[0]);
+	            }).attr("width", 2).attr("y", function (d) {
+	                return y(d[1]);
+	            }).attr("height", function (d) {
+	                return height - y(d[1]);
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            this.renderHistogram(this.props.data);
+	            console.log("Rendered HIstogram");
+	            return _react2.default.createElement(
+	                'svg',
+	                { width: this.props.width, height: this.props.height, className: this.props.targetElement },
+	                _react2.default.createElement('g', { ref: this.onRef })
+	            );
+	        }
+	    }]);
+
+	    return Hisotgram;
+	}(_react.Component);
+
+	exports.default = Hisotgram;
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ExperimentsMenu = function (_Component) {
+	    _inherits(ExperimentsMenu, _Component);
+
+	    function ExperimentsMenu() {
+	        _classCallCheck(this, ExperimentsMenu);
+
+	        return _possibleConstructorReturn(this, (ExperimentsMenu.__proto__ || Object.getPrototypeOf(ExperimentsMenu)).apply(this, arguments));
+	    }
+
+	    _createClass(ExperimentsMenu, [{
+	        key: "render",
+	        value: function render() {
+	            var _this2 = this;
+
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                this.props.data ? this.props.data.map(function (experiment, index) {
+	                    return _react2.default.createElement(
+	                        "div",
+	                        { className: "exp-menu-item-container", onClick: function onClick() {
+	                                return _this2.props.onClick(index);
+	                            } },
+	                        _react2.default.createElement(
+	                            "h3",
+	                            { className: "", key: index },
+	                            experiment.title
+	                        ),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "exp-description" },
+	                            experiment.description
+	                        ),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "exp-buttons" },
+	                            _react2.default.createElement(
+	                                "span",
+	                                null,
+	                                "more"
+	                            ),
+	                            _react2.default.createElement(
+	                                "span",
+	                                null,
+	                                "compare"
+	                            )
+	                        ),
+	                        _react2.default.createElement("hr", null)
+	                    );
+	                }) : null
+	            );
+	        }
+	    }]);
+
+	    return ExperimentsMenu;
+	}(_react.Component);
+
+	exports.default = ExperimentsMenu;
 
 /***/ })
 /******/ ]);

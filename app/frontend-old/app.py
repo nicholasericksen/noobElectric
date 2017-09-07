@@ -46,7 +46,6 @@ def api():
         data_array.append(data)
     # jsonify({"id": v for k, v in data.items() if k == '_id'}))
     data_sanatized = json.loads(json_util.dumps(data_array))
-    print "Sanatized", data_sanatized
     resp = jsonify({"exp": data_sanatized})
     resp.headers['Access-Control-Allow-Origin'] = '*'
 
@@ -85,10 +84,13 @@ def retrieve_files():
     return jsonify({"exp": exp})
 
 
-def retrieve_exp_description(exp):
-    with open('uploads/' + exp + '/info.txt', 'r') as myfile:
-        info = myfile.read()
-        print info
+# def retrieve_exp_description(exp):
+#     with open('uploads/' + exp + '/info.txt', 'r') as myfile:
+#         info = myfile.read()
+#         print info
+
+
+
 # @app.route('/lightsensor')
 # def get_reading():
 #     # sensor_reading()

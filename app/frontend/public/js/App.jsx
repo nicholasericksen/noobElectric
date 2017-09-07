@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 
 import Experiments from './Experiments';
 import Menu from './Menu';
+import Home from './Home';
+import Header from './Header';
 
 import '../style.less';
 
@@ -10,11 +12,11 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            activeTab: 0,
+            activeIndex: 0,
             data: null
         }
-
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
+        this.renderContent = this.renderContent.bind(this);
         this.requestData = this.requestData.bind(this);
     }
 
@@ -46,33 +48,37 @@ export default class App extends Component {
     }
 
     handleMenuButtonClick(index) {
-        this.setState({activeTab: index});
+        this.setState({activeIndex: index});
+    }
+
+
+
+    renderContent() {
+        let content;
+
+        if (this.state.activeIndex === 0) {
+            return <Home />;
+        } else if (this.state.activeIndex === 1) {
+            return (
+                <Experiments
+                    data={this.state.data}
+                />
+            );
+        } else {
+            return <Home />;
+        }
     }
 
     render() {
-        const HOME_MENU = ['Data Acquisition', 'Experiments', 'Information', 'About'];
+
+
         return (
             <div className="noobelectric">
-                <h1 className="title">noobelectric</h1>
-                <div className="header">
-                    <Menu
-                        onClick={this.handleMenuButtonClick}
-                        labels={HOME_MENU}
-                    />
+                <Header
+                    onClick={this.handleMenuButtonClick}
+                />
+                {this.renderContent()}
 
-                {/* <span className="glyphicon glyphicon-home home-btn"></span> */}
-                </div>
-                <div className="main-content">
-                    <p className="quote">
-                        "The motion of a pendulum has exerted a fascination for human minds, since the first savage watched the swaying of the first tree branch.  The smooth sinusoidal motion, back and forth, seems to express some secret of the universe..."
-                    </p>
-                </div>
-                {
-                    this.state.data ?
-                    <Experiments
-                        data={this.state.data}
-                    /> : null
-                }
             </div>
         );
     }

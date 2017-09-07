@@ -104,7 +104,7 @@ result = db.discrete.insert_one(
         "title": "Le poivre et la lumiere",
         "description": "This is an LMP based polarizance setup with images taken of a pepper plant",
         "date": str(datetime.utcnow()),
-        "images": '/data/exp-07-13-17-pepper/',
+        "images": 'exp-07-13-17-pepper',
         "histograms": {
             "measurements": {
                 "H": Hzipped,
