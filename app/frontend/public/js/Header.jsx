@@ -4,7 +4,24 @@ import Menu from './Menu';
 
 export default class Header extends Component {
     render() {
-        const HOME_MENU = ['Experiments', 'Data Acquisition', 'Documentation', 'About'];
+        const HOME_MENU = [
+            {
+                label: 'Experiments',
+                url: '/experiments'
+            },
+            {
+                label: 'Data Acquisition',
+                url: '/daq'
+            },
+            {
+                label: 'Documentation',
+                url: 'documentation'
+            },
+            {
+                label: 'About',
+                url: '/about'
+            }
+        ];
 
         return(
             <div>

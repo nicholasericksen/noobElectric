@@ -13,23 +13,22 @@ export default class Hisotgram extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
-            console.log("update");
-            console.log('nextProps', nextProps.data);
             this.renderHistogram(nextProps.data)
         }
     }
 
     shouldComponentUpdate() { console.log("COMponent should update"); return false }
 
-    componentDidMount(props) {
+    componentDidMount() {
         this.renderHistogram(this.props.data);
     }
 
     onRef(ref) {
-        this.setState({ g: d3.select(ref) }, () => this.renderHistogram(this.props.data))
+        // this.setState({ g: d3.select(ref) }, () => this.renderHistogram(this.props.data))
     }
 
     renderHistogram(data) {
+        console.log("histogram data should be ", data);
             // Initialize Axis and dimensions
             var margin = {top: 20, right: 20, bottom: 70, left: 40},
                 width = this.props.width - margin.left - margin.right,
