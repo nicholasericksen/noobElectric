@@ -27199,11 +27199,14 @@ var Experiment = function (_Component) {
         }
     }, {
         key: 'requestData',
-        value: function requestData() {
+        value: function requestData(props) {
             var _this2 = this;
 
             var request = new XMLHttpRequest();
-            var params = "id=59b0d1acb42de04c416d9cef";
+            var expId = '' + this.props.match.params.experiment;
+            var params = {
+                id: expId
+            };
             request.open('POST', 'http://localhost:5000/api/experiments', true);
 
             request.onload = function () {
@@ -27220,21 +27223,19 @@ var Experiment = function (_Component) {
             request.onerror = function () {
                 // There was a connection error of some sort
             };
-
-            request.send(params);
+            request.send(JSON.stringify(params));
         }
     }, {
         key: 'renderAll',
         value: function renderAll() {
-
             if (this.state.data.images) {
-                var s1data = this.state.data.histograms.stokes.S1.data;
                 return _react2.default.createElement(
                     'div',
                     null,
                     _react2.default.createElement(_ExperimentHeader2.default, {
                         title: this.state.data.title,
-                        date: this.state.data.date
+                        date: this.state.data.date,
+                        id: this.state.data._id.$oid
                     }),
                     _react2.default.createElement(_ExperimentIntro2.default, {
                         summary: this.state.data.summary,
@@ -27577,7 +27578,6 @@ var Hisotgram = function (_Component) {
     }, {
         key: "renderHistogram",
         value: function renderHistogram(data) {
-            console.log("histogram data should be ", data);
             // Initialize Axis and dimensions
             var margin = { top: 20, right: 20, bottom: 70, left: 40 },
                 width = this.props.width - margin.left - margin.right,
@@ -27619,8 +27619,6 @@ var Hisotgram = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-
-            console.log("Rendered HIstogram");
             return _react2.default.createElement(
                 "svg",
                 { width: this.props.width, height: this.props.height, className: this.props.targetElement },
@@ -27678,8 +27676,8 @@ var ExperimentsMenu = function (_Component) {
     }
 
     _createClass(ExperimentsMenu, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
             this.requestData();
         }
     }, {

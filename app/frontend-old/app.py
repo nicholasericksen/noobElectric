@@ -1,6 +1,11 @@
 from __future__ import absolute_import
 
-from bson import json_util, ObjectId
+from bson import json_util
+from bson.objectid import ObjectId
+
+from flask_restful import reqparse
+
+parser = reqparse.RequestParser()
 
 import os
 import serial
@@ -28,6 +33,12 @@ socketio = SocketIO(app)
 # baudrate = 9600
 # angle = [0, 90, 45, -45, "LCP", "RCP"]
 # ser = serial.Serial(port, baudrate)
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
+
 
 @app.route('/')
 def hello_world():
@@ -50,6 +61,20 @@ def api():
     resp.headers['Access-Control-Allow-Origin'] = '*'
 
     return resp
+#
+@app.route('/api/experiments', methods=['POST'])
+def get_exp_by_id():
+    print request.data
+
+    exp_id = json.loads(request.data)['id'];
+    data = discreteLMP.find_one({'_id': ObjectId(exp_id) })
+    data_sanatized = json.loads(json_util.dumps(data))
+
+    resp = jsonify({"exp": data_sanatized})
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+
+    return resp
+
 # @app.route('/upload', methods=['POST'])
 # def file_upload():
 #

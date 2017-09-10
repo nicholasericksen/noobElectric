@@ -28,7 +28,6 @@ export default class Hisotgram extends Component {
     }
 
     renderHistogram(data) {
-        console.log("histogram data should be ", data);
             // Initialize Axis and dimensions
             var margin = {top: 20, right: 20, bottom: 70, left: 40},
                 width = this.props.width - margin.left - margin.right,
@@ -95,8 +94,6 @@ export default class Hisotgram extends Component {
     }
 
     render() {
-
-        console.log("Rendered HIstogram");
         return(
             <svg width={this.props.width} height={this.props.height} className={this.props.targetElement}>
                 <g ref={this.onRef}  />

@@ -66,10 +66,8 @@ export default class ExperimentImages extends Component {
         this.setState({showModal: true, activeImageModal: image});
         this.renderImageModal(image);
 
-
         var svg = d3.select(".exp-H-modal-histogram").transition();
         // svg.selectAll('bar').duration(750)
-
     }
 
     render() {

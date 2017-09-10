@@ -13,7 +13,7 @@ export default class ExperimentsMenu extends Component {
         this.requestData = this.requestData.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.requestData();
     }
 

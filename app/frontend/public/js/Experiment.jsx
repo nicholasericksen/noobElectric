@@ -20,9 +20,12 @@ export default class Experiment extends Component {
         this.requestData();
     }
 
-    requestData() {
+    requestData(props) {
         var request = new XMLHttpRequest();
-        var params = "id=59b0d1acb42de04c416d9cef";
+        var expId = `${this.props.match.params.experiment}`;
+        let params =  {
+            id: expId
+        };
         request.open('POST', 'http://localhost:5000/api/experiments', true);
 
         request.onload = () => {
@@ -39,19 +42,17 @@ export default class Experiment extends Component {
         request.onerror = function() {
           // There was a connection error of some sort
         };
-
-        request.send(params);
+        request.send(JSON.stringify(params));
     }
 
     renderAll() {
-
         if (this.state.data.images) {
-                    let s1data = this.state.data.histograms.stokes.S1.data;
             return(
                 <div>
                 <ExperimentHeader
                     title={this.state.data.title}
                     date={this.state.data.date}
+                    id={this.state.data._id.$oid}
                 />
                 <ExperimentIntro
                     summary={this.state.data.summary}
