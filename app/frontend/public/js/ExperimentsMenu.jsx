@@ -7,16 +7,16 @@ export default class ExperimentsMenu extends Component {
                 {this.props.data ?
                     this.props.data.map((experiment, index) => {
                         return(
-                            <div className="exp-menu-item-container" onClick={() => this.props.onClick(index)}>
-                                <h3 className="" key={index} >
+                            <div className="exp-menu-item-container">
+                                <h3 className="" key={index} onClick={() => this.props.onClick(index)}>
                                     {experiment.title}
                                 </h3>
                                 <div className="exp-description">
-                                    {experiment.description}
+                                    {experiment.summary}
                                 </div>
                                 <div className="exp-buttons">
-                                    <span>more</span>
-                                    <span>compare</span>
+                                    <span className="exp-menu-more exp-btn" onClick={() => this.props.onClick(index)}>more</span>
+                                    <span className="exp-menu-compare exp-btn" onClick={() => this.props.compareClick(index)}>compare</span>
                                 </div>
                                 <hr />
                             </div>

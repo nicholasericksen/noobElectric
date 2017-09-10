@@ -12,7 +12,7 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            activeIndex: 0,
+            activeIndex: false,
             data: null
         }
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
@@ -56,9 +56,9 @@ export default class App extends Component {
     renderContent() {
         let content;
 
-        if (this.state.activeIndex === 0) {
+        if (this.state.activeIndex === 1) {
             return <Home />;
-        } else if (this.state.activeIndex === 1) {
+        } else if (this.state.activeIndex === 0) {
             return (
                 <Experiments
                     data={this.state.data}

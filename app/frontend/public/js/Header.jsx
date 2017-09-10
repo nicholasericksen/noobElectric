@@ -4,7 +4,7 @@ import Menu from './Menu';
 
 export default class Header extends Component {
     render() {
-        const HOME_MENU = ['Data Acquisition', 'Experiments', 'Information', 'About'];
+        const HOME_MENU = ['Experiments', 'Data Acquisition', 'Documentation', 'About'];
 
         return(
             <div>

@@ -8,31 +8,41 @@ export default class Experiments extends Component {
         super(props);
 
         this.state = {
-            expIndex: null
+            expIndex: null,
+            compareIndexes: []
         };
 
         this.setExperimentData = this.setExperimentData.bind(this);
         this.renderContent = this.renderContent.bind(this);
+        this.compareButtonClick = this.compareButtonClick.bind(this);
     }
 
 
 
     setExperimentData (index) {
-        console.log("index", index)
     //    if (index !== this.state.expIndex) {
-            console.log("set experiment", this.state.expIndex);
             this.setState({expIndex: index});
     //    }
-        // this.renderContent();
     }
+
+    compareButtonClick(index) {
+        const indexes = this.state.compareIndexes;
+        indexes.push(index);
+
+        this.setState({
+            compareIndexes: indexes
+        });
+
+        if (this.state.compareIndexes.length() === 2) {
+
+        }
+        console.log("compareIndex", this.state.compareIndexes);
+    }
+
     renderContent() {
-        // This remove all previous data points
         let data = this.props.data;
-        console.log("render content")
-        console.log("ExpIndex", this.state.expIndex);
         if (this.state.expIndex !== null) {
-            // d3.selectAll("svg > *").remove();
-            console.log("HELPP");
+            d3.selectAll("svg > *").remove();
             return (
                 <Experiment
                     data={data[this.state.expIndex]}
@@ -44,6 +54,7 @@ export default class Experiments extends Component {
                 <ExperimentsMenu
                     data={this.props.data}
                     onClick={this.setExperimentData}
+                    compareClick={this.compareButtonClick}
                 />
             );
         }

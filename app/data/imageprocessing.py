@@ -15,7 +15,7 @@ float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind':float_formatter})
 
 #set the directory the images come from
-imagedirectory = 'exp-07-13-17-pepper/'
+imagedirectory = 'exp-07-13-17-basil/'
 
 #Read the images for discrete analysis and flatten them
 Hraw = np.array(cv2.imread(imagedirectory + '0.jpg', 0).ravel(), dtype=np.int)
@@ -67,11 +67,11 @@ def datasummary(data):
     print '============================\n'
 
     return {
-        maxValue: maxValue,
-        minValue: minValue,
-        mean: mean,
-        std: std,
-        num_of_data_pts: length
+        "max": maxValue,
+        "min": minValue,
+        "mean": mean,
+        "std": std,
+        "numpts": length
     }
 
 def createhistogram(data, bins):
@@ -86,8 +86,8 @@ def createhistogram(data, bins):
     return zipped
 
 # Print statistics about Stokes data
-datasummary(S1)
-datasummary(S2)
+S1summary = datasummary(S1)
+S2summary = datasummary(S2)
 
 # Create the S1 and S2 Histogram
 S1zipped = createhistogram(S1, np.arange(-1, 1.01, 0.01))
@@ -101,10 +101,11 @@ Mzipped = createhistogram(M, np.arange(0, 256, 1))
 
 result = db.discrete.insert_one(
     {
-        "title": "Le poivre et la lumiere",
-        "description": "This is an LMP based polarizance setup with images taken of a pepper plant",
+        "title": "Basil a La Mode",
+        "summary": "This is an LMP based polarizance setup with images taken of a basil plant",
+        "description": "The purpose of this experiment was to examine the surface polarization characteristics of a basil leaf.  An unpolarized source was utilized, in conjuction with a linear polarizer, to generate incident rays of light onto the leafs' surface.  The resulting polarization intensities were measured at 0, 90, 45, and 135 degrees and the Polarizance vector of the Mueller matrice was determined.",
         "date": str(datetime.utcnow()),
-        "images": 'exp-07-13-17-pepper',
+        "images": 'exp-07-13-17-basil',
         "histograms": {
             "measurements": {
                 "H": Hzipped,
@@ -113,8 +114,14 @@ result = db.discrete.insert_one(
                 "M": Mzipped
             },
             "stokes": {
-                "S1": S1zipped,
-                "S2": S2zipped
+                "S1": {
+                    "data": S1zipped,
+                    "stats": S1summary
+                },
+                "S2": {
+                    "data": S2zipped,
+                    "stats": S2summary
+                }
             }
         }
     }

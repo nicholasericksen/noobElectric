@@ -16,6 +16,11 @@ html {
     shape-rendering: crispEdges;
 }
 
+.exp-btn:hover {
+    cursor: pointer;
+    border: 1px solid black;
+}
+
 .noobelectric {
     width: 650px;
     margin: 0 auto;
@@ -39,7 +44,7 @@ html {
     }
 
     .home-menu {
-        width: 557px;
+        width: 585px;
         text-align: center;
         margin: 0 auto;
 
@@ -58,6 +63,45 @@ html {
         width: 650px;
         margin: 0 auto;
 
+        .exp-description {
+            padding-bottom: 25px;
+        }
+
+        .exp-menu-more {
+            padding-right: 15px;
+        }
+
+        .exp-introduction {
+            min-height: 50px;
+            padding-bottom: 35px;
+        }
+        .image-container {
+            height: 170px;
+            position: relative;
+        }
+
+        .exp-image {
+float: left;
+    padding: 0 8px;
+    position: relative;
+
+    .exp-image-subtitle {
+        position: absolute;
+bottom: -21px;
+left: 62px;
+font-size: 12px;
+font-weight: 200;
+    }
+
+
+img {
+    padding: 0;
+    height: 95px;
+
+    border-radius: 10px;
+}
+        }
+
         .sub-heading {
             color: #868585;
             font-size: 10px;
@@ -71,6 +115,12 @@ html {
         .exp-date {
             position: absolute;
             right: 0;
+            font-size: 12px;
+            font-weight: 200;
+        }
+        .exp-id {
+            font-size: 12px;
+font-weight: 200;
         }
     }
 }
@@ -88,4 +138,57 @@ html {
     // svg {
     //     padding-left: 50px;
     // }
+    position: relative;
+    .stokes-stats {
+        width: 150px;
+position: absolute;
+right: -150px;
+top: 50px;
+
+
+    h5 {
+        text-decoration: underline;
+    }
+    }
 }
+//
+// .exp-image-modal {
+//     position: fixed;
+//     z-index: 99;
+//     top: 0;
+//     padding: 50px;
+//     // height: 100vh;
+//     // background-color: rgba(11u8, 116, 123, 0.8);
+//
+//     .exp-image-full {
+
+//         // width: 490px;
+//     }
+// }
+.exp-image-full {
+    img {
+        width: 295px;
+    padding: 10px;
+    margin-top: 20px;
+    float: left;
+    }
+
+}
+.exp-image-full-histogram {
+    float: left;
+width: 232px;
+margin-top: 25px;
+margin-left: 10px;
+}
+
+// .calc {
+//     span {
+//
+//     width: 65px;
+// text-overflow: ellipsis;
+// display: block;
+// /* position: relative; */
+// overflow: hidden;
+// margin: 0;
+//     }
+// }

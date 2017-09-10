@@ -19,7 +19,11 @@ export default class Hisotgram extends Component {
         }
     }
 
-    shouldComponentUpdate() { return false }
+    shouldComponentUpdate() { console.log("COMponent should update"); return false }
+
+    componentDidMount(props) {
+        this.renderHistogram(this.props.data);
+    }
 
     onRef(ref) {
         this.setState({ g: d3.select(ref) }, () => this.renderHistogram(this.props.data))
@@ -92,7 +96,7 @@ export default class Hisotgram extends Component {
     }
 
     render() {
-        this.renderHistogram(this.props.data);
+
         console.log("Rendered HIstogram");
         return(
             <svg width={this.props.width} height={this.props.height} className={this.props.targetElement}>
