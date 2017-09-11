@@ -5,6 +5,8 @@ import Menu from './Menu';
 import Home from './Home';
 import Header from './Header';
 
+import Webcam from './Webcam';
+
 import { Route, Link, Switch } from 'react-router-dom'
 
 import '../style.less';
@@ -17,7 +19,7 @@ export default class App extends Component {
                 <Switch>
                     <Route exact path='/index.html' component={Home} />
                     <Route path='/experiments' component={Experiments} />
-                    <Route path='/daq' component={Home} />
+                    <Route path='/daq' component={Webcam} />
                     <Route path='/documentation' component={Experiments} />
                     <Route path='/about' component={Experiments} />
                 </Switch>

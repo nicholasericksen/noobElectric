@@ -23927,6 +23927,10 @@ var _Header = __webpack_require__(241);
 
 var _Header2 = _interopRequireDefault(_Header);
 
+var _Webcam = __webpack_require__(248);
+
+var _Webcam2 = _interopRequireDefault(_Webcam);
+
 var _reactRouterDom = __webpack_require__(28);
 
 __webpack_require__(242);
@@ -23960,7 +23964,7 @@ var App = function (_Component) {
                     null,
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/index.html', component: _Home2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/experiments', component: _Experiments2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/daq', component: _Home2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/daq', component: _Webcam2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/documentation', component: _Experiments2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _Experiments2.default })
                 )
@@ -27731,7 +27735,7 @@ var ExperimentsMenu = function (_Component) {
                             { className: 'exp-buttons' },
                             _react2.default.createElement(
                                 _reactRouterDom.Link,
-                                { key: index, to: '/experiments/' + experiment._id.$oid },
+                                { className: 'button', key: index, to: '/experiments/' + experiment._id.$oid },
                                 'more'
                             )
                         ),
@@ -27921,7 +27925,7 @@ exports = module.exports = __webpack_require__(244)(undefined);
 
 
 // module
-exports.push([module.i, "body,\nhtml {\n  height: 100%;\n  margin: 30px;\n  padding: 0;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-container .stokes-stats {\n  width: 150px;\n  position: absolute;\n  right: -150px;\n  top: 50px;\n}\n.stokes-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n", ""]);
+exports.push([module.i, "body,\nhtml {\n  height: 100%;\n  margin: 30px;\n  padding: 0;\n}\nbody a.button,\nhtml a.button {\n  color: #333;\n  font-weight: 300;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-container .stokes-stats {\n  width: 150px;\n  position: absolute;\n  right: -150px;\n  top: 50px;\n}\n.stokes-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n", ""]);
 
 // exports
 
@@ -28644,6 +28648,133 @@ var ExperimentImages = function (_Component) {
 }(_react.Component);
 
 exports.default = ExperimentImages;
+
+/***/ }),
+/* 248 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Webcam = function (_Component) {
+    _inherits(Webcam, _Component);
+
+    function Webcam(props) {
+        _classCallCheck(this, Webcam);
+
+        var _this = _possibleConstructorReturn(this, (Webcam.__proto__ || Object.getPrototypeOf(Webcam)).call(this, props));
+
+        _this.state = {
+            videoSrc: null,
+            deviceInfos: null
+        };
+
+        _this.gotDevices = _this.gotDevices.bind(_this);
+        _this.errorCallback = _this.errorCallback.bind(_this);
+        _this.selectDevice = _this.selectDevice.bind(_this);
+        _this.startWebcam = _this.startWebcam.bind(_this);
+        _this.takePicture = _this.takePicture.bind(_this);
+        return _this;
+    }
+
+    _createClass(Webcam, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            navigator.mediaDevices.enumerateDevices().then(this.gotDevices).catch(this.errorCallback);
+            this.selectDevice(null);
+        }
+    }, {
+        key: 'errorCallback',
+        value: function errorCallback(err) {
+            console.log("There was n error accessing the webcam", err);
+        }
+    }, {
+        key: 'gotDevices',
+        value: function gotDevices(deviceInfos) {
+            this.setState({
+                deviceInfos: deviceInfos
+            });
+        }
+    }, {
+        key: 'startWebcam',
+        value: function startWebcam(stream) {
+            this.setState({ isLoading: false });
+            // const video = this.refs.video;
+            var vendorURL = window.URL || window.webkitURL;
+
+            // video.src = vendorURL.createObjectURL(stream);
+            // video.play();
+            this.setState({
+                videoSrc: vendorURL.createObjectURL(stream)
+            });
+        }
+    }, {
+        key: 'takePicture',
+        value: function takePicture() {
+            var canvas = this.refs.preview;
+            var context = canvas.getContext('2d');
+
+            var video = this.refs.webcam;
+            // const photo = document.getElementById('photo');
+
+            context.drawImage(video, 0, 0, 620, 520);
+
+            var data = canvas.toDataURL('image/png');
+        }
+    }, {
+        key: 'selectDevice',
+        value: function selectDevice(id) {
+            // The id is not being used right now as the browser seems to be ignoring it
+            // Ideally we should be able to select wwhich webcam we want prior to starting the stream
+            navigator.mediaDevices.getUserMedia({ deviceId: { exact: 'c3ec354d9a5076b46d71b300edaa870b37971619e2ec441943ed0761fe8ffbff' }, audio: false, video: true }).then(this.startWebcam).catch(this.errorCallback);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement('video', { ref: 'webcam', src: this.state.videoSrc, autoPlay: 'true' }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'button', onClick: function onClick() {
+                                return _this2.takePicture();
+                            } },
+                        'Take Picture'
+                    ),
+                    _react2.default.createElement('canvas', { ref: 'preview', width: 620, height: 520 })
+                )
+            );
+        }
+    }]);
+
+    return Webcam;
+}(_react.Component);
+
+exports.default = Webcam;
 
 /***/ })
 /******/ ]);

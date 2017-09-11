@@ -53,7 +53,7 @@ export default class ExperimentsMenu extends Component {
                                     {experiment.summary}
                                 </div>
                                 <div className="exp-buttons">
-                                    <Link key={index} to={`/experiments/${experiment._id.$oid}`}>more</Link>
+                                    <Link className="button" key={index} to={`/experiments/${experiment._id.$oid}`}>more</Link>
                                     {/*<span className="exp-menu-compare exp-btn">compare</span> */}
                                 </div>
                                 <hr />
