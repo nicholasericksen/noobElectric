@@ -32,6 +32,7 @@ export default class ExperimentsMenu extends Component {
           } else {
             // We reached our target server, but it returned an error
           }
+
         };
         request.onerror = function() {
           // There was a connection error of some sort
@@ -42,10 +43,16 @@ export default class ExperimentsMenu extends Component {
     render() {
         return (
             <div>
+                <Link to={'/experiments/new'}>
+                    { /*<div className="experiment-button">
+                        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </div> */}
+                    new
+                </Link>
                 {this.state.data ?
                     this.state.data.map((experiment, index) => {
                         return(
-                            <div className="exp-menu-item-container">
+                            <div key={index} className="exp-menu-item-container">
                                 <h3 className="" key={index}>
                                     {experiment.title}
                                 </h3>

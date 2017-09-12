@@ -24004,6 +24004,10 @@ var _ExperimentsMenu = __webpack_require__(239);
 
 var _ExperimentsMenu2 = _interopRequireDefault(_ExperimentsMenu);
 
+var _ExperimentCreator = __webpack_require__(249);
+
+var _ExperimentCreator2 = _interopRequireDefault(_ExperimentCreator);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24031,6 +24035,7 @@ var Experiments = function (_Component) {
                     _reactRouterDom.Switch,
                     null,
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/experiments', component: _ExperimentsMenu2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/experiments/new', component: _ExperimentCreator2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/experiments/:experiment', component: _Experiment2.default })
                 )
             );
@@ -27716,10 +27721,15 @@ var ExperimentsMenu = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: '/experiments/new' },
+                    'new'
+                ),
                 this.state.data ? this.state.data.map(function (experiment, index) {
                     return _react2.default.createElement(
                         'div',
-                        { className: 'exp-menu-item-container' },
+                        { key: index, className: 'exp-menu-item-container' },
                         _react2.default.createElement(
                             'h3',
                             { className: '', key: index },
@@ -27925,7 +27935,7 @@ exports = module.exports = __webpack_require__(244)(undefined);
 
 
 // module
-exports.push([module.i, "body,\nhtml {\n  height: 100%;\n  margin: 30px;\n  padding: 0;\n}\nbody a.button,\nhtml a.button {\n  color: #333;\n  font-weight: 300;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-container .stokes-stats {\n  width: 150px;\n  position: absolute;\n  right: -150px;\n  top: 50px;\n}\n.stokes-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n", ""]);
+exports.push([module.i, "body,\nhtml {\n  margin: 30px;\n  padding: 0;\n}\nbody a.button,\nhtml a.button {\n  color: #333;\n  font-weight: 300;\n}\nbody input[type=text],\nhtml input[type=text] {\n  background: transparent;\n  border: none;\n  border-bottom: 1px solid #000000;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-container .stokes-stats {\n  width: 150px;\n  position: absolute;\n  right: -150px;\n  top: 50px;\n}\n.stokes-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n.webcam-container {\n  position: relative;\n  width: 640px;\n  background-color: black;\n  height: 480px;\n}\n.webcam-container .webcam-capture-preview {\n  position: absolute;\n  left: 0;\n}\n.webcam-control-container {\n  padding: 15px;\n  position: relative;\n}\n.webcam-control-container .btn-warning {\n  position: absolute;\n  top: 55px;\n  left: 24;\n}\n.webcam-control-container span {\n  font-size: 12px;\n}\n.webcam-control-container div {\n  margin: 0 10px;\n}\n.current-directory-images {\n  position: absolute;\n  top: 0;\n  width: 300px;\n  right: -300px;\n  height: 480px;\n  overflow-y: auto;\n}\n.current-directory-images .directory-image-container {\n  position: relative;\n}\n.current-directory-images .directory-image-container .directory-image-name {\n  position: absolute;\n  bottom: 13px;\n  left: 76px;\n  color: white;\n  font-family: monospace;\n}\n.current-directory-images .directory-image-container img {\n  width: 185px;\n  padding: 10px;\n  margin: 0 auto;\n  display: block;\n}\n.experiment-button {\n  height: 12px;\n  width: 12px;\n  background-color: #616060;\n  border-radius: 6px;\n  color: white;\n  text-align: center;\n  margin: 0;\n  position: absolute;\n  top: 133px;\n  left: 247px;\n  border: 1px solid #333;\n  z-index: 999999;\n}\n.experiment-button span {\n  font-size: 8px;\n}\n", ""]);
 
 // exports
 
@@ -28684,7 +28694,12 @@ var Webcam = function (_Component) {
 
         _this.state = {
             videoSrc: null,
-            deviceInfos: null
+            deviceInfos: null,
+            showSaveButtons: false,
+            filename: '',
+            directory: '',
+            data: '',
+            directoryImages: null
         };
 
         _this.gotDevices = _this.gotDevices.bind(_this);
@@ -28692,6 +28707,10 @@ var Webcam = function (_Component) {
         _this.selectDevice = _this.selectDevice.bind(_this);
         _this.startWebcam = _this.startWebcam.bind(_this);
         _this.takePicture = _this.takePicture.bind(_this);
+        _this.savePicture = _this.savePicture.bind(_this);
+        _this.clearPicture = _this.clearPicture.bind(_this);
+        _this.handleFilenameChange = _this.handleFilenameChange.bind(_this);
+        _this.handleDirctoryChange = _this.handleDirctoryChange.bind(_this);
         return _this;
     }
 
@@ -28735,9 +28754,10 @@ var Webcam = function (_Component) {
             var video = this.refs.webcam;
             // const photo = document.getElementById('photo');
 
-            context.drawImage(video, 0, 0, 620, 520);
+            context.drawImage(video, 0, 0, 640, 480);
 
             var data = canvas.toDataURL('image/png');
+            this.setState({ showSaveButtons: true, data: data });
         }
     }, {
         key: 'selectDevice',
@@ -28747,9 +28767,68 @@ var Webcam = function (_Component) {
             navigator.mediaDevices.getUserMedia({ deviceId: { exact: 'c3ec354d9a5076b46d71b300edaa870b37971619e2ec441943ed0761fe8ffbff' }, audio: false, video: true }).then(this.startWebcam).catch(this.errorCallback);
         }
     }, {
+        key: 'savePicture',
+        value: function savePicture() {
+            var _this2 = this;
+
+            console.log(this.state.directory, this.state.filename);
+
+            var request = new XMLHttpRequest();
+            var params = {
+                directory: this.state.directory,
+                filename: this.state.filename,
+                data: this.state.data
+            };
+
+            request.open('POST', 'http://localhost:5000/api/saveimage', true);
+
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    // var rawdata = JSON.parse(request.responseText);
+                    // var data = rawdata.exp;
+                    // console.log("this.state.data", this.state.data);
+                    console.log("success", JSON.parse(request.responseText));
+                    _this2.setState({ directoryImages: JSON.parse(request.responseText) });
+                } else {
+                    // We reached our target server, but it returned an error
+                }
+            };
+            request.onerror = function () {
+                // There was a connection error of some sort
+            };
+
+            request.send(JSON.stringify(params));
+
+            this.setState({
+                showSaveButtons: !this.state.showSaveButtons,
+                filename: ''
+            });
+            this.clearPicture();
+        }
+    }, {
+        key: 'clearPicture',
+        value: function clearPicture() {
+            var canvas = this.refs.preview;
+            var context = canvas.getContext('2d');
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            this.setState({ showSaveButtons: !this.state.showSaveButtons });
+        }
+    }, {
+        key: 'handleFilenameChange',
+        value: function handleFilenameChange(event) {
+            this.setState({ filename: event.target.value });
+        }
+    }, {
+        key: 'handleDirctoryChange',
+        value: function handleDirctoryChange(event) {
+            this.setState({ directory: event.target.value });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             return _react2.default.createElement(
                 'div',
@@ -28757,15 +28836,84 @@ var Webcam = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement('video', { ref: 'webcam', src: this.state.videoSrc, autoPlay: 'true' }),
                     _react2.default.createElement(
                         'div',
-                        { className: 'button', onClick: function onClick() {
-                                return _this2.takePicture();
-                            } },
-                        'Take Picture'
+                        { className: 'webcam-container' },
+                        _react2.default.createElement('video', { ref: 'webcam', src: this.state.videoSrc, autoPlay: 'true' }),
+                        _react2.default.createElement('canvas', { className: 'webcam-capture-preview', ref: 'preview', width: 640, height: 480 }),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'current-directory-images' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'directory-heading' },
+                                _react2.default.createElement(
+                                    'div',
+                                    null,
+                                    'Current Directory:',
+                                    _react2.default.createElement(
+                                        'span',
+                                        null,
+                                        this.state.directoryImages ? this.state.directoryImages.directory : 'none'
+                                    )
+                                )
+                            ),
+                            this.state.directoryImages ? this.state.directoryImages.images.map(function (image, index) {
+                                var imgSrc = 'http://localhost:5050/data/' + _this3.state.directoryImages.directory + '/' + image;
+                                return _react2.default.createElement(
+                                    'div',
+                                    { className: 'directory-image-container' },
+                                    _react2.default.createElement('img', { src: imgSrc }),
+                                    _react2.default.createElement(
+                                        'span',
+                                        { className: 'directory-image-name' },
+                                        image
+                                    )
+                                );
+                            }) : null
+                        )
                     ),
-                    _react2.default.createElement('canvas', { ref: 'preview', width: 620, height: 520 })
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'webcam-control-container' },
+                        !this.state.showSaveButtons ? _react2.default.createElement(
+                            'div',
+                            { className: 'button btn btn-primary', onClick: function onClick() {
+                                    return _this3.takePicture();
+                                } },
+                            'Take Picture'
+                        ) : null,
+                        this.state.showSaveButtons ? _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'button btn btn-success', onClick: function onClick() {
+                                        return _this3.savePicture();
+                                    } },
+                                'Save Picture'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                'filename: ',
+                                _react2.default.createElement('input', { value: this.state.filename, onChange: this.handleFilenameChange, type: 'text', className: 'filename input' })
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                'directory: ',
+                                _react2.default.createElement('input', { value: this.state.directory, onChange: this.handleDirctoryChange, type: 'text', className: 'directory input' })
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'button btn btn-warning', onClick: function onClick() {
+                                        return _this3.clearPicture();
+                                    } },
+                                'Clear Picture'
+                            )
+                        ) : null
+                    )
                 )
             );
         }
@@ -28775,6 +28923,206 @@ var Webcam = function (_Component) {
 }(_react.Component);
 
 exports.default = Webcam;
+
+/***/ }),
+/* 249 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExperimentCreator = function (_Component) {
+    _inherits(ExperimentCreator, _Component);
+
+    function ExperimentCreator(props) {
+        _classCallCheck(this, ExperimentCreator);
+
+        var _this = _possibleConstructorReturn(this, (ExperimentCreator.__proto__ || Object.getPrototypeOf(ExperimentCreator)).call(this, props));
+
+        _this.state = {
+            title: '',
+            summary: '',
+            description: '',
+            image: '--',
+            experiments: ['--']
+        };
+
+        _this.handleTitleChange = _this.handleTitleChange.bind(_this);
+        _this.handleSummaryChange = _this.handleSummaryChange.bind(_this);
+        _this.handleDescriptionChange = _this.handleDescriptionChange.bind(_this);
+        _this.createExperiment = _this.createExperiment.bind(_this);
+        _this.handleImageChange = _this.handleImageChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(ExperimentCreator, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'http://localhost:5000/api/data', true);
+
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    var tmpArr = _this2.state.experiments;
+                    var rawdata = JSON.parse(xhr.responseText).data;
+                    var data = tmpArr.concat(rawdata);
+                    _this2.setState({
+                        experiments: data
+                    });
+                } else {
+                    console.log("An error was returned");
+                }
+            };
+
+            xhr.onerror = function (err) {
+                console.log("error: ", err);
+            };
+
+            xhr.send();
+        }
+    }, {
+        key: 'createExperiment',
+        value: function createExperiment() {
+            console.log('actual', this.state.image);
+            console.log(this.state.directory, this.state.filename);
+
+            var request = new XMLHttpRequest();
+            var params = {
+                title: this.state.title,
+                summary: this.state.summary,
+                images: this.state.image
+            };
+
+            request.open('POST', 'http://localhost:5000/api/saveimage', true);
+
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    // var rawdata = JSON.parse(request.responseText);
+                    // var data = rawdata.exp;
+                    // console.log("this.state.data", this.state.data);
+                    console.log("success", JSON.parse(request.responseText));
+                    // this.setState({directoryImages: JSON.parse(request.responseText)})
+                } else {
+                        // We reached our target server, but it returned an error
+                    }
+            };
+            request.onerror = function () {
+                // There was a connection error of some sort
+            };
+
+            request.send(JSON.stringify(params));
+        }
+    }, {
+        key: 'handleTitleChange',
+        value: function handleTitleChange(event) {
+            this.setState({ title: event.target.value });
+        }
+    }, {
+        key: 'handleSummaryChange',
+        value: function handleSummaryChange(event) {
+            this.setState({ summary: event.target.value });
+        }
+    }, {
+        key: 'handleDescriptionChange',
+        value: function handleDescriptionChange(event) {
+            this.setState({ description: event.target.value });
+        }
+    }, {
+        key: 'handleImageChange',
+        value: function handleImageChange(event) {
+            this.setState({
+                image: event.target.value
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'form',
+                    null,
+                    _react2.default.createElement(
+                        'h3',
+                        null,
+                        'Title'
+                    ),
+                    _react2.default.createElement('input', { value: this.state.title, onChange: this.handleTitleChange, className: 'form-control' }),
+                    _react2.default.createElement('hr', null),
+                    _react2.default.createElement(
+                        'h3',
+                        null,
+                        'Summary'
+                    ),
+                    _react2.default.createElement('textarea', { value: this.state.summary, onChange: this.handleSummaryChange, className: 'form-control' }),
+                    _react2.default.createElement('hr', null),
+                    _react2.default.createElement(
+                        'h3',
+                        null,
+                        'Description'
+                    ),
+                    _react2.default.createElement('textarea', { value: this.state.description, onChange: this.handleDescriptionChange, className: 'form-control' }),
+                    _react2.default.createElement('hr', null),
+                    _react2.default.createElement(
+                        'h3',
+                        null,
+                        'Images'
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        _react2.default.createElement(
+                            'select',
+                            { className: 'form-control', value: this.state.image, onChange: this.handleImageChange },
+                            this.state.experiments.map(function (experiment, index) {
+                                return _react2.default.createElement(
+                                    'option',
+                                    { value: experiment },
+                                    experiment
+                                );
+                            })
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'button btn btn-primary', onClick: function onClick() {
+                            return _this3.createExperiment();
+                        } },
+                    'Create'
+                )
+            );
+        }
+    }]);
+
+    return ExperimentCreator;
+}(_react.Component);
+
+exports.default = ExperimentCreator;
 
 /***/ })
 /******/ ]);

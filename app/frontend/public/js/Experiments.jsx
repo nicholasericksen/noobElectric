@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Experiment from './Experiment';
 import ExperimentsMenu from './ExperimentsMenu';
+import ExperimentCreator from './ExperimentCreator';
 
 export default class Experiments extends Component {
     render() {
@@ -11,6 +12,7 @@ export default class Experiments extends Component {
             <div className="exp">
                 <Switch>
                     <Route exact path="/experiments" component={ExperimentsMenu} />
+                    <Route path='/experiments/new' component={ExperimentCreator} />
                     <Route path='/experiments/:experiment' component={Experiment} />
                 </Switch>
             </div>

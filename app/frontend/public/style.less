@@ -1,12 +1,17 @@
 body,
 html {
-    height: 100%;
     margin: 30px;
     padding: 0;
 
     a.button {
         color: #333;
         font-weight: 300;
+    }
+
+    input[type=text] {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #000000;
     }
 }
 // axis styles for D3
@@ -125,7 +130,7 @@ img {
         }
         .exp-id {
             font-size: 12px;
-font-weight: 200;
+            font-weight: 200;
         }
     }
 }
@@ -133,67 +138,114 @@ font-weight: 200;
 .histogram-small-container {
     width: 300px;
     float: left;
-    // svg {
-    //     padding-left: 15px;
-    // }
 }
 
 .stokes-container {
     clear: both;
-    // svg {
-    //     padding-left: 50px;
-    // }
     position: relative;
     .stokes-stats {
         width: 150px;
-position: absolute;
-right: -150px;
-top: 50px;
+        position: absolute;
+        right: -150px;
+        top: 50px;
 
 
-    h5 {
-        text-decoration: underline;
-    }
+        h5 {
+            text-decoration: underline;
+        }
     }
 }
-//
-// .exp-image-modal {
-//     position: fixed;
-//     z-index: 99;
-//     top: 0;
-//     padding: 50px;
-//     // height: 100vh;
-//     // background-color: rgba(11u8, 116, 123, 0.8);
-//
-//     .exp-image-full {
-
-//         // width: 490px;
-//     }
-// }
 .exp-image-full {
     img {
         width: 295px;
-    padding: 10px;
-    margin-top: 20px;
-    float: left;
+        padding: 10px;
+        margin-top: 20px;
+        float: left;
     }
 
 }
 .exp-image-full-histogram {
     float: left;
-width: 232px;
-margin-top: 25px;
-margin-left: 10px;
+    width: 232px;
+    margin-top: 25px;
+    margin-left: 10px;
 }
 
-// .calc {
-//     span {
-//
-//     width: 65px;
-// text-overflow: ellipsis;
-// display: block;
-// /* position: relative; */
-// overflow: hidden;
-// margin: 0;
-//     }
-// }
+.webcam-container {
+    position: relative;
+    width: 640px;
+    background-color: black;
+    height: 480px;
+
+    .webcam-capture-preview {
+        position: absolute;
+        left: 0;
+    }
+
+
+}
+.webcam-control-container {
+    padding: 15px;
+    position: relative;
+
+    .btn-warning {
+        position: absolute;
+        top: 55px;
+        left: 24;
+    }
+
+    span {
+        font-size: 12px;
+    }
+
+    div {
+        margin: 0 10px;
+    }
+}
+
+.current-directory-images {
+    position: absolute;
+    top: 0;
+    width: 300px;
+    right: -300px;
+    height: 480px;
+    overflow-y: auto;
+
+    .directory-image-container {
+        position: relative;
+
+        .directory-image-name {
+            position: absolute;
+            bottom: 13px;
+            left: 76px;
+            color: white;
+            font-family: monospace;
+        }
+
+        img {
+            width: 185px;
+            padding: 10px;
+            margin: 0 auto;
+            display: block;
+        }
+    }
+}
+
+.experiment-button {
+    height: 12px;
+    width: 12px;
+    background-color: #616060;
+    border-radius: 6px;
+    color: white;
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 133px;
+    left: 247px;
+    border: 1px solid #333;
+    z-index: 999999;
+
+    span {
+            font-size: 8px;
+    }
+}
