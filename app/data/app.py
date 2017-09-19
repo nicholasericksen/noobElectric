@@ -1,5 +1,16 @@
 from __future__ import absolute_import
 
+# discrete calulcation
+from __future__ import division
+import numpy as np
+import cv2
+from pymongo import MongoClient
+import matplotlib.pyplot as plt
+from scipy.stats import gaussian_kde
+from datetime import datetime
+
+
+
 from bson import json_util
 from bson.objectid import ObjectId
 
@@ -7,17 +18,20 @@ from flask_restful import reqparse
 
 parser = reqparse.RequestParser()
 
+#import standard libraries
 import os
 import serial
 import time
 import json
 
+# Connect to mongodb
 from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/')
 db = client.experiments
 discreteLMP = db.discrete
 # from LMP import sensor_reading
 
+# Import flask
 from flask import Flask, render_template, request, redirect, url_for, jsonify, Response
 from flask_socketio import SocketIO
 from werkzeug.utils import secure_filename
@@ -27,18 +41,41 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# app.run(threaded=True)
+
 socketio = SocketIO(app)
 
-# port = "/dev/cu.usbmodem1411"
-# baudrate = 9600
-# angle = [0, 90, 45, -45, "LCP", "RCP"]
-# ser = serial.Serial(port, baudrate)
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
             return str(o)
         return json.JSONEncoder.default(self, o)
 
+
+def datasummary(data):
+    maxValue = np.amax(data)
+    minValue = np.amin(data)
+    length = len(data)
+    mean = np.mean(data)
+    std = np.std(data)
+
+    return {
+        "max": maxValue,
+        "min": minValue,
+        "mean": mean,
+        "std": std,
+        "numpts": length
+    }
+
+def createhistogram(data, bins):
+    hist = np.histogram(data, bins=bins)
+    bins = hist[1].tolist()
+    values = hist[0].tolist()
+
+    # Convert the tuples into arrays for smaller formatting
+    zipped = [list(t) for t in zip(bins, values)]
+
+    return zipped
 
 @app.route('/')
 def hello_world():
@@ -129,7 +166,87 @@ def upload_new_discrete_LMP():
     description = raw_data['description']
     images = raw_data['images']
 
-    
+    float_formatter = lambda x: "%.2f" % x
+    np.set_printoptions(formatter={'float_kind':float_formatter})
+
+    #set the directory the images come from
+    imagedirectory = images
+
+    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, '0.png'), 0).ravel(), dtype=np.int)
+    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, '90.png'), 0).ravel(), dtype=np.int)
+    Praw = np.array(cv2.imread(os.path.join(imagedirectory, '45.png'), 0).ravel(), dtype=np.int)
+    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, '135.png'), 0).ravel(), dtype=np.int)
+
+    zeroindex = []
+    index = 0
+    while (index < len(Hraw)):
+        # Remove if all are 0 and/or Nan values
+        if (Hraw[index] == 0 or np.isnan(Hraw[index])) and (Vraw[index] == 0 or np.isnan(Vraw[index])) or (Praw[index] == 0 or np.isnan(Praw[index])) and (Mraw[index] == 0 or np.isnan(Mraw[index])):
+            zeroindex.append(index)
+        index += 1
+
+    print 'Number of points removed: ', len(zeroindex)
+
+    # Remove values from all arrays equally so as to retain the size
+    H = np.delete(Hraw, zeroindex, axis=0)
+    V = np.delete(Vraw, zeroindex, axis=0)
+    P = np.delete(Praw, zeroindex, axis=0)
+    M = np.delete(Mraw, zeroindex, axis=0)
+
+    # Calculate the Stokes parameters
+    # Power intensities are taken and normalized
+    S1 = (H - V) / (H + V)
+    S2 = (P - M) / (P + M)
+
+
+    # Print statistics about Stokes data
+    S1summary = datasummary(S1)
+    S2summary = datasummary(S2)
+
+    # Create the S1 and S2 Histogram
+    S1zipped = createhistogram(S1, np.arange(-1, 1.01, 0.01))
+    S2zipped = createhistogram(S2, np.arange(-1, 1.01, 0.01))
+
+    # Create measurement Histograms
+    Hzipped = createhistogram(H, np.arange(0, 256, 1))
+    Vzipped = createhistogram(V, np.arange(0, 256, 1))
+    Pzipped = createhistogram(P, np.arange(0, 256, 1))
+    Mzipped = createhistogram(M, np.arange(0, 256, 1))
+
+
+    result = discreteLMP.insert_one(
+        {
+            "title": title,
+            "summary": summary,
+            "description": description,
+            "date": str(datetime.utcnow()),
+            "images": images,
+            "histograms": {
+                "measurements": {
+                    "H": Hzipped,
+                    "V": Vzipped,
+                    "P": Pzipped,
+                    "M": Mzipped
+                },
+                "stokes": {
+                    "S1": {
+                        "data": S1zipped,
+                        "stats": S1summary
+                    },
+                    "S2": {
+                        "data": S2zipped,
+                        "stats": S2summary
+                    }
+                }
+            }
+        }
+    )
+
+    resp = jsonify({"data": 'datat'})
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+
+    return resp
+
 # @app.route('/upload', methods=['POST'])
 # def file_upload():
 #

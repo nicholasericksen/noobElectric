@@ -13,7 +13,7 @@ export default class ExperimentsMenu extends Component {
         this.requestData = this.requestData.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.requestData();
     }
 
@@ -41,6 +41,8 @@ export default class ExperimentsMenu extends Component {
         request.send();
     }
     render() {
+        const data = this.state.data ? this.state.data.reverse() : null;
+
         return (
             <div>
                 <Link to={'/experiments/new'}>
@@ -49,8 +51,8 @@ export default class ExperimentsMenu extends Component {
                     </div> */}
                     new
                 </Link>
-                {this.state.data ?
-                    this.state.data.map((experiment, index) => {
+                {data ?
+                    data.map((experiment, index) => {
                         return(
                             <div key={index} className="exp-menu-item-container">
                                 <h3 className="" key={index}>

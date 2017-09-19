@@ -47,16 +47,16 @@ export default class ExperimentCreator extends Component {
 
     createExperiment() {
         console.log('actual', this.state.image);
-        console.log(this.state.directory, this.state.filename);
 
         var request = new XMLHttpRequest();
         var params = {
             title: this.state.title,
             summary: this.state.summary,
+            description: this.state.description,
             images: this.state.image
         };
 
-        request.open('POST', 'http://localhost:5000/api/saveimage', true);
+        request.open('POST', 'http://localhost:5000/api/experiments/new', true);
 
 
 
@@ -114,7 +114,7 @@ export default class ExperimentCreator extends Component {
                         <select className="form-control" value={this.state.image} onChange={this.handleImageChange}>
                             {this.state.experiments.map((experiment, index) => {
                                 return (
-                                    <option value={experiment}>{experiment}</option>
+                                    <option key={index} value={experiment}>{experiment}</option>
                                 );
                             })}
                         </select>

@@ -12,12 +12,13 @@ export default class Hisotgram extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data !== this.props.data) {
+        console.log("received props", nextProps.data);
+        // if (nextProps.data !== this.props.data) {
             this.renderHistogram(nextProps.data)
-        }
+        // }
     }
 
-    shouldComponentUpdate() { console.log("COMponent should update"); return false }
+    // shouldComponentUpdate() { console.log("COMponent should update"); return false }
 
     componentDidMount() {
         this.renderHistogram(this.props.data);
@@ -29,7 +30,7 @@ export default class Hisotgram extends Component {
 
     renderHistogram(data) {
             // Initialize Axis and dimensions
-            var margin = {top: 20, right: 20, bottom: 70, left: 40},
+            var margin = {top: 20, right: 20, bottom: 70, left: 50},
                 width = this.props.width - margin.left - margin.right,
                 height = this.props.height - margin.top - margin.bottom;
 
@@ -50,6 +51,7 @@ export default class Hisotgram extends Component {
                     .ticks(this.props.yTicks);
 
                 var targetElement = '.' + this.props.targetElement;
+                d3.select(targetElement + ' svg').remove();
 
                 var svg = d3.select(targetElement).append("svg")
                     .attr("width", width + margin.left + margin.right)
@@ -57,6 +59,8 @@ export default class Hisotgram extends Component {
                   .append("g")
                     .attr("transform",
                           "translate(" + margin.left + "," + margin.top + ")");
+
+                console.log("histogram svg", svg);
 
                   x.domain([-1, d3.max(data, function(d) { return d[0]; })]);
                   y.domain([0, d3.max(data, function(d) { return d[1]; })]);

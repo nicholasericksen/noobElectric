@@ -49,8 +49,8 @@ S2 = (P - M) / (P + M)
 
 # Plot S1 S2 scatter Plot
 # TODO remove this in favor of api usage
-plt.scatter(S1, S2)
-plt.show()
+# plt.scatter(S1, S2)
+# plt.show()
 
 def datasummary(data):
     maxValue = np.amax(data)

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ExperimentHeader from './ExperimentHeader';
 import ExperimentIntro from './ExperimentIntro';
 import ExperimentImages from './ExperimentImages';
+import ScatterPlot from './ScatterPlot';
 
 import Histogram from './Histogram';
 
@@ -16,7 +17,7 @@ export default class Experiment extends Component {
         this.renderAll = this.renderAll.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.requestData();
     }
 
@@ -102,6 +103,8 @@ export default class Experiment extends Component {
                         </div>
                     </div>
                 </div>
+
+                {/* <ScatterPlot data={this.state.data} /> */}
             </div>
             )
         }
