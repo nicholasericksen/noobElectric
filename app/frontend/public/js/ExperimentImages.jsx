@@ -38,7 +38,7 @@ export default class ExperimentImages extends Component {
                             <h5>{LETTERS[img]} Histogram</h5>
                             {/* this.renderHistogram(this.props.histograms.measurements[LETTERS[img]], `exp-${LETTERS[img]}-modal-histogram`, 375, 200, 10) */}
                             <Histogram
-                                data={this.props.histograms.measurements[LETTERS[img]]}
+                                data={[this.props.histograms.measurements[LETTERS[img]]]}
                                 targetElement={`exp-modal-histogram`}
                                 width={375}
                                 height={200}

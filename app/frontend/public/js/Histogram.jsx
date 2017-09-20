@@ -28,7 +28,7 @@ export default class Hisotgram extends Component {
         // this.setState({ g: d3.select(ref) }, () => this.renderHistogram(this.props.data))
     }
 
-    renderHistogram(data) {
+    renderHistogram(dataSet) {
             // Initialize Axis and dimensions
             var margin = {top: 20, right: 20, bottom: 70, left: 50},
                 width = this.props.width - margin.left - margin.right,
@@ -62,8 +62,8 @@ export default class Hisotgram extends Component {
 
                 console.log("histogram svg", svg);
 
-                  x.domain([-1, d3.max(data, function(d) { return d[0]; })]);
-                  y.domain([0, d3.max(data, function(d) { return d[1]; })]);
+                  x.domain([-1, d3.max(dataSet[0], function(d) { return d[0]; })]);
+                  y.domain([0, d3.max(dataSet[0], function(d) { return d[1]; })]);
 
                   svg.append("g")
                       .attr("class", "x axis")
@@ -87,14 +87,18 @@ export default class Hisotgram extends Component {
 
 
 
-                  svg.selectAll("bar")
-                      .data(data)
-                    .enter().append("rect")
-                      .style("fill", "steelblue")
-                      .attr("x", function(d) { return x(d[0]); })
-                      .attr("width", 2)
-                      .attr("y", function(d) { return y(d[1]); })
-                      .attr("height", function(d) { return height - y(d[1]); });
+                      const COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
+
+                dataSet.map((data, index) => {
+                    svg.selectAll("bar")
+                        .data(data)
+                      .enter().append("rect")
+                        .style("fill", COLORS[index])
+                        .attr("x", function(d) { return x(d[0]); })
+                        .attr("width", 2)
+                        .attr("y", function(d) { return y(d[1]); })
+                        .attr("height", function(d) { return height - y(d[1]); });
+                })
     }
 
     render() {

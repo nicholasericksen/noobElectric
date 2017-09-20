@@ -144,12 +144,17 @@ img {
 .stokes-container {
     clear: both;
     position: relative;
-    .stokes-stats {
-        width: 150px;
-        position: absolute;
-        right: -150px;
-        top: 50px;
+}
 
+.stokes-stats-container {
+    clear: both;
+    position: relative;
+    .stokes-stats {
+        width: 250px;
+        // position: absolute;
+        // right: -150px;
+        // top: 50px;
+        float: left;
 
         h5 {
             text-decoration: underline;
@@ -248,5 +253,11 @@ img {
 
     span {
             font-size: 8px;
+    }
+}
+
+.histogram-filter-container {
+    .histogram-filter {
+        padding-left: 10px;
     }
 }

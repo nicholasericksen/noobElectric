@@ -11751,7 +11751,7 @@ var Hisotgram = function (_Component) {
         }
     }, {
         key: "renderHistogram",
-        value: function renderHistogram(data) {
+        value: function renderHistogram(dataSet) {
             // Initialize Axis and dimensions
             var margin = { top: 20, right: 20, bottom: 70, left: 50 },
                 width = this.props.width - margin.left - margin.right,
@@ -11774,10 +11774,10 @@ var Hisotgram = function (_Component) {
 
             console.log("histogram svg", svg);
 
-            x.domain([-1, d3.max(data, function (d) {
+            x.domain([-1, d3.max(dataSet[0], function (d) {
                 return d[0];
             })]);
-            y.domain([0, d3.max(data, function (d) {
+            y.domain([0, d3.max(dataSet[0], function (d) {
                 return d[1];
             })]);
 
@@ -11785,12 +11785,16 @@ var Hisotgram = function (_Component) {
 
             svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
 
-            svg.selectAll("bar").data(data).enter().append("rect").style("fill", "steelblue").attr("x", function (d) {
-                return x(d[0]);
-            }).attr("width", 2).attr("y", function (d) {
-                return y(d[1]);
-            }).attr("height", function (d) {
-                return height - y(d[1]);
+            var COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
+
+            dataSet.map(function (data, index) {
+                svg.selectAll("bar").data(data).enter().append("rect").style("fill", COLORS[index]).attr("x", function (d) {
+                    return x(d[0]);
+                }).attr("width", 2).attr("y", function (d) {
+                    return y(d[1]);
+                }).attr("height", function (d) {
+                    return height - y(d[1]);
+                });
             });
         }
     }, {
@@ -27321,10 +27325,12 @@ var Experiment = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Experiment.__proto__ || Object.getPrototypeOf(Experiment)).call(this, props));
 
         _this.state = {
-            data: {}
+            data: {},
+            stokesDataSet: []
         };
         _this.requestData = _this.requestData.bind(_this);
         _this.renderAll = _this.renderAll.bind(_this);
+        _this.setStokesDataset = _this.setStokesDataset.bind(_this);
         return _this;
     }
 
@@ -27349,8 +27355,14 @@ var Experiment = function (_Component) {
                 if (request.status >= 200 && request.status < 400) {
                     var rawdata = JSON.parse(request.responseText);
                     var data = rawdata.exp;
+                    var dataSet = [];
+                    dataSet.push(data.histograms.stokes.S1.data);
+
+                    dataSet.push(data.histograms.stokes.S2.data);
+
                     _this2.setState({
-                        data: data
+                        data: data,
+                        stokesDataSet: dataSet
                     });
                 } else {
                     // We reached our target server, but it returned an error
@@ -27362,9 +27374,38 @@ var Experiment = function (_Component) {
             request.send(JSON.stringify(params));
         }
     }, {
+        key: 'setStokesDataset',
+        value: function setStokesDataset(index) {
+            var S1 = this.state.data.histograms.stokes.S1.data;
+            var S2 = this.state.data.histograms.stokes.S2.data;
+
+            if (index === 0) {
+                var dataSet = [];
+                dataSet.push(S1);
+                dataSet.push(S2);
+
+                this.setState({
+                    stokesDataSet: dataSet
+                });
+            }
+            if (index === 1) {
+                this.setState({
+                    stokesDataSet: [S1]
+                });
+            } else if (index === 2) {
+
+                this.setState({
+                    stokesDataSet: [S2]
+                });
+            }
+        }
+    }, {
         key: 'renderAll',
         value: function renderAll() {
+            var _this3 = this;
+
             if (this.state.data.images) {
+
                 return _react2.default.createElement(
                     'div',
                     null,
@@ -27390,112 +27431,126 @@ var Experiment = function (_Component) {
                             _react2.default.createElement(
                                 'h4',
                                 null,
-                                'S1 Histograms'
+                                'Stokes Histograms'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'histogram-filter-container' },
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'histogram-filter button btn', onClick: function onClick() {
+                                            return _this3.setStokesDataset(0);
+                                        } },
+                                    'All'
+                                ),
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'histogram-filter button btn', onClick: function onClick() {
+                                            return _this3.setStokesDataset(1);
+                                        } },
+                                    'S1'
+                                ),
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'histogram-filter button btn', onClick: function onClick() {
+                                            return _this3.setStokesDataset(2);
+                                        } },
+                                    'S2'
+                                )
                             ),
                             _react2.default.createElement(_Histogram2.default, {
-                                data: this.state.data.histograms.stokes.S1.data,
-                                targetElement: 'exp-s1-histogram',
+                                data: this.state.stokesDataSet,
+                                targetElement: 'exp-stokes-histograms',
                                 width: 600,
                                 height: 300,
                                 yTicks: 10
-                            }),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'stokes-stats' },
-                                _react2.default.createElement(
-                                    'h5',
-                                    null,
-                                    'Statistics'
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    'Data pts: ',
-                                    this.state.data.histograms.stokes.S1.stats.numpts
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    'Max: ',
-                                    this.state.data.histograms.stokes.S1.stats.max
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    'Min: ',
-                                    this.state.data.histograms.stokes.S1.stats.min
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    'Mean: ',
-                                    this.state.data.histograms.stokes.S1.stats.mean
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    'STD: ',
-                                    this.state.data.histograms.stokes.S1.stats.std
-                                )
-                            )
+                            })
                         )
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'stokes-container' },
+                        { className: 'stokes-stats-container' },
+                        _react2.default.createElement(
+                            'h4',
+                            null,
+                            'Statistics'
+                        ),
                         _react2.default.createElement(
                             'div',
-                            { className: 'histogram-stokes' },
+                            { className: 'stokes-stats' },
                             _react2.default.createElement(
-                                'h4',
+                                'h5',
                                 null,
-                                'S2 Histograms'
+                                'S1'
                             ),
-                            _react2.default.createElement(_Histogram2.default, {
-                                data: this.state.data.histograms.stokes.S2.data,
-                                targetElement: 'exp-s2-histogram',
-                                width: 600,
-                                height: 300,
-                                yTicks: 10
-                            }),
                             _react2.default.createElement(
                                 'div',
-                                { className: 'stokes-stats' },
-                                _react2.default.createElement(
-                                    'h5',
-                                    null,
-                                    'Statistics'
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'calc' },
-                                    'Data pts: ',
-                                    this.state.data.histograms.stokes.S2.stats.numpts
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'calc' },
-                                    'Max: ',
-                                    this.state.data.histograms.stokes.S2.stats.max
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'calc' },
-                                    'Min: ',
-                                    this.state.data.histograms.stokes.S2.stats.min
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'calc' },
-                                    'Mean: ',
-                                    this.state.data.histograms.stokes.S2.stats.mean
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'calc' },
-                                    'STD: ',
-                                    this.state.data.histograms.stokes.S2.stats.std
-                                )
+                                null,
+                                'Data pts: ',
+                                this.state.data.histograms.stokes.S1.stats.numpts
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                'Max: ',
+                                this.state.data.histograms.stokes.S1.stats.max
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                'Min: ',
+                                this.state.data.histograms.stokes.S1.stats.min
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                'Mean: ',
+                                this.state.data.histograms.stokes.S1.stats.mean
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                null,
+                                'STD: ',
+                                this.state.data.histograms.stokes.S1.stats.std
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'stokes-stats' },
+                            _react2.default.createElement(
+                                'h5',
+                                null,
+                                'S2'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'calc' },
+                                'Data pts: ',
+                                this.state.data.histograms.stokes.S2.stats.numpts
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'calc' },
+                                'Max: ',
+                                this.state.data.histograms.stokes.S2.stats.max
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'calc' },
+                                'Min: ',
+                                this.state.data.histograms.stokes.S2.stats.min
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'calc' },
+                                'Mean: ',
+                                this.state.data.histograms.stokes.S2.stats.mean
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'calc' },
+                                'STD: ',
+                                this.state.data.histograms.stokes.S2.stats.std
                             )
                         )
                     )
@@ -27731,7 +27786,7 @@ var ExperimentImages = function (_Component) {
                                 ' Histogram'
                             ),
                             _react2.default.createElement(_Histogram2.default, {
-                                data: this.props.histograms.measurements[LETTERS[img]],
+                                data: [this.props.histograms.measurements[LETTERS[img]]],
                                 targetElement: 'exp-modal-histogram',
                                 width: 375,
                                 height: 200,
@@ -28696,7 +28751,7 @@ exports = module.exports = __webpack_require__(248)(undefined);
 
 
 // module
-exports.push([module.i, "body,\nhtml {\n  margin: 30px;\n  padding: 0;\n}\nbody a.button,\nhtml a.button {\n  color: #333;\n  font-weight: 300;\n}\nbody input[type=text],\nhtml input[type=text] {\n  background: transparent;\n  border: none;\n  border-bottom: 1px solid #000000;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  width: 158px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-container .stokes-stats {\n  width: 150px;\n  position: absolute;\n  right: -150px;\n  top: 50px;\n}\n.stokes-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n.webcam-container {\n  position: relative;\n  width: 640px;\n  background-color: black;\n  height: 480px;\n}\n.webcam-container .webcam-capture-preview {\n  position: absolute;\n  left: 0;\n}\n.webcam-control-container {\n  padding: 15px;\n  position: relative;\n}\n.webcam-control-container .btn-warning {\n  position: absolute;\n  top: 55px;\n  left: 24;\n}\n.webcam-control-container span {\n  font-size: 12px;\n}\n.webcam-control-container div {\n  margin: 0 10px;\n}\n.current-directory-images {\n  position: absolute;\n  top: 0;\n  width: 300px;\n  right: -300px;\n  height: 480px;\n  overflow-y: auto;\n}\n.current-directory-images .directory-image-container {\n  position: relative;\n}\n.current-directory-images .directory-image-container .directory-image-name {\n  position: absolute;\n  bottom: 13px;\n  left: 76px;\n  color: white;\n  font-family: monospace;\n}\n.current-directory-images .directory-image-container img {\n  width: 185px;\n  padding: 10px;\n  margin: 0 auto;\n  display: block;\n}\n.experiment-button {\n  height: 12px;\n  width: 12px;\n  background-color: #616060;\n  border-radius: 6px;\n  color: white;\n  text-align: center;\n  margin: 0;\n  position: absolute;\n  top: 133px;\n  left: 247px;\n  border: 1px solid #333;\n  z-index: 999999;\n}\n.experiment-button span {\n  font-size: 8px;\n}\n", ""]);
+exports.push([module.i, "body,\nhtml {\n  margin: 30px;\n  padding: 0;\n}\nbody a.button,\nhtml a.button {\n  color: #333;\n  font-weight: 300;\n}\nbody input[type=text],\nhtml input[type=text] {\n  background: transparent;\n  border: none;\n  border-bottom: 1px solid #000000;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  width: 158px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container .stokes-stats {\n  width: 250px;\n  float: left;\n}\n.stokes-stats-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n.webcam-container {\n  position: relative;\n  width: 640px;\n  background-color: black;\n  height: 480px;\n}\n.webcam-container .webcam-capture-preview {\n  position: absolute;\n  left: 0;\n}\n.webcam-control-container {\n  padding: 15px;\n  position: relative;\n}\n.webcam-control-container .btn-warning {\n  position: absolute;\n  top: 55px;\n  left: 24;\n}\n.webcam-control-container span {\n  font-size: 12px;\n}\n.webcam-control-container div {\n  margin: 0 10px;\n}\n.current-directory-images {\n  position: absolute;\n  top: 0;\n  width: 300px;\n  right: -300px;\n  height: 480px;\n  overflow-y: auto;\n}\n.current-directory-images .directory-image-container {\n  position: relative;\n}\n.current-directory-images .directory-image-container .directory-image-name {\n  position: absolute;\n  bottom: 13px;\n  left: 76px;\n  color: white;\n  font-family: monospace;\n}\n.current-directory-images .directory-image-container img {\n  width: 185px;\n  padding: 10px;\n  margin: 0 auto;\n  display: block;\n}\n.experiment-button {\n  height: 12px;\n  width: 12px;\n  background-color: #616060;\n  border-radius: 6px;\n  color: white;\n  text-align: center;\n  margin: 0;\n  position: absolute;\n  top: 133px;\n  left: 247px;\n  border: 1px solid #333;\n  z-index: 999999;\n}\n.experiment-button span {\n  font-size: 8px;\n}\n.histogram-filter-container .histogram-filter {\n  padding-left: 10px;\n}\n", ""]);
 
 // exports
 
