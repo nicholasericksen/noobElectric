@@ -11720,7 +11720,8 @@ var Hisotgram = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Hisotgram.__proto__ || Object.getPrototypeOf(Hisotgram)).call(this, props));
 
         _this.state = {
-            g: null
+            g: null,
+            ledgend: []
         };
 
         _this.onRef = _this.onRef.bind(_this);
@@ -11731,10 +11732,7 @@ var Hisotgram = function (_Component) {
     _createClass(Hisotgram, [{
         key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(nextProps) {
-            console.log("received props", nextProps.data);
-            // if (nextProps.data !== this.props.data) {
             this.renderHistogram(nextProps.data);
-            // }
         }
 
         // shouldComponentUpdate() { console.log("COMponent should update"); return false }
@@ -11752,6 +11750,8 @@ var Hisotgram = function (_Component) {
     }, {
         key: "renderHistogram",
         value: function renderHistogram(dataSet) {
+            var _this2 = this;
+
             // Initialize Axis and dimensions
             var margin = { top: 20, right: 20, bottom: 70, left: 50 },
                 width = this.props.width - margin.left - margin.right,
@@ -11772,14 +11772,29 @@ var Hisotgram = function (_Component) {
 
             var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            console.log("histogram svg", svg);
+            var yMax = 0;
+            var yMaxTmp = 0;
 
-            x.domain([-1, d3.max(dataSet[0], function (d) {
+            dataSet.map(function (experiment, index) {
+                if (index === 0) {
+                    yMax = d3.max(dataSet[0].data, function (d) {
+                        return d[1];
+                    });
+                } else {
+                    yMaxTmp = d3.max(dataSet[index].data, function (d) {
+                        return d[1];
+                    });
+                }
+
+                if (yMaxTmp > yMax) {
+                    yMax = yMaxTmp;
+                }
+            });
+
+            x.domain([-1, d3.max(dataSet[0].data, function (d) {
                 return d[0];
             })]);
-            y.domain([0, d3.max(dataSet[0], function (d) {
-                return d[1];
-            })]);
+            y.domain([0, yMax]);
 
             svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
 
@@ -11787,14 +11802,21 @@ var Hisotgram = function (_Component) {
 
             var COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
 
-            dataSet.map(function (data, index) {
-                svg.selectAll("bar").data(data).enter().append("rect").style("fill", COLORS[index]).attr("x", function (d) {
+            dataSet.map(function (experiment, index) {
+                console.log("color", COLORS[index]);
+                console.log("experiMENT", experiment);
+                svg.selectAll("bar").data(experiment.data).enter().append("rect").style("fill", COLORS[index]).attr("x", function (d) {
                     return x(d[0]);
                 }).attr("width", 2).attr("y", function (d) {
                     return y(d[1]);
                 }).attr("height", function (d) {
                     return height - y(d[1]);
                 });
+
+                var tmpLedgendObject = _this2.state.ledgend;
+
+                tmpLedgendObject.push(experiment);
+                _this2.setState({ ledgend: tmpLedgendObject });
             });
         }
     }, {
@@ -24135,6 +24157,10 @@ var _ExperimentCreator = __webpack_require__(242);
 
 var _ExperimentCreator2 = _interopRequireDefault(_ExperimentCreator);
 
+var _ExperimentComparision = __webpack_require__(251);
+
+var _ExperimentComparision2 = _interopRequireDefault(_ExperimentComparision);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24163,6 +24189,7 @@ var Experiments = function (_Component) {
                     null,
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/experiments', component: _ExperimentsMenu2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/experiments/new', component: _ExperimentCreator2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/experiments/compare/:ids', component: _ExperimentComparision2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/experiments/:experiment', component: _Experiment2.default })
                 )
             );
@@ -27326,7 +27353,8 @@ var Experiment = function (_Component) {
 
         _this.state = {
             data: {},
-            stokesDataSet: []
+            stokesDataSet: null,
+            index: 0
         };
         _this.requestData = _this.requestData.bind(_this);
         _this.renderAll = _this.renderAll.bind(_this);
@@ -27355,14 +27383,17 @@ var Experiment = function (_Component) {
                 if (request.status >= 200 && request.status < 400) {
                     var rawdata = JSON.parse(request.responseText);
                     var data = rawdata.exp;
-                    var dataSet = [];
-                    dataSet.push(data.histograms.stokes.S1.data);
+                    var dataset = [];
+                    var S1 = { data: data.histograms.stokes.S1.data, title: data.title };
+                    var S2 = { data: data.histograms.stokes.S2.data, title: data.title };
+                    dataset.push(S1);
 
-                    dataSet.push(data.histograms.stokes.S2.data);
+                    dataset.push(S2);
 
                     _this2.setState({
                         data: data,
-                        stokesDataSet: dataSet
+                        stokesDataSet: dataset,
+                        index: 0
                     });
                 } else {
                     // We reached our target server, but it returned an error
@@ -27376,25 +27407,29 @@ var Experiment = function (_Component) {
     }, {
         key: 'setStokesDataset',
         value: function setStokesDataset(index) {
-            var S1 = this.state.data.histograms.stokes.S1.data;
-            var S2 = this.state.data.histograms.stokes.S2.data;
+            var S1 = { data: this.state.data.histograms.stokes.S1.data, title: this.state.data.title };
+            var S2 = { data: this.state.data.histograms.stokes.S2.data, title: this.state.data.title };
 
             if (index === 0) {
                 var dataSet = [];
                 dataSet.push(S1);
                 dataSet.push(S2);
-
+                console.log("cow", dataSet);
                 this.setState({
-                    stokesDataSet: dataSet
+                    stokesDataSet: dataSet,
+                    index: 0
                 });
             }
             if (index === 1) {
+
                 this.setState({
+                    index: 1,
                     stokesDataSet: [S1]
                 });
             } else if (index === 2) {
 
                 this.setState({
+                    index: 2,
                     stokesDataSet: [S2]
                 });
             }
@@ -27405,7 +27440,6 @@ var Experiment = function (_Component) {
             var _this3 = this;
 
             if (this.state.data.images) {
-
                 return _react2.default.createElement(
                     'div',
                     null,
@@ -27458,13 +27492,13 @@ var Experiment = function (_Component) {
                                     'S2'
                                 )
                             ),
-                            _react2.default.createElement(_Histogram2.default, {
+                            this.state.stokesDataSet ? _react2.default.createElement(_Histogram2.default, {
                                 data: this.state.stokesDataSet,
                                 targetElement: 'exp-stokes-histograms',
                                 width: 600,
                                 height: 300,
                                 yTicks: 10
-                            })
+                            }) : null
                         )
                     ),
                     _react2.default.createElement(
@@ -27761,6 +27795,7 @@ var ExperimentImages = function (_Component) {
         value: function renderImageModal(img) {
 
             if (img !== this.state.activeImageModal) {}
+            var histogramData = { data: this.props.histograms.measurements[LETTERS[img]], title: this.props.title };
             // d3.selectAll("svg > *").remove();
             return _react2.default.createElement(
                 'div',
@@ -27786,7 +27821,7 @@ var ExperimentImages = function (_Component) {
                                 ' Histogram'
                             ),
                             _react2.default.createElement(_Histogram2.default, {
-                                data: [this.props.histograms.measurements[LETTERS[img]]],
+                                data: [histogramData],
                                 targetElement: 'exp-modal-histogram',
                                 width: 375,
                                 height: 200,
@@ -27800,24 +27835,14 @@ var ExperimentImages = function (_Component) {
     }, {
         key: 'openImageModal',
         value: function openImageModal(img) {
-            console.log('exp-' + LETTERS[img] + '-modal-histogram');
-            // this.setState({showModal: false});
-            // const svg = d3.select(`.exp-${LETTERS[img]}-modal-histogram`);
-            // console.log("svg", svg);
-            // svg.remove();
-            // d3.selectAll('bar').remove();
             this.setState({ showModal: true, activeImageModal: img });
             this.renderImageModal(img);
-
-            // var svg =d3.select(`.exp-${LETTERS[img]}-modal-histogram`).transition();
-            // svg.selectAll('bar').duration(750)
         }
     }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
-            console.log("this.state.histograms", this.props.histograms);
             return _react2.default.createElement(
                 'div',
                 { className: 'image-container' },
@@ -28026,7 +28051,8 @@ var ExperimentsMenu = function (_Component) {
         var _this = _possibleConstructorReturn(this, (ExperimentsMenu.__proto__ || Object.getPrototypeOf(ExperimentsMenu)).call(this, props));
 
         _this.state = {
-            data: null
+            data: [],
+            compareList: []
         };
 
         _this.requestData = _this.requestData.bind(_this);
@@ -28065,17 +28091,34 @@ var ExperimentsMenu = function (_Component) {
             request.send();
         }
     }, {
+        key: 'addCompare',
+        value: function addCompare(id) {
+            var list = this.state.compareList;
+            list.push(id);
+            this.setState({
+                compareList: list
+            });
+            console.log("compare list", this.state.compareList);
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var data = this.state.data ? this.state.data.reverse() : null;
+            var _this3 = this;
+
+            var data = this.state.data ? this.state.data : [];
 
             return _react2.default.createElement(
                 'div',
                 null,
                 _react2.default.createElement(
                     _reactRouterDom.Link,
-                    { to: '/experiments/new' },
+                    { className: 'button', to: '/experiments/new' },
                     'new'
+                ),
+                _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { className: 'button', to: '/experiments/compare/' + this.state.compareList },
+                    'compare'
                 ),
                 data ? data.map(function (experiment, index) {
                     return _react2.default.createElement(
@@ -28098,6 +28141,13 @@ var ExperimentsMenu = function (_Component) {
                                 _reactRouterDom.Link,
                                 { className: 'button', key: index, to: '/experiments/' + experiment._id.$oid },
                                 'more'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                { className: 'button', onClick: function onClick() {
+                                        return _this3.addCompare(experiment._id.$oid);
+                                    } },
+                                'compare'
                             )
                         ),
                         _react2.default.createElement('hr', null)
@@ -29291,6 +29341,146 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Histogram = __webpack_require__(103);
+
+var _Histogram2 = _interopRequireDefault(_Histogram);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExperimentComparision = function (_Component) {
+    _inherits(ExperimentComparision, _Component);
+
+    function ExperimentComparision(props) {
+        _classCallCheck(this, ExperimentComparision);
+
+        var _this = _possibleConstructorReturn(this, (ExperimentComparision.__proto__ || Object.getPrototypeOf(ExperimentComparision)).call(this, props));
+
+        _this.state = {
+            experiments: []
+        };
+        return _this;
+    }
+
+    _createClass(ExperimentComparision, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            var ids = '' + this.props.match.params.ids;
+            var idArray = ids.split(',');
+
+            idArray.map(function (id, index) {
+                console.log("starting new request");
+                var request = new XMLHttpRequest();
+
+                var params = {
+                    id: id
+                };
+
+                request.open('POST', 'http://localhost:5000/api/experiments', true);
+
+                request.onload = function () {
+                    if (request.status >= 200 && request.status < 400) {
+                        var rawdata = JSON.parse(request.responseText);
+                        var data = rawdata.exp;
+                        var experiments = _this2.state.experiments;
+                        experiments.push(data);
+
+                        _this2.setState({
+                            experiments: experiments
+                        });
+                    } else {
+                        // We reached our target server, but it returned an error
+                    }
+                };
+                request.onerror = function () {
+                    // There was a connection error of some sort
+                };
+                request.send(JSON.stringify(params));
+            });
+
+            console.log(this.state.experiments);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var S1 = [];
+            var S2 = [];
+
+            var stokes = this.state.experiments.length > 0 ? this.state.experiments.map(function (experiment, index) {
+                console.log("experiments", experiment);
+                var experimentS1 = { data: experiment.histograms.stokes.S1.data, title: experiment.title };
+                var experimentS2 = { data: experiment.histograms.stokes.S2.data, title: experiment.title };
+
+                S1.push(experimentS1);
+                S2.push(experimentS2);
+            }) : null;
+
+            console.log("S1", S1);
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                this.state.experiments.length > 0 ? _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        'S1 Parameter'
+                    ),
+                    _react2.default.createElement(_Histogram2.default, {
+                        data: S1,
+                        targetElement: 'exp-stokes-S1-histograms',
+                        width: 600,
+                        height: 300,
+                        yTicks: 10
+                    }),
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        'S2 Parameter'
+                    ),
+                    _react2.default.createElement(_Histogram2.default, {
+                        data: S2,
+                        targetElement: 'exp-stokes-S2-histograms',
+                        width: 600,
+                        height: 300,
+                        yTicks: 10
+                    })
+                ) : null
+            );
+        }
+    }]);
+
+    return ExperimentComparision;
+}(_react.Component);
+
+exports.default = ExperimentComparision;
 
 /***/ })
 /******/ ]);

@@ -12,7 +12,8 @@ export default class Experiment extends Component {
         super(props);
         this.state = {
             data: {},
-            stokesDataSet: []
+            stokesDataSet: null,
+            index: 0
         };
         this.requestData = this.requestData.bind(this);
         this.renderAll = this.renderAll.bind(this);
@@ -35,14 +36,17 @@ export default class Experiment extends Component {
           if (request.status >= 200 && request.status < 400) {
             var rawdata = JSON.parse(request.responseText);
             var data = rawdata.exp;
-            const dataSet = [];
-            dataSet.push(data.histograms.stokes.S1.data);
+            var dataset = [];
+            const S1 = {data: data.histograms.stokes.S1.data, title: data.title};
+            const S2 = {data: data.histograms.stokes.S2.data, title: data.title};
+            dataset.push(S1);
 
-            dataSet.push(data.histograms.stokes.S2.data);
+            dataset.push(S2);
 
             this.setState({
                 data: data,
-                stokesDataSet: dataSet
+                stokesDataSet: dataset,
+                index: 0
             });
           } else {
             // We reached our target server, but it returned an error
@@ -55,25 +59,29 @@ export default class Experiment extends Component {
     }
 
     setStokesDataset(index) {
-        const S1 = this.state.data.histograms.stokes.S1.data;
-        const S2 = this.state.data.histograms.stokes.S2.data;
+        const S1 = {data: this.state.data.histograms.stokes.S1.data, title: this.state.data.title};
+        const S2 = {data: this.state.data.histograms.stokes.S2.data, title: this.state.data.title};
 
         if (index === 0) {
             const dataSet = [];
             dataSet.push(S1);
             dataSet.push(S2);
-
+            console.log("cow", dataSet);
             this.setState({
-                stokesDataSet: dataSet
+                stokesDataSet: dataSet,
+                index: 0
             });
         }
         if ( index === 1) {
+
             this.setState({
+                index: 1,
                 stokesDataSet: [S1]
             });
         } else if (index === 2) {
 
             this.setState({
+                index: 2,
                 stokesDataSet: [S2]
             });
 
@@ -82,7 +90,6 @@ export default class Experiment extends Component {
 
     renderAll() {
         if (this.state.data.images) {
-
             return(
                 <div>
                 <ExperimentHeader
@@ -106,6 +113,8 @@ export default class Experiment extends Component {
                             <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(1)}>S1</span>
                             <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(2)}>S2</span>
                         </div>
+                        {this.state.stokesDataSet ?
+
                         <Histogram
                             data={this.state.stokesDataSet}
                             targetElement={'exp-stokes-histograms'}
@@ -113,6 +122,7 @@ export default class Experiment extends Component {
                             height={300}
                             yTicks={10}
                         />
+                    : null}
 
                     </div>
                 </div>

@@ -26,6 +26,7 @@ export default class ExperimentImages extends Component {
 
         if (img !== this.state.activeImageModal) {
         }
+        let histogramData = {data: this.props.histograms.measurements[LETTERS[img]], title:this.props.title};
             // d3.selectAll("svg > *").remove();
         return (
             <div className="exp-image-modal">
@@ -38,7 +39,7 @@ export default class ExperimentImages extends Component {
                             <h5>{LETTERS[img]} Histogram</h5>
                             {/* this.renderHistogram(this.props.histograms.measurements[LETTERS[img]], `exp-${LETTERS[img]}-modal-histogram`, 375, 200, 10) */}
                             <Histogram
-                                data={[this.props.histograms.measurements[LETTERS[img]]]}
+                                data={[histogramData]}
                                 targetElement={`exp-modal-histogram`}
                                 width={375}
                                 height={200}
@@ -52,23 +53,11 @@ export default class ExperimentImages extends Component {
     }
 
     openImageModal(img) {
-        console.log(
-            `exp-${LETTERS[img]}-modal-histogram`
-        );
-        // this.setState({showModal: false});
-        // const svg = d3.select(`.exp-${LETTERS[img]}-modal-histogram`);
-        // console.log("svg", svg);
-        // svg.remove();
-        // d3.selectAll('bar').remove();
         this.setState({showModal: true, activeImageModal: img});
         this.renderImageModal(img);
-
-        // var svg =d3.select(`.exp-${LETTERS[img]}-modal-histogram`).transition();
-        // svg.selectAll('bar').duration(750)
     }
 
     render() {
-        console.log("this.state.histograms", this.props.histograms);
         return(
             <div className="image-container">
                 <h4>Images</h4>

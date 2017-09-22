@@ -4,18 +4,17 @@ export default class Hisotgram extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            g: null
+            g: null,
+            ledgend: []
         };
+
 
         this.onRef = this.onRef.bind(this);
         this.renderHistogram = this.renderHistogram.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("received props", nextProps.data);
-        // if (nextProps.data !== this.props.data) {
-            this.renderHistogram(nextProps.data)
-        // }
+        this.renderHistogram(nextProps.data)
     }
 
     // shouldComponentUpdate() { console.log("COMponent should update"); return false }
@@ -60,10 +59,24 @@ export default class Hisotgram extends Component {
                     .attr("transform",
                           "translate(" + margin.left + "," + margin.top + ")");
 
-                console.log("histogram svg", svg);
+                var yMax = 0;
+                var yMaxTmp = 0;
 
-                  x.domain([-1, d3.max(dataSet[0], function(d) { return d[0]; })]);
-                  y.domain([0, d3.max(dataSet[0], function(d) { return d[1]; })]);
+                dataSet.map((experiment, index) => {
+                    if (index === 0) {
+                        yMax = d3.max(dataSet[0].data, function(d) { return d[1]; })
+                    } else {
+                        yMaxTmp = d3.max(dataSet[index].data, function(d) { return d[1]; })
+                    }
+
+                    if (yMaxTmp > yMax) {
+                        yMax = yMaxTmp;
+                    }
+
+                });
+
+                  x.domain([-1, d3.max(dataSet[0].data, function(d) { return d[0]; })]);
+                  y.domain([0, yMax]);
 
                   svg.append("g")
                       .attr("class", "x axis")
@@ -89,15 +102,22 @@ export default class Hisotgram extends Component {
 
                       const COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
 
-                dataSet.map((data, index) => {
+                dataSet.map((experiment, index) => {
+                    console.log("color", COLORS[index]);
+                    console.log("experiMENT", experiment);
                     svg.selectAll("bar")
-                        .data(data)
+                        .data(experiment.data)
                       .enter().append("rect")
                         .style("fill", COLORS[index])
                         .attr("x", function(d) { return x(d[0]); })
                         .attr("width", 2)
                         .attr("y", function(d) { return y(d[1]); })
                         .attr("height", function(d) { return height - y(d[1]); });
+
+                    const tmpLedgendObject = this.state.ledgend;
+
+                    tmpLedgendObject.push(experiment);
+                    this.setState({ledgend: tmpLedgendObject});
                 })
     }
 

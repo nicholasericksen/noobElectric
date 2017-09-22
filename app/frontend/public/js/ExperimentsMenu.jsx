@@ -7,7 +7,8 @@ export default class ExperimentsMenu extends Component {
         super(props);
 
         this.state = {
-            data: null
+            data: [],
+            compareList: []
         }
 
         this.requestData = this.requestData.bind(this);
@@ -40,17 +41,27 @@ export default class ExperimentsMenu extends Component {
 
         request.send();
     }
+    addCompare(id) {
+        let list = this.state.compareList;
+        list.push(id);
+        this.setState({
+            compareList: list
+        });
+        console.log("compare list", this.state.compareList);
+    }
+
     render() {
-        const data = this.state.data ? this.state.data.reverse() : null;
+        const data = this.state.data ? this.state.data : [];
 
         return (
             <div>
-                <Link to={'/experiments/new'}>
+                <Link className="button" to={'/experiments/new'}>
                     { /*<div className="experiment-button">
                         <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </div> */}
                     new
                 </Link>
+                <Link className="button" to={`/experiments/compare/${this.state.compareList}`}>compare</Link>
                 {data ?
                     data.map((experiment, index) => {
                         return(
@@ -63,6 +74,7 @@ export default class ExperimentsMenu extends Component {
                                 </div>
                                 <div className="exp-buttons">
                                     <Link className="button" key={index} to={`/experiments/${experiment._id.$oid}`}>more</Link>
+                                    <span className="button" onClick={() => this.addCompare(experiment._id.$oid)}>compare</span>
                                     {/*<span className="exp-menu-compare exp-btn">compare</span> */}
                                 </div>
                                 <hr />
