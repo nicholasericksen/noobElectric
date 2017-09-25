@@ -11732,6 +11732,7 @@ var Hisotgram = function (_Component) {
     _createClass(Hisotgram, [{
         key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(nextProps) {
+            this.setState({ ledgend: [] });
             this.renderHistogram(nextProps.data);
         }
 
@@ -11753,6 +11754,7 @@ var Hisotgram = function (_Component) {
             var _this2 = this;
 
             // Initialize Axis and dimensions
+
             var margin = { top: 20, right: 20, bottom: 70, left: 50 },
                 width = this.props.width - margin.left - margin.right,
                 height = this.props.height - margin.top - margin.bottom;
@@ -11815,6 +11817,8 @@ var Hisotgram = function (_Component) {
 
                 var tmpLedgendObject = _this2.state.ledgend;
 
+                experiment.color = COLORS[index];
+
                 tmpLedgendObject.push(experiment);
                 _this2.setState({ ledgend: tmpLedgendObject });
             });
@@ -11822,10 +11826,16 @@ var Hisotgram = function (_Component) {
     }, {
         key: "render",
         value: function render() {
+            console.log("this.state.ledgend", this.state.ledgend);
             return _react2.default.createElement(
-                "svg",
-                { width: this.props.width, height: this.props.height, className: this.props.targetElement },
-                _react2.default.createElement("g", { ref: this.onRef })
+                "div",
+                null,
+                _react2.default.createElement("div", { className: "ledgend" }),
+                _react2.default.createElement(
+                    "svg",
+                    { width: this.props.width, height: this.props.height, className: this.props.targetElement },
+                    _react2.default.createElement("g", { ref: this.onRef })
+                )
             );
         }
     }]);
@@ -27856,7 +27866,7 @@ var ExperimentImages = function (_Component) {
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
                             return _this2.openImageModal('0');
-                        }, src: 'http://localhost:5050/data/' + this.props.images + '/0.png' }),
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/0.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },
@@ -27868,7 +27878,7 @@ var ExperimentImages = function (_Component) {
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
                             return _this2.openImageModal('90');
-                        }, src: 'http://localhost:5050/data/' + this.props.images + '/90.png' }),
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/90.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },
@@ -27880,7 +27890,7 @@ var ExperimentImages = function (_Component) {
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
                             return _this2.openImageModal('45');
-                        }, src: 'http://localhost:5050/data/' + this.props.images + '/45.png' }),
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/45.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },
@@ -27892,7 +27902,7 @@ var ExperimentImages = function (_Component) {
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
                             return _this2.openImageModal('135');
-                        }, src: 'http://localhost:5050/data/' + this.props.images + '/135.png' }),
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/135.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },
@@ -29394,7 +29404,6 @@ var ExperimentComparision = function (_Component) {
             var idArray = ids.split(',');
 
             idArray.map(function (id, index) {
-                console.log("starting new request");
                 var request = new XMLHttpRequest();
 
                 var params = {
@@ -29422,25 +29431,21 @@ var ExperimentComparision = function (_Component) {
                 };
                 request.send(JSON.stringify(params));
             });
-
-            console.log(this.state.experiments);
         }
     }, {
         key: 'render',
         value: function render() {
             var S1 = [];
             var S2 = [];
+            console.log("PIG", this.state.experiments);
 
             var stokes = this.state.experiments.length > 0 ? this.state.experiments.map(function (experiment, index) {
-                console.log("experiments", experiment);
                 var experimentS1 = { data: experiment.histograms.stokes.S1.data, title: experiment.title };
                 var experimentS2 = { data: experiment.histograms.stokes.S2.data, title: experiment.title };
 
                 S1.push(experimentS1);
                 S2.push(experimentS2);
             }) : null;
-
-            console.log("S1", S1);
 
             return _react2.default.createElement(
                 'div',

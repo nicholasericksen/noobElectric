@@ -62,19 +62,19 @@ export default class ExperimentImages extends Component {
             <div className="image-container">
                 <h4>Images</h4>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('0')} src={`http://localhost:5050/data/${this.props.images}/0.png`} />
+                    <img onClick={() => this.openImageModal('0')} src={`http://localhost:8090/data/${this.props.images}/0.png`} />
                     <span className="exp-image-subtitle">H.png</span>
                 </div>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('90')} src={`http://localhost:5050/data/${this.props.images}/90.png`} />
+                    <img onClick={() => this.openImageModal('90')} src={`http://localhost:8090/data/${this.props.images}/90.png`} />
                     <span className="exp-image-subtitle">V.png</span>
                 </div>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('45')} src={`http://localhost:5050/data/${this.props.images}/45.png`} />
+                    <img onClick={() => this.openImageModal('45')} src={`http://localhost:8090/data/${this.props.images}/45.png`} />
                     <span className="exp-image-subtitle">P.png</span>
                 </div>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('135')} src={`http://localhost:5050/data/${this.props.images}/135.png`} />
+                    <img onClick={() => this.openImageModal('135')} src={`http://localhost:8090/data/${this.props.images}/135.png`} />
                     <span className="exp-image-subtitle">M.png</span>
                 </div>
                 {this.state.showModal ?

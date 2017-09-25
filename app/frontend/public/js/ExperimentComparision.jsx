@@ -19,7 +19,6 @@ export default class ExperimentComparision extends Component {
 
 
         idArray.map((id, index) => {
-            console.log("starting new request");
             var request = new XMLHttpRequest();
 
             let params =  {
@@ -47,23 +46,19 @@ export default class ExperimentComparision extends Component {
             };
             request.send(JSON.stringify(params));
         });
-
-        console.log(this.state.experiments);
     }
     render() {
         let S1 = [];
         let S2 = [];
+        console.log("PIG", this.state.experiments);
 
         let stokes = this.state.experiments.length > 0 ? this.state.experiments.map((experiment, index) => {
-            console.log("experiments", experiment);
             let experimentS1 = {data: experiment.histograms.stokes.S1.data, title: experiment.title};
             let experimentS2 = {data: experiment.histograms.stokes.S2.data, title: experiment.title};
 
             S1.push(experimentS1);
             S2.push(experimentS2);
         }) : null;
-
-        console.log("S1", S1);
 
         return(
             <div>

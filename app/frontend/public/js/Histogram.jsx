@@ -14,6 +14,7 @@ export default class Hisotgram extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        this.setState({ledgend: []});
         this.renderHistogram(nextProps.data)
     }
 
@@ -29,6 +30,7 @@ export default class Hisotgram extends Component {
 
     renderHistogram(dataSet) {
             // Initialize Axis and dimensions
+
             var margin = {top: 20, right: 20, bottom: 70, left: 50},
                 width = this.props.width - margin.left - margin.right,
                 height = this.props.height - margin.top - margin.bottom;
@@ -43,6 +45,7 @@ export default class Hisotgram extends Component {
                     .scale(x)
                     .orient("bottom")
                     .ticks(10);
+
 
                 var yAxis = d3.svg.axis()
                     .scale(y)
@@ -116,16 +119,32 @@ export default class Hisotgram extends Component {
 
                     const tmpLedgendObject = this.state.ledgend;
 
+                    experiment.color = COLORS[index];
+
                     tmpLedgendObject.push(experiment);
                     this.setState({ledgend: tmpLedgendObject});
                 })
     }
 
     render() {
+        console.log("this.state.ledgend", this.state.ledgend);
         return(
+            <div>
+                <div className="ledgend">
+                    {/*this.state.ledgend ? this.state.ledgend.map((experiment, index) => {
+                        console.log("RENDERING LEDGEND", experiment);
+                        return (
+                            <div>
+                                <span className="ledgend-color">{experiment.color}</span>
+                                <div>{experiment.title}</div>
+                            </div>
+                        )
+                    }) : null */}
+                </div>
             <svg width={this.props.width} height={this.props.height} className={this.props.targetElement}>
                 <g ref={this.onRef}  />
             </svg>
+            </div>
         );
     }
 }
