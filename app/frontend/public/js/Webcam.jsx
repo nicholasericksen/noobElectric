@@ -151,7 +151,7 @@ export default class Webcam extends Component {
                             </div>
                         </div>
                         {this.state.directoryImages ? this.state.directoryImages.images.map((image, index) => {
-                            const imgSrc = 'http://localhost:5050/data/' + this.state.directoryImages.directory + '/' + image;
+                            const imgSrc = 'http://localhost:8090/data/' + this.state.directoryImages.directory + '/' + image;
                             return (
                                 <div className="directory-image-container">
                                     <img src={imgSrc} />

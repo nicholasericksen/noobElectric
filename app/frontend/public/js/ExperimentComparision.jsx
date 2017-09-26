@@ -53,8 +53,8 @@ export default class ExperimentComparision extends Component {
         console.log("PIG", this.state.experiments);
 
         let stokes = this.state.experiments.length > 0 ? this.state.experiments.map((experiment, index) => {
-            let experimentS1 = {data: experiment.histograms.stokes.S1.data, title: experiment.title};
-            let experimentS2 = {data: experiment.histograms.stokes.S2.data, title: experiment.title};
+            let experimentS1 = {data: experiment.histograms.stokes.S1.data, title: `S1 ${experiment.title}`};
+            let experimentS2 = {data: experiment.histograms.stokes.S2.data, title: `S2 ${experiment.title}`};
 
             S1.push(experimentS1);
             S2.push(experimentS2);

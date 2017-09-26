@@ -11703,6 +11703,10 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = __webpack_require__(252);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11730,26 +11734,31 @@ var Hisotgram = function (_Component) {
     }
 
     _createClass(Hisotgram, [{
-        key: "componentWillReceiveProps",
+        key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
+            console.log("RECIEVED Props", nextProps);
             this.setState({ ledgend: [] });
-            this.renderHistogram(nextProps.data);
+            if (nextProps.data !== this.props.data) {
+                console.log("nextProps", nextProps.data);
+                this.renderHistogram(nextProps.data);
+            }
         }
 
         // shouldComponentUpdate() { console.log("COMponent should update"); return false }
 
     }, {
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
+            this.setState({ ledgend: [] });
             this.renderHistogram(this.props.data);
         }
     }, {
-        key: "onRef",
+        key: 'onRef',
         value: function onRef(ref) {
             // this.setState({ g: d3.select(ref) }, () => this.renderHistogram(this.props.data))
         }
     }, {
-        key: "renderHistogram",
+        key: 'renderHistogram',
         value: function renderHistogram(dataSet) {
             var _this2 = this;
 
@@ -11800,13 +11809,17 @@ var Hisotgram = function (_Component) {
 
             svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
 
-            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Value");
+            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("# of pxs");
 
             var COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
+
+            var tmpLedgendObject = [];
 
             dataSet.map(function (experiment, index) {
                 console.log("color", COLORS[index]);
                 console.log("experiMENT", experiment);
+                // this.setState({ledgend: []});
+                console.log("reset ledgend", _this2.state.ledgend);
                 svg.selectAll("bar").data(experiment.data).enter().append("rect").style("fill", COLORS[index]).attr("x", function (d) {
                     return x(d[0]);
                 }).attr("width", 2).attr("y", function (d) {
@@ -11815,8 +11828,6 @@ var Hisotgram = function (_Component) {
                     return height - y(d[1]);
                 });
 
-                var tmpLedgendObject = _this2.state.ledgend;
-
                 experiment.color = COLORS[index];
 
                 tmpLedgendObject.push(experiment);
@@ -11824,17 +11835,33 @@ var Hisotgram = function (_Component) {
             });
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             console.log("this.state.ledgend", this.state.ledgend);
             return _react2.default.createElement(
-                "div",
+                'div',
                 null,
-                _react2.default.createElement("div", { className: "ledgend" }),
                 _react2.default.createElement(
-                    "svg",
+                    'div',
+                    { className: 'ledgend' },
+                    this.state.ledgend ? this.state.ledgend.map(function (experiment, index) {
+                        console.log("RENDERING LEDGEND", experiment);
+                        return _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement('span', { className: (0, _classnames2.default)(["ledgend-color", experiment.color]) }),
+                            _react2.default.createElement(
+                                'span',
+                                { className: 'ledgend-experiment-title' },
+                                experiment.title
+                            )
+                        );
+                    }) : null
+                ),
+                _react2.default.createElement(
+                    'svg',
                     { width: this.props.width, height: this.props.height, className: this.props.targetElement },
-                    _react2.default.createElement("g", { ref: this.onRef })
+                    _react2.default.createElement('g', { ref: this.onRef })
                 )
             );
         }
@@ -27417,8 +27444,8 @@ var Experiment = function (_Component) {
     }, {
         key: 'setStokesDataset',
         value: function setStokesDataset(index) {
-            var S1 = { data: this.state.data.histograms.stokes.S1.data, title: this.state.data.title };
-            var S2 = { data: this.state.data.histograms.stokes.S2.data, title: this.state.data.title };
+            var S1 = { data: this.state.data.histograms.stokes.S1.data, title: 'S1 ' + this.state.data.title };
+            var S2 = { data: this.state.data.histograms.stokes.S2.data, title: 'S2 ' + this.state.data.title };
 
             if (index === 0) {
                 var dataSet = [];
@@ -27429,8 +27456,7 @@ var Experiment = function (_Component) {
                     stokesDataSet: dataSet,
                     index: 0
                 });
-            }
-            if (index === 1) {
+            } else if (index === 1) {
 
                 this.setState({
                     index: 1,
@@ -27816,7 +27842,7 @@ var ExperimentImages = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'exp-image-full' },
-                        _react2.default.createElement('img', { src: 'http://localhost:5050/data/' + this.props.images + '/' + img + '.png' })
+                        _react2.default.createElement('img', { src: 'http://localhost:8090/data/' + this.props.images + '/' + img + '.png' })
                     ),
                     _react2.default.createElement(
                         'div',
@@ -28706,7 +28732,7 @@ var Webcam = function (_Component) {
                                 )
                             ),
                             this.state.directoryImages ? this.state.directoryImages.images.map(function (image, index) {
-                                var imgSrc = 'http://localhost:5050/data/' + _this3.state.directoryImages.directory + '/' + image;
+                                var imgSrc = 'http://localhost:8090/data/' + _this3.state.directoryImages.directory + '/' + image;
                                 return _react2.default.createElement(
                                     'div',
                                     { className: 'directory-image-container' },
@@ -28811,7 +28837,7 @@ exports = module.exports = __webpack_require__(248)(undefined);
 
 
 // module
-exports.push([module.i, "body,\nhtml {\n  margin: 30px;\n  padding: 0;\n}\nbody a.button,\nhtml a.button {\n  color: #333;\n  font-weight: 300;\n}\nbody input[type=text],\nhtml input[type=text] {\n  background: transparent;\n  border: none;\n  border-bottom: 1px solid #000000;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  width: 158px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container .stokes-stats {\n  width: 250px;\n  float: left;\n}\n.stokes-stats-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n.webcam-container {\n  position: relative;\n  width: 640px;\n  background-color: black;\n  height: 480px;\n}\n.webcam-container .webcam-capture-preview {\n  position: absolute;\n  left: 0;\n}\n.webcam-control-container {\n  padding: 15px;\n  position: relative;\n}\n.webcam-control-container .btn-warning {\n  position: absolute;\n  top: 55px;\n  left: 24;\n}\n.webcam-control-container span {\n  font-size: 12px;\n}\n.webcam-control-container div {\n  margin: 0 10px;\n}\n.current-directory-images {\n  position: absolute;\n  top: 0;\n  width: 300px;\n  right: -300px;\n  height: 480px;\n  overflow-y: auto;\n}\n.current-directory-images .directory-image-container {\n  position: relative;\n}\n.current-directory-images .directory-image-container .directory-image-name {\n  position: absolute;\n  bottom: 13px;\n  left: 76px;\n  color: white;\n  font-family: monospace;\n}\n.current-directory-images .directory-image-container img {\n  width: 185px;\n  padding: 10px;\n  margin: 0 auto;\n  display: block;\n}\n.experiment-button {\n  height: 12px;\n  width: 12px;\n  background-color: #616060;\n  border-radius: 6px;\n  color: white;\n  text-align: center;\n  margin: 0;\n  position: absolute;\n  top: 133px;\n  left: 247px;\n  border: 1px solid #333;\n  z-index: 999999;\n}\n.experiment-button span {\n  font-size: 8px;\n}\n.histogram-filter-container .histogram-filter {\n  padding-left: 10px;\n}\n", ""]);
+exports.push([module.i, "body,\nhtml {\n  margin: 30px;\n  padding: 0;\n}\nbody a.button,\nhtml a.button {\n  color: #333;\n  font-weight: 300;\n}\nbody input[type=text],\nhtml input[type=text] {\n  background: transparent;\n  border: none;\n  border-bottom: 1px solid #000000;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  width: 158px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container .stokes-stats {\n  width: 250px;\n  float: left;\n}\n.stokes-stats-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n.webcam-container {\n  position: relative;\n  width: 640px;\n  background-color: black;\n  height: 480px;\n}\n.webcam-container .webcam-capture-preview {\n  position: absolute;\n  left: 0;\n}\n.webcam-control-container {\n  padding: 15px;\n  position: relative;\n}\n.webcam-control-container .btn-warning {\n  position: absolute;\n  top: 55px;\n  left: 24;\n}\n.webcam-control-container span {\n  font-size: 12px;\n}\n.webcam-control-container div {\n  margin: 0 10px;\n}\n.current-directory-images {\n  position: absolute;\n  top: 0;\n  width: 300px;\n  right: -300px;\n  height: 480px;\n  overflow-y: auto;\n}\n.current-directory-images .directory-image-container {\n  position: relative;\n}\n.current-directory-images .directory-image-container .directory-image-name {\n  position: absolute;\n  bottom: 13px;\n  left: 76px;\n  color: white;\n  font-family: monospace;\n}\n.current-directory-images .directory-image-container img {\n  width: 185px;\n  padding: 10px;\n  margin: 0 auto;\n  display: block;\n}\n.experiment-button {\n  height: 12px;\n  width: 12px;\n  background-color: #616060;\n  border-radius: 6px;\n  color: white;\n  text-align: center;\n  margin: 0;\n  position: absolute;\n  top: 133px;\n  left: 247px;\n  border: 1px solid #333;\n  z-index: 999999;\n}\n.experiment-button span {\n  font-size: 8px;\n}\n.ledgend-color {\n  height: 10px;\n  width: 10px;\n  position: relative;\n  display: inline-block;\n  margin-right: 5px;\n}\n.steelblue {\n  background-color: steelblue;\n}\n.red {\n  background-color: red;\n}\n.grey {\n  background-color: grey;\n}\n.green {\n  background-color: green;\n}\n.black {\n  background-color: black;\n}\n.histogram-filter-container .histogram-filter {\n  padding-left: 10px;\n}\n", ""]);
 
 // exports
 
@@ -29440,8 +29466,8 @@ var ExperimentComparision = function (_Component) {
             console.log("PIG", this.state.experiments);
 
             var stokes = this.state.experiments.length > 0 ? this.state.experiments.map(function (experiment, index) {
-                var experimentS1 = { data: experiment.histograms.stokes.S1.data, title: experiment.title };
-                var experimentS2 = { data: experiment.histograms.stokes.S2.data, title: experiment.title };
+                var experimentS1 = { data: experiment.histograms.stokes.S1.data, title: 'S1 ' + experiment.title };
+                var experimentS2 = { data: experiment.histograms.stokes.S2.data, title: 'S2 ' + experiment.title };
 
                 S1.push(experimentS1);
                 S2.push(experimentS2);
@@ -29486,6 +29512,61 @@ var ExperimentComparision = function (_Component) {
 }(_react.Component);
 
 exports.default = ExperimentComparision;
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			return classNames;
+		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+		window.classNames = classNames;
+	}
+}());
+
 
 /***/ })
 /******/ ]);

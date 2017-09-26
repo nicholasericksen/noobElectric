@@ -59,8 +59,8 @@ export default class Experiment extends Component {
     }
 
     setStokesDataset(index) {
-        const S1 = {data: this.state.data.histograms.stokes.S1.data, title: this.state.data.title};
-        const S2 = {data: this.state.data.histograms.stokes.S2.data, title: this.state.data.title};
+        const S1 = {data: this.state.data.histograms.stokes.S1.data, title: `S1 ${this.state.data.title}`};
+        const S2 = {data: this.state.data.histograms.stokes.S2.data, title: `S2 ${this.state.data.title}`};
 
         if (index === 0) {
             const dataSet = [];
@@ -72,7 +72,7 @@ export default class Experiment extends Component {
                 index: 0
             });
         }
-        if ( index === 1) {
+        else if ( index === 1) {
 
             this.setState({
                 index: 1,

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import classNames from 'classnames';
+
 export default class Hisotgram extends Component {
     constructor(props) {
         super(props);
@@ -14,13 +16,18 @@ export default class Hisotgram extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ledgend: []});
-        this.renderHistogram(nextProps.data)
+        console.log("RECIEVED Props", nextProps);
+            this.setState({ledgend: []});
+        if (nextProps.data !== this.props.data) {
+            console.log("nextProps", nextProps.data);
+            this.renderHistogram(nextProps.data);
+        }
     }
 
     // shouldComponentUpdate() { console.log("COMponent should update"); return false }
 
     componentDidMount() {
+        this.setState({ledgend: []});
         this.renderHistogram(this.props.data);
     }
 
@@ -99,15 +106,19 @@ export default class Hisotgram extends Component {
                       .attr("y", 6)
                       .attr("dy", ".71em")
                       .style("text-anchor", "end")
-                      .text("Value");
+                      .text("# of pxs");
 
 
 
-                      const COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
+                const COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
+
+                const tmpLedgendObject = [];
 
                 dataSet.map((experiment, index) => {
                     console.log("color", COLORS[index]);
                     console.log("experiMENT", experiment);
+                    // this.setState({ledgend: []});
+                    console.log("reset ledgend", this.state.ledgend);
                     svg.selectAll("bar")
                         .data(experiment.data)
                       .enter().append("rect")
@@ -117,7 +128,6 @@ export default class Hisotgram extends Component {
                         .attr("y", function(d) { return y(d[1]); })
                         .attr("height", function(d) { return height - y(d[1]); });
 
-                    const tmpLedgendObject = this.state.ledgend;
 
                     experiment.color = COLORS[index];
 
@@ -131,15 +141,15 @@ export default class Hisotgram extends Component {
         return(
             <div>
                 <div className="ledgend">
-                    {/*this.state.ledgend ? this.state.ledgend.map((experiment, index) => {
+                    {this.state.ledgend ? this.state.ledgend.map((experiment, index) => {
                         console.log("RENDERING LEDGEND", experiment);
                         return (
                             <div>
-                                <span className="ledgend-color">{experiment.color}</span>
-                                <div>{experiment.title}</div>
+                                <span className={classNames(["ledgend-color", experiment.color])}></span>
+                                <span className="ledgend-experiment-title">{experiment.title}</span>
                             </div>
                         )
-                    }) : null */}
+                    }) : null }
                 </div>
             <svg width={this.props.width} height={this.props.height} className={this.props.targetElement}>
                 <g ref={this.onRef}  />

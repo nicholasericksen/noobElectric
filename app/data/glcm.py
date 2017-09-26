@@ -25,8 +25,8 @@ def plototsu(img):
         # plt.title(title)
 
 
-Pdry = cv2.imread('sandpaper-60-grit-red-filter/135.png', 0)
-Pwet = cv2.imread('sandpaper-brown-60-grit/135.png', 0)
+Pdry = cv2.imread('exp-04-18-17-type1-dry/135.png', 0)
+Pwet = cv2.imread('exp-04-18-17-type1-wet/135.png', 0)
 
 # Pdry = plototsu(Pdryraw)
 # Pwet = plototsu(Pwetraw)

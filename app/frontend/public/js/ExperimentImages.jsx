@@ -32,7 +32,7 @@ export default class ExperimentImages extends Component {
             <div className="exp-image-modal">
                 <div className="exp-image-modal-container">
                     <div className="exp-image-full">
-                        <img src={`http://localhost:5050/data/${this.props.images}/${img}.png`} />
+                        <img src={`http://localhost:8090/data/${this.props.images}/${img}.png`} />
                     </div>
                     <div className="exp-image-full-histogram">
                         <div className="histogram-large-container">
