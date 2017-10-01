@@ -34,21 +34,21 @@ Pwet = cv2.imread('exp-04-18-17-type1-wet/135.png', 0)
 print "Pdy: ", Pdry
 
 
-Pdry_samples = [ (40,30), (55,45), (80,20), (90,110), (75,75), (100,100), (50,300), (50, 360), (65, 299) ]
-Pwet_samples = [ (40,30), (55,45), (80,20), (90,110), (75,75), (100,100), (50,300), (50, 360), (65, 299) ]
+# Pdry_samples = [ (40,30), (55,45), (80,20), (90,110), (75,75), (100,100), (50,300), (50, 360), (65, 299) ]
+# Pwet_samples = [ (40,30), (55,45), (80,20), (90,110), (75,75), (100,100), (50,300), (50, 360), (65, 299) ]
+#
+# Pdry_patches = []
+#
+# for loc in Pdry_samples:
+#     Pdry_patches.append(Pdry[loc[0]:loc[0] + SAMPLE_SIZE, loc[1]:loc[1] + SAMPLE_SIZE])
+#
+# Pwet_patches = []
+#
+# for loc in Pwet_samples:
+#     Pwet_patches.append(Pwet[loc[0]:loc[0] + SAMPLE_SIZE, loc[1]:loc[1] + SAMPLE_SIZE])
 
-Pdry_patches = []
-
-for loc in Pdry_samples:
-    Pdry_patches.append(Pdry[loc[0]:loc[0] + SAMPLE_SIZE, loc[1]:loc[1] + SAMPLE_SIZE])
-
-Pwet_patches = []
-
-for loc in Pwet_samples:
-    Pwet_patches.append(Pwet[loc[0]:loc[0] + SAMPLE_SIZE, loc[1]:loc[1] + SAMPLE_SIZE])
-
-# Pdry_patches = image.extract_patches_2d(Pdry, (50, 50), 250)
-# Pwet_patches = image.extract_patches_2d(Pwet, (50, 50), 250)
+Pdry_patches = image.extract_patches_2d(Pdry, (50, 50), 250)
+Pwet_patches = image.extract_patches_2d(Pwet, (50, 50), 250)
 
 print "Pdry_patches: ", Pdry_patches
 print "Pwet_patches: ", Pwet_patches

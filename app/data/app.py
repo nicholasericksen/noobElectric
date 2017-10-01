@@ -34,6 +34,7 @@ discreteLMP = db.discrete
 # Import flask
 from flask import Flask, render_template, request, redirect, url_for, jsonify, Response
 from flask_socketio import SocketIO
+from flask_socketio import send, emit
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'uploads'
@@ -42,7 +43,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # app.run(threaded=True)
-
+app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
 class JSONEncoder(json.JSONEncoder):
@@ -242,7 +243,7 @@ def upload_new_discrete_LMP():
         }
     )
 
-    resp = jsonify({"data": 'datat'})
+    resp = jsonify({"data": 'Successfully inserted'})
     resp.headers['Access-Control-Allow-Origin'] = '*'
 
     return resp
@@ -289,20 +290,47 @@ def retrieve_files():
 
 
 # @app.route('/lightsensor')
-# def get_reading():
-#     # sensor_reading()
+# def sensor_reading():
+#     port = "/dev/cu.usbmodem1411"
+#     baudrate = 9600
+#     # angle = [0, 90, 45, -45, "LCP", "RCP"]
+#     ser = serial.Serial(port, baudrate)
 #
-#     time.sleep(2)
+#     # time.sleep(1)
 #
-#     ser.flush()
-#     ser.write('3')
+#     # ser.flush()
+#     # ser.write('3')
 #
-#     time.sleep(1)
+#     # time.sleep(1)
 #
 #     measurement = ser.readline()
 #
-#     return measurement
+#     print "Voltage", measurement
 #
+#     resp = jsonify({"data": measurement})
+#     resp.headers['Access-Control-Allow-Origin'] = '*'
+#
+#     return resp
+
+# @socketio.on('message')
+# def handle_message(message):
+#     port = "/dev/cu.usbmodem1411"
+#     baudrate = 9600
+#     # angle = [0, 90, 45, -45, "LCP", "RCP"]
+#     ser = serial.Serial(port, baudrate)
+#
+#     # time.sleep(1)
+#
+#     # ser.flush()
+#     # ser.write('3')
+#
+#     # time.sleep(1)
+#     print message
+#
+#     measurement = ser.readline()
+#     print measurement
+#     emit('value', str(measurement))
+
 #
 # @app.route('/motor', methods=['POST'])
 # def motor():
@@ -333,5 +361,5 @@ def catch_all(path):
     return render_template('index.html')
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  socketio.run(app)
   # socketio.run(app)

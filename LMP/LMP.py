@@ -11,10 +11,13 @@ def sensor_reading():
     time.sleep(2)
 
     ser.flush()
-    ser.write('3')
+    # ser.write('3')
 
     time.sleep(1)
 
     measurement = ser.readline()
 
     print "Voltage", measurement
+
+while True:
+    sensor_reading()

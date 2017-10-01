@@ -3,9 +3,15 @@ html {
     margin: 30px;
     padding: 0;
 
-    a.button {
+    .button {
         color: #333;
         font-weight: 300;
+        padding: 0 5px;
+
+        &.active {
+            background-color: #bbb;
+            color: #fdfdfd;
+        }
     }
 
     input[type=text] {
@@ -29,6 +35,23 @@ html {
 .exp-btn:hover {
     cursor: pointer;
     border: 1px solid black;
+}
+
+.subheading {
+    margin: 0 5px;
+
+    &.btn-primary {
+        padding: 3px 12px;
+    }
+
+    &.inactive {
+        background-color: #d8d7d7;
+        border-color: #e2e2e2;
+    }
+    &.inactive:hover {
+        cursor: none;
+        pointer-events: none;
+    }
 }
 
 .noobelectric {
@@ -207,6 +230,21 @@ img {
     div {
         margin: 0 10px;
     }
+}
+
+.directory-heading {
+    padding-left: 10px;
+
+    span {
+        display: block;
+    }
+}
+
+.voltage-container {
+    font-size: 35px;
+height: 250px;
+line-height: 250px;
+text-align: center;
 }
 
 .current-directory-images {

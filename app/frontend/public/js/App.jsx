@@ -17,7 +17,7 @@ export default class App extends Component {
             <div className="noobelectric">
                 <Header/>
                 <Switch>
-                    <Route exact path='/index.html' component={Home} />
+                    <Route exact path='/frontend/public/index.html' component={Home} />
                     <Route path='/experiments' component={Experiments} />
                     <Route path='/daq' component={Webcam} />
                     <Route path='/documentation' component={Experiments} />

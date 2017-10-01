@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import classNames from 'classnames';
+
 import { Link } from 'react-router-dom';
 
 export default class ExperimentsMenu extends Component {
@@ -43,27 +45,36 @@ export default class ExperimentsMenu extends Component {
     }
     addCompare(id) {
         let list = this.state.compareList;
-        list.push(id);
+        if (list.includes(id)) {
+            const i = list.indexOf(id);
+            list.splice(i, 1);
+        } else {
+            list.push(id);
+        }
         this.setState({
             compareList: list
         });
-        console.log("compare list", this.state.compareList);
     }
 
     render() {
         const data = this.state.data ? this.state.data : [];
+        const inactive = this.state.compareList.length === 0 ? true : false;
+        console.log("inactive", inactive);
 
         return (
             <div>
-                <Link className="button" to={'/experiments/new'}>
+                <Link className="subheading btn-primary btn" to={'/experiments/new'}>
                     { /*<div className="experiment-button">
                         <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </div> */}
                     new
                 </Link>
-                <Link className="button" to={`/experiments/compare/${this.state.compareList}`}>compare</Link>
+                <Link className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")} to={`/experiments/compare/${this.state.compareList}`}>compare</Link>
+                <span className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")}>export</span>
                 {data ?
                     data.map((experiment, index) => {
+                        const active = this.state.compareList.includes(experiment._id.$oid);
+
                         return(
                             <div key={index} className="exp-menu-item-container">
                                 <h3 className="" key={index}>
@@ -74,7 +85,7 @@ export default class ExperimentsMenu extends Component {
                                 </div>
                                 <div className="exp-buttons">
                                     <Link className="button" key={index} to={`/experiments/${experiment._id.$oid}`}>more</Link>
-                                    <span className="button" onClick={() => this.addCompare(experiment._id.$oid)}>compare</span>
+                                    <span key={experiment._id.$oid} onClick={() => this.addCompare(experiment._id.$oid)} className={classNames({'active': active}, "compare", "button")}>select</span>
                                     {/*<span className="exp-menu-compare exp-btn">compare</span> */}
                                 </div>
                                 <hr />

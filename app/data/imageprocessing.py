@@ -5,7 +5,10 @@ from pymongo import MongoClient
 import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 from datetime import datetime
+from flask_socketio import SocketIO
 
+
+socketio = SocketIO(app)
 # Connect to mongodb
 client = MongoClient()
 db = client.experiments
@@ -58,13 +61,6 @@ def datasummary(data):
     length = len(data)
     mean = np.mean(data)
     std = np.std(data)
-
-    #TODO Add median and mean and variance
-    print '\n==========Summary==========='
-    print 'max: ', maxValue
-    print 'min: ', minValue
-    print 'length: ', length
-    print '============================\n'
 
     return {
         "max": maxValue,

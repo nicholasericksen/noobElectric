@@ -120,7 +120,7 @@ export default class ExperimentCreator extends Component {
                         </select>
                     </span>
                 </form>
-                <div className="button btn btn-primary" onClick={() => this.createExperiment()}>Create</div>
+                <div className="btn btn-primary" onClick={() => this.createExperiment()}>Create</div>
             </div>
         )
     }
