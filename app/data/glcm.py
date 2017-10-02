@@ -6,81 +6,159 @@ import matplotlib.pyplot as plt
 from skimage.filters import threshold_otsu
 from skimage.feature import greycomatrix, greycoprops
 from sklearn.feature_extraction import image
+from scipy.stats import gaussian_kde
+from datetime import datetime
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+import os
+# Connect to mongodb
+client = MongoClient()
+db = client.experiments
 
-SAMPLE_SIZE = 50
+# np.seterr(divide='ignore', invalid='ignore')
 
-# def plototsu(img, title, subplot1, subplot2):
-def plototsu(img):
-        # plt.subplot(subplot1)
-        # plt.title(title)
+# set numpy formatter to 2 decimal places
+float_formatter = lambda x: "%.2f" % x
+np.set_printoptions(formatter={'float_kind':float_formatter})
+# np.errstate(divide='ignore', invalid='ignore')
+old_err_state = np.seterr(divide='raise')
+ignored_states = np.seterr(**old_err_state)
+#set the directory the images come from
+imagedirectory = 'test/'
 
-        threshold = threshold_otsu(img)
-        binary = img >= threshold
-
-        return binary
-        # plt.imshow(binary, cmap='gray')
-        #
-        # plt.subplot(subplot2)
-        # plt.hist(binary.ravel())
-        # plt.title(title)
-
-
-Pdry = cv2.imread('exp-04-18-17-type1-dry/135.png', 0)
-Pwet = cv2.imread('exp-04-18-17-type1-wet/135.png', 0)
-
-# Pdry = plototsu(Pdryraw)
-# Pwet = plototsu(Pwetraw)
-
-print "Pdy: ", Pdry
+#Read the images for discrete analysis and flatten them
+Hraw = np.array(cv2.imread(imagedirectory + 'H.png', 0), dtype=np.int)
+Vraw = np.array(cv2.imread(imagedirectory + 'V.png', 0), dtype=np.int)
+Praw = np.array(cv2.imread(imagedirectory + 'P.png', 0), dtype=np.int)
+Mraw = np.array(cv2.imread(imagedirectory + 'M.png', 0), dtype=np.int)
 
 
-# Pdry_samples = [ (40,30), (55,45), (80,20), (90,110), (75,75), (100,100), (50,300), (50, 360), (65, 299) ]
-# Pwet_samples = [ (40,30), (55,45), (80,20), (90,110), (75,75), (100,100), (50,300), (50, 360), (65, 299) ]
-#
-# Pdry_patches = []
-#
-# for loc in Pdry_samples:
-#     Pdry_patches.append(Pdry[loc[0]:loc[0] + SAMPLE_SIZE, loc[1]:loc[1] + SAMPLE_SIZE])
-#
-# Pwet_patches = []
-#
-# for loc in Pwet_samples:
-#     Pwet_patches.append(Pwet[loc[0]:loc[0] + SAMPLE_SIZE, loc[1]:loc[1] + SAMPLE_SIZE])
 
-Pdry_patches = image.extract_patches_2d(Pdry, (50, 50), 250)
-Pwet_patches = image.extract_patches_2d(Pwet, (50, 50), 250)
 
-print "Pdry_patches: ", Pdry_patches
-print "Pwet_patches: ", Pwet_patches
+SAMPLE_SIZE = 5
+
+EXPERIMENT_DIR = 'test/'
+
+# Pdry = cv2.imread('sandpaper-brown-60-grit/90.png', 0)
+# Pwet = cv2.imread('sandpaper-100-grit-brown-red-filter/90.png', 0)
+
+Hpatches = image.extract_patches_2d(Hraw, (50, 50), SAMPLE_SIZE, 1)
+Ppatches = image.extract_patches_2d(Praw, (50, 50), SAMPLE_SIZE, 1)
+Vpatches = image.extract_patches_2d(Vraw, (50, 50), SAMPLE_SIZE, 1)
+Mpatches = image.extract_patches_2d(Mraw, (50, 50), SAMPLE_SIZE, 1)
+
+# Pwet_patches = image.extract_patches_2d(Praw, (50, 50), SAMPLE_SIZE, 1)
 
 xs = []
 ys = []
 
-for patch in (Pdry_patches + Pwet_patches):
+dataset = []
+# xsWet = []
+# ysWet = []
+
+def datasummary(data):
+    maxValue = np.amax(data)
+    minValue = np.amin(data)
+    length = len(data)
+    mean = np.mean(data)
+    std = np.std(data)
+
+    return {
+        "max": maxValue,
+        "min": minValue,
+        "mean": mean,
+        "std": std,
+        "numpts": length
+    }
+
+def createhistogram(data, bins):
+    hist = np.histogram(data, bins=bins)
+    bins = hist[1].tolist()
+    values = hist[0].tolist()
+
+    # Convert the tuples into arrays for smaller formatting
+    zipped = [list(t) for t in zip(bins, values)]
+    # print "zipped", zipped
+
+    return zipped
+
+for index, Hpatch in enumerate(Hpatches):
     try:
-        glcm = greycomatrix(patch, [5], [0], 256, symmetric=True, normed=True)
-        xs.append(greycoprops(glcm, 'dissimilarity')[0, 0])
-        ys.append(greycoprops(glcm, 'correlation')[0, 0])
+        glcm = greycomatrix(Hpatch, [5], [0], 256, symmetric=True, normed=True)
+        dissimilarity = greycoprops(glcm, 'dissimilarity')[0, 0]
+        correlation = greycoprops(glcm, 'correlation')[0, 0]
+
+        xs.append(dissimilarity)
+        ys.append(correlation)
+
+        directory = EXPERIMENT_DIR + 'samples/H'
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        filename = directory + 'H-sample-' + str(index) + '.png'
+        cv2.imwrite(filename, Hpatches[index])
+
+        H = Hpatches[index].ravel()
+        V = Vpatches[index].ravel()
+        P = Ppatches[index].ravel()
+        M = Mpatches[index].ravel()
+
+        # try:
+        S1 = np.divide((H - V), (H + V))
+        # except:
+        # S1 = [0]
+        # try:
+        S2 = np.divide((P - M), (P + M))
+        # except:
+        # S2 = [0]
+        # Print statistics about Stokes data
+        S1summary = datasummary(S1)
+        S2summary = datasummary(S2)
+
+        # Create the S1 and S2 Histogram
+        S1zipped = createhistogram(S1, np.arange(-1, 1.01, 0.01))
+        S2zipped = createhistogram(S2, np.arange(-1, 1.01, 0.01))
+
+        S1obj = {
+            "data": S1zipped,
+            "stats": S1summary
+        }
+
+        S2obj = {
+            "data": S2zipped,
+            "stats": S1summary
+        }
+        S = [list(t) for t in zip(S1, S2)]
+
+        #['filename', xs, ys, [S1], [S2], [[patch]]]
+        sample = {"file": filename, "dissimilarity": dissimilarity, "correlation": correlation, "S1": S1obj, "S2": S2obj, "S": S}
+        dataset.append(sample)
+        # plt.scatter(S1, S2)
+        # plt.show()
     except ValueError:
+        print "ERROR"
         pass
+print "DATASET", dataset
 
-print "xs: ", xs
-print "ys: ", ys
+# print dataset
+result = db.discrete.update(
+    {
+        '_id': ObjectId('59b86c8bb42de0886d65ccbc')
+    },
+    {
+        '$set': {
+            "glcm": dataset
+        }
+    }
+)
 
-plt.scatter(xs, ys)
-plt.show()
 
-###########
-# create the figure
-
-# display original image with locations of patches
-
-# for each patch, plot (dissimilarity, correlation)
 fig, ax = plt.subplots()
-ax.plot(xs[:len(Pdry_patches)], ys[:len(Pdry_patches)], 'go',
+ax.plot(xs[:len(Hpatches)], ys[:len(Hpatches)], 'go',
         label='Dry')
-ax.plot(xs[len(Pwet_patches):], ys[len(Pwet_patches):], 'bx',
-        label='Wet')
+# ax.plot(xsWet[:len(Pwet_patches)], ysWet[:len(Pwet_patches)], 'rx',
+#         label='Wet')
 ax.set_xlabel('GLCM Dissimilarity')
 ax.set_ylabel('GLCM Correlation')
 ax.legend()
@@ -90,28 +168,49 @@ ax.legend()
 
 # display the patches and plot
 fig.suptitle('Grey level co-occurrence matrix features', fontsize=14)
-plt.show()
+# plt.show()
+# for patch in patches:
+#     try:
+#         glcm = greycomatrix(patch, [5], [0], 256, symmetric=True, normed=True)
+#         xsDry.append(greycoprops(glcm, 'dissimilarity')[0, 0])
+#         ysDry.append(greycoprops(glcm, 'correlation')[0, 0])
+#     except ValueError:
+#         pass
 
 
+###########
+# create the figure
+
+# display original image with locations of patches
+
+# for each patch, plot (dissimilarity, correlation)
+
+
+# print "Pdry[0]", Hpatches[0]
 
 fig = plt.figure(figsize=(8, 6))
 # axis = fig.add_subplot(3, 3, 3)
 # display the image patches
-for i, patch in enumerate(Pdry_patches):
-    axis = fig.add_subplot(3, len(Pdry_patches), len(Pdry_patches)*1 + i + 1)
-    axis.imshow(patch, cmap=plt.cm.gray, interpolation='nearest',
-              vmin=0, vmax=255)
-    axis.set_xlabel('Dry %d' % (i + 1))
-
-for i, patch in enumerate(Pwet_patches):
-    axis = fig.add_subplot(3, len(Pwet_patches), len(Pwet_patches)*2 + i + 1)
-    axis.imshow(patch, cmap=plt.cm.gray, interpolation='nearest',
-              vmin=0, vmax=255)
-    axis.set_xlabel('Wet %d' % (i + 1))
+# for i, patch in enumerate(patches):
+#     while (i <= 5):
+#         axis = fig.add_subplot(3, len(patches), len(patches)*1 + i + 1)
+#         axis.imshow(patch, cmap=plt.cm.gray, interpolation='nearest',
+#               vmin=0, vmax=255)
+#         axis.set_xlabel('Dry %d' % (i + 1))
+#
+# for i, patch in enumerate(Pwet_patches):
+#     while(i <= 5):
+#
+#         axis = fig.add_subplot(3, len(Pwet_patches), len(Pwet_patches)*2 + i + 1)
+#         axis.imshow(patch, cmap=plt.cm.gray, interpolation='nearest',
+#               vmin=0, vmax=255)
+#         axis.set_xlabel('Wet %d' % (i + 1))
 
 ###########
+# i = 0
+# while (i < len(patches)):
+#     # filename = 'p-dry-sample-' + str(i) + '.png'
+#     # cv2.imwrite('./test/' + filename, patches[i])
+#     i = i + 1
 
-# plototsu(Pdry, 'dry', 221, 222)
-# plototsu(Pwet, 'wet', 223, 224)
-
-plt.show()
+# plt.show()

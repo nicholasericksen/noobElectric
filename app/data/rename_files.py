@@ -2,7 +2,7 @@ import os
 import glob
 from shutil import copy
 
-directories = glob.glob('./matte-*')
+directories = glob.glob('./*-pepper')
 
 for directory in directories:
         for filename in os.listdir(directory):

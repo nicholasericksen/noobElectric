@@ -30951,6 +30951,7 @@ var Experiment = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            console.log("this.state.data", this.state.data);
             return _react2.default.createElement(
                 'div',
                 null,
@@ -31122,13 +31123,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LETTERS = {
-    "0": "H",
-    "90": "V",
-    "45": "P",
-    "135": "M"
-};
-
 var ExperimentImages = function (_Component) {
     _inherits(ExperimentImages, _Component);
 
@@ -31152,8 +31146,8 @@ var ExperimentImages = function (_Component) {
         value: function renderImageModal(img) {
 
             if (img !== this.state.activeImageModal) {}
-            var histogramData = { data: this.props.histograms.measurements[LETTERS[img]], title: this.props.title };
-            // d3.selectAll("svg > *").remove();
+            var histogramData = { data: this.props.histograms.measurements[img], title: this.props.title };
+
             return _react2.default.createElement(
                 'div',
                 { className: 'exp-image-modal' },
@@ -31174,7 +31168,7 @@ var ExperimentImages = function (_Component) {
                             _react2.default.createElement(
                                 'h5',
                                 null,
-                                LETTERS[img],
+                                img,
                                 ' Histogram'
                             ),
                             _react2.default.createElement(_Histogram2.default, {
@@ -31212,8 +31206,8 @@ var ExperimentImages = function (_Component) {
                     'div',
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
-                            return _this2.openImageModal('0');
-                        }, src: 'http://localhost:8090/data/' + this.props.images + '/0.png' }),
+                            return _this2.openImageModal('H');
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/H.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },
@@ -31224,8 +31218,8 @@ var ExperimentImages = function (_Component) {
                     'div',
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
-                            return _this2.openImageModal('90');
-                        }, src: 'http://localhost:8090/data/' + this.props.images + '/90.png' }),
+                            return _this2.openImageModal('V');
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/V.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },
@@ -31236,8 +31230,8 @@ var ExperimentImages = function (_Component) {
                     'div',
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
-                            return _this2.openImageModal('45');
-                        }, src: 'http://localhost:8090/data/' + this.props.images + '/45.png' }),
+                            return _this2.openImageModal('P');
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/P.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },
@@ -31248,8 +31242,8 @@ var ExperimentImages = function (_Component) {
                     'div',
                     { className: 'exp-image' },
                     _react2.default.createElement('img', { onClick: function onClick() {
-                            return _this2.openImageModal('135');
-                        }, src: 'http://localhost:8090/data/' + this.props.images + '/135.png' }),
+                            return _this2.openImageModal('M');
+                        }, src: 'http://localhost:8090/data/' + this.props.images + '/M.png' }),
                     _react2.default.createElement(
                         'span',
                         { className: 'exp-image-subtitle' },

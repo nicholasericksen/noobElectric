@@ -5,10 +5,7 @@ from pymongo import MongoClient
 import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 from datetime import datetime
-from flask_socketio import SocketIO
 
-
-socketio = SocketIO(app)
 # Connect to mongodb
 client = MongoClient()
 db = client.experiments
@@ -19,12 +16,13 @@ np.set_printoptions(formatter={'float_kind':float_formatter})
 
 #set the directory the images come from
 imagedirectory = 'exp-07-13-17-basil/'
+# sampledirectroy = os.path.join()
 
 #Read the images for discrete analysis and flatten them
-Hraw = np.array(cv2.imread(imagedirectory + '0.jpg', 0).ravel(), dtype=np.int)
-Vraw = np.array(cv2.imread(imagedirectory + '90.jpg', 0).ravel(), dtype=np.int)
-Praw = np.array(cv2.imread(imagedirectory + '45.jpg', 0).ravel(), dtype=np.int)
-Mraw = np.array(cv2.imread(imagedirectory + '135.jpg', 0).ravel(), dtype=np.int)
+Hraw = np.array(cv2.imread(imagedirectory + 'H.png', 0).ravel(), dtype=np.int)
+Vraw = np.array(cv2.imread(imagedirectory + 'V.png', 0).ravel(), dtype=np.int)
+Praw = np.array(cv2.imread(imagedirectory + 'P.png', 0).ravel(), dtype=np.int)
+Mraw = np.array(cv2.imread(imagedirectory + 'M.png', 0).ravel(), dtype=np.int)
 
 zeroindex = []
 index = 0

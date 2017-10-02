@@ -173,10 +173,10 @@ def upload_new_discrete_LMP():
     #set the directory the images come from
     imagedirectory = images
 
-    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, '0.png'), 0).ravel(), dtype=np.int)
-    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, '90.png'), 0).ravel(), dtype=np.int)
-    Praw = np.array(cv2.imread(os.path.join(imagedirectory, '45.png'), 0).ravel(), dtype=np.int)
-    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, '135.png'), 0).ravel(), dtype=np.int)
+    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel(), dtype=np.int)
+    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel(), dtype=np.int)
+    Praw = np.array(cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel(), dtype=np.int)
+    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel(), dtype=np.int)
 
     zeroindex = []
     index = 0

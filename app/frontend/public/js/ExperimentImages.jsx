@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 
 import Histogram from './Histogram';
 
-const LETTERS = {
-    "0": "H",
-    "90": "V",
-    "45": "P",
-    "135": "M"
-};
-
 export default class ExperimentImages extends Component {
     constructor(props) {
         super(props);
@@ -26,8 +19,8 @@ export default class ExperimentImages extends Component {
 
         if (img !== this.state.activeImageModal) {
         }
-        let histogramData = {data: this.props.histograms.measurements[LETTERS[img]], title:this.props.title};
-            // d3.selectAll("svg > *").remove();
+        let histogramData = {data: this.props.histograms.measurements[img], title:this.props.title};
+
         return (
             <div className="exp-image-modal">
                 <div className="exp-image-modal-container">
@@ -36,8 +29,7 @@ export default class ExperimentImages extends Component {
                     </div>
                     <div className="exp-image-full-histogram">
                         <div className="histogram-large-container">
-                            <h5>{LETTERS[img]} Histogram</h5>
-                            {/* this.renderHistogram(this.props.histograms.measurements[LETTERS[img]], `exp-${LETTERS[img]}-modal-histogram`, 375, 200, 10) */}
+                            <h5>{img} Histogram</h5>
                             <Histogram
                                 data={[histogramData]}
                                 targetElement={`exp-modal-histogram`}
@@ -62,19 +54,19 @@ export default class ExperimentImages extends Component {
             <div className="image-container">
                 <h4>Images</h4>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('0')} src={`http://localhost:8090/data/${this.props.images}/0.png`} />
+                    <img onClick={() => this.openImageModal('H')} src={`http://localhost:8090/data/${this.props.images}/H.png`} />
                     <span className="exp-image-subtitle">H.png</span>
                 </div>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('90')} src={`http://localhost:8090/data/${this.props.images}/90.png`} />
+                    <img onClick={() => this.openImageModal('V')} src={`http://localhost:8090/data/${this.props.images}/V.png`} />
                     <span className="exp-image-subtitle">V.png</span>
                 </div>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('45')} src={`http://localhost:8090/data/${this.props.images}/45.png`} />
+                    <img onClick={() => this.openImageModal('P')} src={`http://localhost:8090/data/${this.props.images}/P.png`} />
                     <span className="exp-image-subtitle">P.png</span>
                 </div>
                 <div className="exp-image">
-                    <img onClick={() => this.openImageModal('135')} src={`http://localhost:8090/data/${this.props.images}/135.png`} />
+                    <img onClick={() => this.openImageModal('M')} src={`http://localhost:8090/data/${this.props.images}/M.png`} />
                     <span className="exp-image-subtitle">M.png</span>
                 </div>
                 {this.state.showModal ?

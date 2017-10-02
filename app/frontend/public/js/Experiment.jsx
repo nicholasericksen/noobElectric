@@ -156,6 +156,7 @@ export default class Experiment extends Component {
 
 
     render() {
+        console.log("this.state.data", this.state.data);
         return(
             <div>
                 {this.state.data ? this.renderAll() : 'Error'}
