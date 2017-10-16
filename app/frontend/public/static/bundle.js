@@ -30776,8 +30776,9 @@ var Experiment = function (_Component) {
 
                         _this3.setState({
                             stokesDataSet: dataset,
-                            histogramDataset: dataset
+                            histogramDataset: data
                         });
+                        console.log("NICHOLAS", _this3.state.histogramDataset);
                     } else {
                         // this.setState({data: data});
                     }
@@ -30828,26 +30829,27 @@ var Experiment = function (_Component) {
         value: function setStokesDataset(index) {
             console.log("histogram", this.state.histogramDataset);
             console.log("jack", this.state.stokesDataSet);
-            // const S1 = this.state.data.histograms ? {data: this.state.data.histograms.stokes.S1.data, title: `S1 ${this.state.data.title}`} : [];
-            // const S2 = this.state.data.histograms ? {data: this.state.data.histograms.stokes.S2.data, title: `S2 ${this.state.data.title}`} : [];
+            var S1 = this.state.histogramDataset ? { data: this.state.histogramDataset.histograms.stokes.S1.data, title: 'S1 ' + this.state.data.title } : [];
+            var S2 = this.state.histogramDataset ? { data: this.state.histogramDataset.histograms.stokes.S2.data, title: 'S2 ' + this.state.data.title } : [];
 
             if (index === 0) {
-                var dataSet = this.state.histogramDataset;
-                // dataSet.push(S1);
-                // dataSet.push(S2);
-                console.log("cow", dataSet);
+                var dataSet = [];
+                dataSet.push(S1);
+                dataSet.push(S2);
+
                 this.setState({
                     stokesDataSet: dataSet,
                     index: 0
                 });
+                console.log("cow", stokesDataSet);
             } else if (index === 1) {
-                var S1 = this.state.histogramDataset[0];
+                // const S1 = this.state.histogramDataset[0]
                 this.setState({
                     index: 1,
                     stokesDataSet: [S1]
                 });
             } else if (index === 2) {
-                var S2 = this.state.histogramDataset[1];
+                // const S2 = this.state.histogramDataset[1]
                 this.setState({
                     index: 2,
                     stokesDataSet: [S2]
@@ -30975,10 +30977,10 @@ var Experiment = function (_Component) {
                         summary: this.state.data.summary,
                         description: this.state.data.description
                     }),
-                    _react2.default.createElement(_ExperimentImages2.default, {
+                    this.state.histogramDataset ? _react2.default.createElement(_ExperimentImages2.default, {
                         images: this.state.data.images,
-                        histograms: this.state.data.histograms
-                    }),
+                        histograms: this.state.histogramDataset.histograms
+                    }) : null,
                     _react2.default.createElement(
                         'div',
                         { className: 'stokes-container' },

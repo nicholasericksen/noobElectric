@@ -77,8 +77,9 @@ export default class Experiment extends Component {
 
                     this.setState({
                         stokesDataSet: dataset,
-                        histogramDataset: dataset
+                        histogramDataset: data
                     });
+                    console.log("NICHOLAS", this.state.histogramDataset);
                 }
                 else {
                     // this.setState({data: data});
@@ -128,27 +129,28 @@ export default class Experiment extends Component {
     setStokesDataset(index) {
         console.log("histogram", this.state.histogramDataset);
         console.log("jack", this.state.stokesDataSet);
-        // const S1 = this.state.data.histograms ? {data: this.state.data.histograms.stokes.S1.data, title: `S1 ${this.state.data.title}`} : [];
-        // const S2 = this.state.data.histograms ? {data: this.state.data.histograms.stokes.S2.data, title: `S2 ${this.state.data.title}`} : [];
+        const S1 = this.state.histogramDataset ? {data: this.state.histogramDataset.histograms.stokes.S1.data, title: `S1 ${this.state.data.title}`} : [];
+        const S2 = this.state.histogramDataset ? {data: this.state.histogramDataset.histograms.stokes.S2.data, title: `S2 ${this.state.data.title}`} : [];
 
         if (index === 0) {
-            const dataSet = this.state.histogramDataset;
-            // dataSet.push(S1);
-            // dataSet.push(S2);
-            console.log("cow", dataSet);
+            const dataSet = [];
+            dataSet.push(S1);
+            dataSet.push(S2);
+
             this.setState({
                 stokesDataSet: dataSet,
                 index: 0
             });
+            console.log("cow", stokesDataSet);
         }
         else if ( index === 1) {
-            const S1 = this.state.histogramDataset[0]
+            // const S1 = this.state.histogramDataset[0]
             this.setState({
                 index: 1,
                 stokesDataSet: [S1]
             });
         } else if (index === 2) {
-            const S2 = this.state.histogramDataset[1]
+            // const S2 = this.state.histogramDataset[1]
             this.setState({
                 index: 2,
                 stokesDataSet: [S2]
@@ -205,10 +207,13 @@ export default class Experiment extends Component {
                     summary={this.state.data.summary}
                     description={this.state.data.description}
                 />
+            {this.state.histogramDataset ?
                 <ExperimentImages
                     images={this.state.data.images}
-                    histograms={this.state.data.histograms}
+                    histograms={this.state.histogramDataset.histograms}
                 />
+            : null}
+
                 <div className="stokes-container">
                     <div className="histogram-stokes">
                         <h4>Stokes Histograms</h4>

@@ -16,7 +16,7 @@ float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind':float_formatter})
 
 #set the directory the images come from
-imagedirectory = 'red-oak-2-white-specular-1wk/'
+imagedirectory = 'red-oak-1-white-specular-1wk/'
 # sampledirectroy = os.path.join()
 
 #Read the images for discrete analysis and flatten them
@@ -113,7 +113,7 @@ Mzipped = createhistogram(M, np.arange(0, 256, 1))
 
 result = db.histograms.insert_one(
     {
-        'meta_id': ObjectId('59d5cf2ab42de0f228a79419'),
+        'meta_id': ObjectId('59d5cedcb42de0f1f6e89b6a'),
         "histograms": {
             "measurements": {
                 "H": Hzipped,

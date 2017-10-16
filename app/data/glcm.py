@@ -26,7 +26,7 @@ np.errstate(divide='ignore', invalid='ignore')
 old_err_state = np.seterr(divide='raise')
 ignored_states = np.seterr(**old_err_state)
 #set the directory the images come from
-EXPERIMENT_DIR = 'red-oak-2-white-specular-1wk/'
+EXPERIMENT_DIR = 'red-oak-1-white-specular-1wk/'
 
 #Read the images for discrete analysis and flatten them
 Hraw = np.array(cv2.imread(EXPERIMENT_DIR + 'H.png', 0), dtype=np.float32)
@@ -169,7 +169,7 @@ for index, Hpatch in enumerate(Hpatches):
 # print dataset
 result = db.glcm.insert(
     {
-            'meta_id': ObjectId('59d5cf2ab42de0f228a79419'),
+            'meta_id': ObjectId('59d5cedcb42de0f1f6e89b6a'),
             'glcm': str(dataset)
     }
 )
