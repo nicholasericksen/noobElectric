@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 from datetime import datetime
+from bson.objectid import ObjectId
 
 # Connect to mongodb
 client = MongoClient()
@@ -15,23 +16,40 @@ float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind':float_formatter})
 
 #set the directory the images come from
-imagedirectory = 'exp-07-13-17-basil/'
+imagedirectory = 'red-oak-2-white-specular-1wk/'
 # sampledirectroy = os.path.join()
 
 #Read the images for discrete analysis and flatten them
-Hraw = np.array(cv2.imread(imagedirectory + 'H.png', 0).ravel(), dtype=np.int)
-Vraw = np.array(cv2.imread(imagedirectory + 'V.png', 0).ravel(), dtype=np.int)
-Praw = np.array(cv2.imread(imagedirectory + 'P.png', 0).ravel(), dtype=np.int)
-Mraw = np.array(cv2.imread(imagedirectory + 'M.png', 0).ravel(), dtype=np.int)
+Hraw = np.array(cv2.imread(imagedirectory + 'H.png', 0).ravel(), dtype=np.float32)
+Vraw = np.array(cv2.imread(imagedirectory + 'V.png', 0).ravel(), dtype=np.float32)
+Praw = np.array(cv2.imread(imagedirectory + 'P.png', 0).ravel(), dtype=np.float32)
+Mraw = np.array(cv2.imread(imagedirectory + 'M.png', 0).ravel(), dtype=np.float32)
 
 zeroindex = []
 index = 0
+S1 = []
+S2 = []
 while (index < len(Hraw)):
     # Remove if all are 0 and/or Nan values
-    if (Hraw[index] == 0 or np.isnan(Hraw[index])) and (Vraw[index] == 0 or np.isnan(Vraw[index])) or (Praw[index] == 0 or np.isnan(Praw[index])) and (Mraw[index] == 0 or np.isnan(Mraw[index])):
+    if (np.isnan(Hraw[index])) and (np.isnan(Vraw[index])) or (np.isnan(Praw[index])) and (np.isnan(Mraw[index])):
         zeroindex.append(index)
+
+
+
+
     index += 1
 
+
+try:
+    S1tmp = [(Hraw - Vraw) / 255.0]
+    S2tmp = [(Praw - Mraw) / 255.0]
+    S1 = np.append(S1, S1tmp)
+    S2 = np.append(S2, S2tmp)
+except:
+    S1 = np.append(S1, 0)
+    S2 = np.append(S2, 0)
+print "S1", S1
+print "S2", S2
 print 'Number of points removed: ', len(zeroindex)
 
 # Remove values from all arrays equally so as to retain the size
@@ -45,8 +63,8 @@ M = np.delete(Mraw, zeroindex, axis=0)
 
 # Calculate the Stokes parameters
 # Power intensities are taken and normalized
-S1 = (H - V) / (H + V)
-S2 = (P - M) / (P + M)
+
+
 
 # Plot S1 S2 scatter Plot
 # TODO remove this in favor of api usage
@@ -75,7 +93,7 @@ def createhistogram(data, bins):
 
     # Convert the tuples into arrays for smaller formatting
     zipped = [list(t) for t in zip(bins, values)]
-    print "zipped", zipped
+    # print "zipped", zipped
 
     return zipped
 
@@ -93,13 +111,9 @@ Vzipped = createhistogram(V, np.arange(0, 256, 1))
 Pzipped = createhistogram(P, np.arange(0, 256, 1))
 Mzipped = createhistogram(M, np.arange(0, 256, 1))
 
-result = db.discrete.insert_one(
+result = db.histograms.insert_one(
     {
-        "title": "Basil a La Mode",
-        "summary": "This is an LMP based polarizance setup with images taken of a basil plant",
-        "description": "The purpose of this experiment was to examine the surface polarization characteristics of a basil leaf.  An unpolarized source was utilized, in conjuction with a linear polarizer, to generate incident rays of light onto the leafs' surface.  The resulting polarization intensities were measured at 0, 90, 45, and 135 degrees and the Polarizance vector of the Mueller matrice was determined.",
-        "date": str(datetime.utcnow()),
-        "images": 'exp-07-13-17-basil',
+        'meta_id': ObjectId('59d5cf2ab42de0f228a79419'),
         "histograms": {
             "measurements": {
                 "H": Hzipped,

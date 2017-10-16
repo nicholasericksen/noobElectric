@@ -28,7 +28,9 @@ import json
 from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/')
 db = client.experiments
-discreteLMP = db.discrete
+discreteLMP = db.meta
+glcmData = db.glcm
+histogramData = db.histograms
 # from LMP import sensor_reading
 
 # Import flask
@@ -113,6 +115,32 @@ def get_exp_by_id():
 
     return resp
 
+@app.route('/api/experiments/histograms', methods=['POST'])
+def get_histograms_by_id():
+    print request.data
+
+    exp_id = json.loads(request.data)['id'];
+    data = histogramData.find_one({'meta_id': ObjectId(exp_id) })
+    data_sanatized = json.loads(json_util.dumps(data))
+
+    resp = jsonify({"exp": data_sanatized})
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+
+    return resp
+
+@app.route('/api/experiments/glcm', methods=['POST'])
+def get_glcm_by_id():
+    print request.data
+
+    exp_id = json.loads(request.data)['id'];
+    data = glcmData.find_one({'meta_id': ObjectId(exp_id) })
+    data_sanatized = json.loads(json_util.dumps(data))
+
+    resp = jsonify({"exp": data_sanatized})
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+
+    return resp
+
 @app.route('/api/saveimage', methods=['POST'])
 def save_base64_image():
     raw_data = json.loads(request.data)
@@ -173,10 +201,10 @@ def upload_new_discrete_LMP():
     #set the directory the images come from
     imagedirectory = images
 
-    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel(), dtype=np.int)
-    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel(), dtype=np.int)
-    Praw = np.array(cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel(), dtype=np.int)
-    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel(), dtype=np.int)
+    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel(), dtype=np.float32)
+    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel(), dtype=np.float32)
+    Praw = np.array(cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel(), dtype=np.float32)
+    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel(), dtype=np.float32)
 
     zeroindex = []
     index = 0
@@ -224,19 +252,19 @@ def upload_new_discrete_LMP():
             "images": images,
             "histograms": {
                 "measurements": {
-                    "H": Hzipped,
-                    "V": Vzipped,
-                    "P": Pzipped,
-                    "M": Mzipped
+                    "H": jsonify(Hzipped),
+                    "V": jsonify(Vzipped),
+                    "P": jsonify(Pzipped),
+                    "M": jsonify(Mzipped)
                 },
                 "stokes": {
                     "S1": {
-                        "data": S1zipped,
-                        "stats": S1summary
+                        "data": jsonify(S1zipped),
+                        "stats": jsonify(S1summary)
                     },
                     "S2": {
-                        "data": S2zipped,
-                        "stats": S2summary
+                        "data": jsonify(S2zipped),
+                        "stats": jsonify(S2summary)
                     }
                 }
             }

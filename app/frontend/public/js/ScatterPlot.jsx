@@ -6,77 +6,90 @@ export default class ScatterPlot extends Component {
 
         this.renderData = this.renderData.bind(this);
     }
-    renderData() {
-        console.log("this.props.data", this.props.data)
-        var S1data = this.props.data.histograms.stokes.S1.data;
-        var S2data = this.props.data.histograms.stokes.S2.data;
-
-        var data = [];
-
-        for (var i = 0; i < S1data.length; i++) {
-            data[i] = [S1data[i], S2data[i]];
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data !== this.props.data) {
+            // this.setState({ledgend: []});
+            console.log("nextProps", nextProps);
+            this.renderData(nextProps.data);
         }
-        console.log("data", data);
+    }
+    renderData(data) {
+        console.log("SCATTER PLOT DAta", data);
+        d3.select(this.props.container + ' svg').remove();
+            var margin = {top: 20, right: 15, bottom: 60, left: 60}
+              , width = 600 - margin.left - margin.right
+              , height = 300 - margin.top - margin.bottom;
 
-    var margin = {top: 20, right: 15, bottom: 60, left: 60}
-      , width = 960 - margin.left - margin.right
-      , height = 500 - margin.top - margin.bottom;
+              var xMin = d3.min(data, function(d) { return d[0]; });
+              var xMax = d3.max(data, function(d) { return d[0]; });
 
-    var x = d3.scale.linear()
-              .domain([0, d3.max(data, function(d) { return d[0]; })])
-              .range([ 0, width ]);
+              var yMin = d3.min(data, function(d) { return d[1]; });
+              var yMax = d3.max(data, function(d) { return d[1]; });
 
-    var y = d3.scale.linear()
-    	      .domain([0, d3.max(data, function(d) { return d[1]; })])
-    	      .range([ height, 0 ]);
+            var x = d3.scale.linear()
+                      .domain([ xMin, xMax ])
+                      .range([0, width ]);
 
-    var chart = d3.select('body')
-	.append('svg:svg')
-	.attr('width', width + margin.right + margin.left)
-	.attr('height', height + margin.top + margin.bottom)
-	.attr('class', 'chart')
+            var y = d3.scale.linear()
+            	      .domain([ yMin, yMax ])
+            	      .range([ height, 0 ]);
 
-    var main = chart.append('g')
-	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-	.attr('width', width)
-	.attr('height', height)
-	.attr('class', 'main')
+            var chart = d3.select('.' + this.props.container)
+        	.append('svg:svg')
+        	.attr('width', width + margin.right + margin.left)
+        	.attr('height', height + margin.top + margin.bottom)
+        	.attr('class', 'chart')
 
-    // draw the x axis
-    var xAxis = d3.svg.axis()
-	.scale(x)
-	.orient('bottom');
+            var main = chart.append('g')
+        	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+        	.attr('width', width)
+        	.attr('height', height)
+        	.attr('class', 'main')
 
-    main.append('g')
-	.attr('transform', 'translate(0,' + height + ')')
-	.attr('class', 'main axis date')
-	.call(xAxis);
+            // draw the x axis
+            var xAxis = d3.svg.axis()
+        	.scale(x)
+        	.orient('bottom');
 
-    // draw the y axis
-    var yAxis = d3.svg.axis()
-	.scale(y)
-	.orient('left');
+            main.append('g')
+        	.attr('transform', 'translate(0,' + height + ')')
+        	.attr('class', 'main axis date')
+            .text("# of pxs")
+        	.call(xAxis);
 
-    main.append('g')
-	.attr('transform', 'translate(0,0)')
-	.attr('class', 'main axis date')
-	.call(yAxis);
+            // draw the y axis
+            var yAxis = d3.svg.axis()
+        	.scale(y)
+        	.orient('left');
 
-    var g = main.append("svg:g");
+            // yAxis.append('text')
+                // .text('#of pxs')
 
-    g.selectAll("scatter-dots")
-      .data(data)
-      .enter().append("svg:circle")
-          .attr("cx", function (d,i) { return x(d[0]); } )
-          .attr("cy", function (d) { return y(d[1]); } )
-          .attr("r", 8);
+            main.append('g')
+        	.attr('transform', 'translate(0,0)')
+        	.attr('class', 'main axis date')
+        	.call(yAxis);
+
+            var g = main.append("svg:g");
+
+            g.selectAll("scatter-dots")
+              .data(data)
+              .enter().append("svg:circle")
+                  .attr("cx", function (d,i) { return x(d[0]); } )
+                  .attr("cy", function (d) { return y(d[1]); } )
+                  .attr("r", 4);
     }
     componentDidMount() {
-        this.renderData();
+        this.renderData(this.props.data);
+    }
+    componentWillUnmount() {
+        d3.select(this.props.container + ' svg').remove();
     }
     render() {
         return(
-            <div>Hello</div>
+            <div>
+                <svg width={600} height={300} className={this.props.container}></svg>
+            </div>
         )
     }
 }

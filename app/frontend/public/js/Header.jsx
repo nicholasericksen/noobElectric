@@ -25,7 +25,7 @@ export default class Header extends Component {
 
         return(
             <div>
-                <h1 className="main-title">noobelectric</h1>
+                <h1 className="main-title">{/*noobelectric*/}</h1>
                 <div className="header">
                     <Menu
                         onClick={this.props.onClick}

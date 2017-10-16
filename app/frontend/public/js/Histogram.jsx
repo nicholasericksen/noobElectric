@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import classNames from 'classnames';
 
-export default class Hisotgram extends Component {
+export default class Histogram extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,10 +16,8 @@ export default class Hisotgram extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("RECIEVED Props", nextProps);
-            this.setState({ledgend: []});
         if (nextProps.data !== this.props.data) {
-            console.log("nextProps", nextProps.data);
+            this.setState({ledgend: []});
             this.renderHistogram(nextProps.data);
         }
     }
@@ -44,7 +42,7 @@ export default class Hisotgram extends Component {
 
             // Parse the date / time
             // var	parseDate = d3.time.format("%Y-%m").parse;
-                var x = d3.scale.linear().range([-1, width]);
+                var x = d3.scale.linear().range([0, width]);
                 // var x = d3.scale.linear().range([width, 0]);
                 var y = d3.scale.linear().range([height, 0]);
 
@@ -61,7 +59,6 @@ export default class Hisotgram extends Component {
 
                 var targetElement = '.' + this.props.targetElement;
                 d3.select(targetElement + ' svg').remove();
-
                 var svg = d3.select(targetElement).append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
@@ -71,6 +68,8 @@ export default class Hisotgram extends Component {
 
                 var yMax = 0;
                 var yMaxTmp = 0;
+
+                if (dataSet.length > 0) {
 
                 dataSet.map((experiment, index) => {
                     if (index === 0) {
@@ -84,7 +83,7 @@ export default class Hisotgram extends Component {
                     }
 
                 });
-
+                }
                   x.domain([-1, d3.max(dataSet[0].data, function(d) { return d[0]; })]);
                   y.domain([0, yMax]);
 
@@ -110,15 +109,11 @@ export default class Hisotgram extends Component {
 
 
 
-                const COLORS = ['steelblue', 'red', 'grey', 'green', 'black'];
+                const COLORS = ['steelblue', 'red', 'grey', 'green', 'black', 'purple'];
 
                 const tmpLedgendObject = [];
 
                 dataSet.map((experiment, index) => {
-                    console.log("color", COLORS[index]);
-                    console.log("experiMENT", experiment);
-                    // this.setState({ledgend: []});
-                    console.log("reset ledgend", this.state.ledgend);
                     svg.selectAll("bar")
                         .data(experiment.data)
                       .enter().append("rect")
@@ -137,12 +132,10 @@ export default class Hisotgram extends Component {
     }
 
     render() {
-        console.log("this.state.ledgend", this.state.ledgend);
         return(
             <div>
                 <div className="ledgend">
                     {this.state.ledgend ? this.state.ledgend.map((experiment, index) => {
-                        console.log("RENDERING LEDGEND", experiment);
                         return (
                             <div>
                                 <span className={classNames(["ledgend-color", experiment.color])}></span>

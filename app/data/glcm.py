@@ -11,6 +11,7 @@ from datetime import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os
+# from flask import jsonify
 # Connect to mongodb
 client = MongoClient()
 db = client.experiments
@@ -20,24 +21,24 @@ db = client.experiments
 # set numpy formatter to 2 decimal places
 float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind':float_formatter})
-# np.errstate(divide='ignore', invalid='ignore')
+
+np.errstate(divide='ignore', invalid='ignore')
 old_err_state = np.seterr(divide='raise')
 ignored_states = np.seterr(**old_err_state)
 #set the directory the images come from
-imagedirectory = 'test/'
+EXPERIMENT_DIR = 'red-oak-2-white-specular-1wk/'
 
 #Read the images for discrete analysis and flatten them
-Hraw = np.array(cv2.imread(imagedirectory + 'H.png', 0), dtype=np.int)
-Vraw = np.array(cv2.imread(imagedirectory + 'V.png', 0), dtype=np.int)
-Praw = np.array(cv2.imread(imagedirectory + 'P.png', 0), dtype=np.int)
-Mraw = np.array(cv2.imread(imagedirectory + 'M.png', 0), dtype=np.int)
+Hraw = np.array(cv2.imread(EXPERIMENT_DIR + 'H.png', 0), dtype=np.float32)
+Vraw = np.array(cv2.imread(EXPERIMENT_DIR + 'V.png', 0), dtype=np.float32)
+Praw = np.array(cv2.imread(EXPERIMENT_DIR + 'P.png', 0), dtype=np.float32)
+Mraw = np.array(cv2.imread(EXPERIMENT_DIR + 'M.png', 0), dtype=np.float32)
 
 
 
 
-SAMPLE_SIZE = 5
+SAMPLE_SIZE = 500
 
-EXPERIMENT_DIR = 'test/'
 
 # Pdry = cv2.imread('sandpaper-brown-60-grit/90.png', 0)
 # Pwet = cv2.imread('sandpaper-100-grit-brown-red-filter/90.png', 0)
@@ -55,6 +56,7 @@ ys = []
 dataset = []
 # xsWet = []
 # ysWet = []
+directory = EXPERIMENT_DIR + 'samples/'
 
 def datasummary(data):
     maxValue = np.amax(data)
@@ -82,6 +84,26 @@ def createhistogram(data, bins):
 
     return zipped
 
+def divide( a, b ):
+    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
+    with np.errstate(divide='ignore', invalid='ignore'):
+        c = np.true_divide( a, b )
+        c[ ~ np.isfinite( c )] = 0  # -inf inf NaN
+    return c
+
+
+for index, Ppatch in enumerate(Ppatches):
+    filenameP = directory + 'P-sample-' + str(index) + '.png'
+    cv2.imwrite(filenameP, Ppatches[index])
+for index, Mpatch in enumerate(Mpatches):
+    filenameM = directory + 'M-sample-' + str(index) + '.png'
+    cv2.imwrite(filenameM, Mpatches[index])
+
+for index, Vpatch in enumerate(Vpatches):
+    filenameV = directory + 'V-sample-' + str(index) + '.png'
+    cv2.imwrite(filenameV, Vpatches[index])
+
+
 for index, Hpatch in enumerate(Hpatches):
     try:
         glcm = greycomatrix(Hpatch, [5], [0], 256, symmetric=True, normed=True)
@@ -91,7 +113,7 @@ for index, Hpatch in enumerate(Hpatches):
         xs.append(dissimilarity)
         ys.append(correlation)
 
-        directory = EXPERIMENT_DIR + 'samples/H'
+
 
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -105,11 +127,13 @@ for index, Hpatch in enumerate(Hpatches):
         M = Mpatches[index].ravel()
 
         # try:
-        S1 = np.divide((H - V), (H + V))
+        S1 = divide((H - V), 255.0)
         # except:
         # S1 = [0]
         # try:
-        S2 = np.divide((P - M), (P + M))
+        # print 'S1', S1
+        S2 = divide((P - M), 255.0)
+        # print 'S2', S2
         # except:
         # S2 = [0]
         # Print statistics about Stokes data
@@ -132,42 +156,41 @@ for index, Hpatch in enumerate(Hpatches):
         S = [list(t) for t in zip(S1, S2)]
 
         #['filename', xs, ys, [S1], [S2], [[patch]]]
-        sample = {"file": filename, "dissimilarity": dissimilarity, "correlation": correlation, "S1": S1obj, "S2": S2obj, "S": S}
+        sample = {"file": filename, "dissimilarity": dissimilarity, "correlation": correlation, "S1": S1obj, "S2": S2obj}
         dataset.append(sample)
         # plt.scatter(S1, S2)
         # plt.show()
     except ValueError:
         print "ERROR"
         pass
-print "DATASET", dataset
+# print "DATASET", dataset
+# jsonData = jsonify({"data": dataset})
 
 # print dataset
-result = db.discrete.update(
+result = db.glcm.insert(
     {
-        '_id': ObjectId('59b86c8bb42de0886d65ccbc')
-    },
-    {
-        '$set': {
-            "glcm": dataset
-        }
+            'meta_id': ObjectId('59d5cf2ab42de0f228a79419'),
+            'glcm': str(dataset)
     }
 )
 
-
-fig, ax = plt.subplots()
-ax.plot(xs[:len(Hpatches)], ys[:len(Hpatches)], 'go',
-        label='Dry')
-# ax.plot(xsWet[:len(Pwet_patches)], ysWet[:len(Pwet_patches)], 'rx',
-#         label='Wet')
-ax.set_xlabel('GLCM Dissimilarity')
-ax.set_ylabel('GLCM Correlation')
-ax.legend()
+#
+# fig, ax = plt.subplots()
+# ax.plot(xs[:len(Hpatches)], ys[:len(Hpatches)], 'go',
+#         label='Dry')
+# # ax.plot(xsWet[:len(Pwet_patches)], ysWet[:len(Pwet_patches)], 'rx',
+# #         label='Wet')
+#
+#
+# ax.set_xlabel('GLCM Dissimilarity')
+# ax.set_ylabel('GLCM Correlation')
+# ax.legend()
 
 
 
 
 # display the patches and plot
-fig.suptitle('Grey level co-occurrence matrix features', fontsize=14)
+# fig.suptitle('Grey level co-occurrence matrix features', fontsize=14)
 # plt.show()
 # for patch in patches:
 #     try:
@@ -188,7 +211,7 @@ fig.suptitle('Grey level co-occurrence matrix features', fontsize=14)
 
 # print "Pdry[0]", Hpatches[0]
 
-fig = plt.figure(figsize=(8, 6))
+# fig = plt.figure(figsize=(8, 6))
 # axis = fig.add_subplot(3, 3, 3)
 # display the image patches
 # for i, patch in enumerate(patches):
