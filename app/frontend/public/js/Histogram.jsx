@@ -139,7 +139,7 @@ export default class Histogram extends Component {
                         return (
                             <div>
                                 <span className={classNames(["ledgend-color", experiment.color])}></span>
-                                <span className="ledgend-experiment-title">{experiment.title}</span>
+                                <span className="ledgend-experiment-title">{experiment.title ? experiment.title : 'tmp'}</span>
                             </div>
                         )
                     }) : null }

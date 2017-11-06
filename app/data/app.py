@@ -10,11 +10,17 @@ from scipy.stats import gaussian_kde
 from datetime import datetime
 
 
+import cPickle
+from bson.binary import Binary
 
 from bson import json_util
+
 from bson.objectid import ObjectId
+from bson.raw_bson import RawBSONDocument
 
 from flask_restful import reqparse
+# from flask_compress import Compress
+# compress = Compress()
 
 parser = reqparse.RequestParser()
 
@@ -22,7 +28,13 @@ parser = reqparse.RequestParser()
 import os
 import serial
 import time
-import json
+import simplejson as json
+import bsonjs
+
+# glcm imports
+from skimage.filters import threshold_otsu
+from skimage.feature import greycomatrix, greycoprops
+from sklearn.feature_extraction import image
 
 # Connect to mongodb
 from pymongo import MongoClient
@@ -43,9 +55,9 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# app.run(threaded=True)
-app.config['SECRET_KEY'] = 'secret!'
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# # app.run(threaded=True)
+# app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
 class JSONEncoder(json.JSONEncoder):
@@ -54,7 +66,16 @@ class JSONEncoder(json.JSONEncoder):
             return str(o)
         return json.JSONEncoder.default(self, o)
 
-
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return super(MyEncoder, self).default(obj)
 def datasummary(data):
     maxValue = np.amax(data)
     minValue = np.amin(data)
@@ -79,6 +100,14 @@ def createhistogram(data, bins):
     zipped = [list(t) for t in zip(bins, values)]
 
     return zipped
+
+
+def divide( a, b ):
+    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
+    with np.errstate(divide='ignore', invalid='ignore'):
+        c = np.true_divide( a, b )
+        c[ ~ np.isfinite( c )] = 0  # -inf inf NaN
+    return c
 
 @app.route('/')
 def hello_world():
@@ -115,28 +144,103 @@ def get_exp_by_id():
 
     return resp
 
-@app.route('/api/experiments/histograms', methods=['POST'])
-def get_histograms_by_id():
+@app.route('/api/experiments/tags', methods=['POST'])
+def add_tags():
     print request.data
 
     exp_id = json.loads(request.data)['id'];
-    data = histogramData.find_one({'meta_id': ObjectId(exp_id) })
-    data_sanatized = json.loads(json_util.dumps(data))
+    print "EXO", exp_id
+    tags = json.loads(request.data)['tags']
+    print "tags", tags
+    # data = discreteLMP.update_one({'_id': ObjectId(exp_id) }, {'tags': tags})
+    # data_sanatized = json.loads(json_util.dumps(data))
+    print data
+    resp = jsonify({"exp": tags})
+    print resp
+    resp.headers['Access-Control-Allow-Origin'] = '*'
 
-    resp = jsonify({"exp": data_sanatized})
+    return resp
+
+@app.route('/api/experiments/histograms', methods=['POST'])
+def get_histograms_by_id():
+    print "request.data", request.data
+
+    exp_id = json.loads(request.data)['id'];
+    data = histogramData.find_one({'_id': ObjectId(exp_id) })
+    print "data", data
+
+    if not data:
+        resp = jsonify({"exp": 'data_sanatized'})
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+    # data_sanatized = json.loads(json_util.dumps(data))
+    # print cPickle.loads(data['histograms']['measurements']['V'])
+
+
+    binary_convert = {}
+    binary_convert['histograms'] = {}
+    binary_convert['histograms']['measurements'] = {}
+
+    binary_convert['meta_id'] = str(data['meta_id'])
+
+    binary_convert['histograms']['measurements']['H'] = cPickle.loads(data['histograms']['measurements']['H'])
+    binary_convert['histograms']['measurements']['V'] = cPickle.loads(data['histograms']['measurements']['V'])
+    binary_convert['histograms']['measurements']['P'] = cPickle.loads(data['histograms']['measurements']['P'])
+    binary_convert['histograms']['measurements']['M'] = cPickle.loads(data['histograms']['measurements']['M'])
+
+    binary_convert['histograms']['stokes'] = {}
+    binary_convert['histograms']['stokes']['S1'] = {}
+    binary_convert['histograms']['stokes']['S2'] = {}
+    binary_convert['histograms']['stokes']['S1']['data'] = cPickle.loads(data['histograms']['stokes']['S1']['data'])
+    binary_convert['histograms']['stokes']['S1']['stats'] = cPickle.loads(data['histograms']['stokes']['S1']['stats'])
+
+    binary_convert['histograms']['stokes']['S2']['data'] = cPickle.loads(data['histograms']['stokes']['S2']['data'])
+    binary_convert['histograms']['stokes']['S2']['stats'] = cPickle.loads(data['histograms']['stokes']['S2']['stats'])
+
+    data_sanatized = json.loads(json.dumps(binary_convert, cls=MyEncoder))
+
+    resp = jsonify({"exp": binary_convert})
     resp.headers['Access-Control-Allow-Origin'] = '*'
 
     return resp
 
 @app.route('/api/experiments/glcm', methods=['POST'])
 def get_glcm_by_id():
-    print request.data
-
     exp_id = json.loads(request.data)['id'];
-    data = glcmData.find_one({'meta_id': ObjectId(exp_id) })
-    data_sanatized = json.loads(json_util.dumps(data))
+    print "looking for glcm data"
+    data = glcmData.find_one({'meta_id': ObjectId(exp_id), "size": 25 })
+    print "found glcm data"
+    if not data:
+        print 'no data'
+        resp = jsonify({"exp": 'binary_convert'})
+        resp.headers['Access-Control-Allow-Origin'] = '*'
 
+        return resp
+    # print data
+    # binary_convert = data
+    # binary_convert['glcm'] = {}
+    # binary_convert['glcm']['file'] = data['glcm']['file']
+    # binary_convert['glcm']['dissimilarity'] = data['glcm']['dissimilarity']
+    # binary_convert['glcm']['correlation'] = data['glcm']['correlation']
+    # binary_convert['glcm']['asm'] = data['glcm']['asm']
+    # binary_convert['glcm']['energy'] = data['glcm']['energy']
+    # binary_convert['glcm']['contrast'] = data['glcm']['contrast']
+    #
+    # binary_convert['glcm']['S1'] = {}
+    # binary_convert['glcm']['S2'] = {}
+    print "converting glcm"
+    data['glcm'] = cPickle.loads(data['glcm'])
+    data['meta_id'] = data['meta_id']
+    # print "done converting", data
+    # binary_convert['glcm']['data'] = cPickle.loads(data['glcm']['data'])
+    # binary_convert['size'] = 25
+    # binary_convert['meta_id'] = ObjectId(exp_id)
+
+
+    data_sanatized = json.loads(json_util.dumps(data))
+    print "sanatized"
     resp = jsonify({"exp": data_sanatized})
+    print "about to send resposne"
     resp.headers['Access-Control-Allow-Origin'] = '*'
 
     return resp
@@ -151,11 +255,7 @@ def save_base64_image():
     # print image
     stripped_image = image.split(",")[1]
 
-    print directory
-
     dir_path = os.path.join(directory, filename)
-
-    print dir_path
 
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -165,7 +265,6 @@ def save_base64_image():
 
     discrete = [f for f in os.listdir(directory) if f.endswith(".png")]
 
-    print discrete
 
     resp = jsonify({"directory": directory, "images": discrete})
     resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -176,57 +275,41 @@ def save_base64_image():
 def get_data_directories():
     directories = [d for d in os.listdir('.') if os.path.isdir(d)]
 
-    print directories
 
     resp = jsonify({"data": directories})
     resp.headers['Access-Control-Allow-Origin'] = '*'
 
-    print resp
 
     return resp
 
 
-@app.route('/api/experiments/new', methods=['POST'])
-def upload_new_discrete_LMP():
+@app.route('/api/generate/stokes', methods=['POST'])
+def generate_discrete_stokes_data():
     raw_data = json.loads(request.data)
-
-    title = raw_data['title']
-    summary = raw_data['summary']
-    description = raw_data['description']
+    exp_id = raw_data['id']
     images = raw_data['images']
-
-    float_formatter = lambda x: "%.2f" % x
-    np.set_printoptions(formatter={'float_kind':float_formatter})
+    # float_formatter = lambda x: "%.2f" % x
+    # np.set_printoptions(formatter={'float_kind':float_formatter})
 
     #set the directory the images come from
     imagedirectory = images
 
-    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel(), dtype=np.float32)
-    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel(), dtype=np.float32)
-    Praw = np.array(cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel(), dtype=np.float32)
-    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel(), dtype=np.float32)
-
+    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel(), dtype=np.float64)
+    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel(), dtype=np.float64)
+    Praw = np.array(cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel(), dtype=np.float64)
+    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel(), dtype=np.float64)
     zeroindex = []
     index = 0
-    while (index < len(Hraw)):
-        # Remove if all are 0 and/or Nan values
-        if (Hraw[index] == 0 or np.isnan(Hraw[index])) and (Vraw[index] == 0 or np.isnan(Vraw[index])) or (Praw[index] == 0 or np.isnan(Praw[index])) and (Mraw[index] == 0 or np.isnan(Mraw[index])):
-            zeroindex.append(index)
-        index += 1
+    S1 = []
+    S2 = []
 
-    print 'Number of points removed: ', len(zeroindex)
-
+    S1 = divide((Hraw - Vraw), (Hraw + Vraw))
+    S2 = divide((Praw - Mraw), (Praw + Mraw))
     # Remove values from all arrays equally so as to retain the size
     H = np.delete(Hraw, zeroindex, axis=0)
     V = np.delete(Vraw, zeroindex, axis=0)
     P = np.delete(Praw, zeroindex, axis=0)
     M = np.delete(Mraw, zeroindex, axis=0)
-
-    # Calculate the Stokes parameters
-    # Power intensities are taken and normalized
-    S1 = (H - V) / (H + V)
-    S2 = (P - M) / (P + M)
-
 
     # Print statistics about Stokes data
     S1summary = datasummary(S1)
@@ -241,7 +324,209 @@ def upload_new_discrete_LMP():
     Vzipped = createhistogram(V, np.arange(0, 256, 1))
     Pzipped = createhistogram(P, np.arange(0, 256, 1))
     Mzipped = createhistogram(M, np.arange(0, 256, 1))
+    # print Hzipped
+    result = histogramData.insert_one(
+        {
+            'meta_id': ObjectId(exp_id),
+            'histograms': {
+                'measurements': {
+                    'H': Binary(cPickle.dumps(Hzipped, protocol=2)),
+                    'V': Binary(cPickle.dumps(Vzipped, protocol=2)),
+                    'P': Binary(cPickle.dumps(Pzipped, protocol=2)),
+                    'M': Binary(cPickle.dumps(Mzipped, protocol=2))
+                },
+                'stokes': {
+                    'S1': {
+                        'data': Binary(cPickle.dumps(S1zipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S1summary, protocol=2))
+                    },
+                    'S2': {
+                        'data': Binary(cPickle.dumps(S2zipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S2summary, protocol=2))
+                    }
+                }
+            }
+        }
+    )
 
+    print "about to send response", result.inserted_id
+    add_meta = discreteLMP.update_one(
+        {
+            '_id': ObjectId(exp_id)
+        },
+        {
+            '$set': {
+                'stokes': ObjectId(str(result.inserted_id))
+            }
+        }
+
+    )
+    print "updated"
+    resp = jsonify({"data": 'Successfully inserted'})
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+
+    return resp
+
+@app.route('/api/generate/glcm', methods=['POST'])
+def generate_discrete_glcm_samples():
+    raw_data = json.loads(request.data)
+    exp_id = raw_data['id']
+    images = raw_data['images']
+
+    EXPERIMENT_DIR = images
+    #Read the images for discrete analysis and flatten them
+    Hraw = np.array(cv2.imread(EXPERIMENT_DIR + '/H.png', 0), dtype=np.float64)
+    Vraw = np.array(cv2.imread(EXPERIMENT_DIR + '/V.png', 0), dtype=np.float64)
+    Praw = np.array(cv2.imread(EXPERIMENT_DIR + '/P.png', 0), dtype=np.float64)
+    Mraw = np.array(cv2.imread(EXPERIMENT_DIR + '/M.png', 0), dtype=np.float64)
+
+    SAMPLE_SIZE = 500
+    print "HELLO"
+    PATCH_WINDOWS = [25]
+    for size in PATCH_WINDOWS:
+        print size
+
+    Hpatches = {}
+    Vpatches = {}
+    Ppatches = {}
+    Mpatches = {}
+    # Pdry = cv2.imread('sandpaper-brown-60-grit/90.png', 0)
+    # Pwet = cv2.imread('sandpaper-100-grit-brown-red-filter/90.png', 0)
+
+
+    directory = EXPERIMENT_DIR + '/samples/'
+    for size in PATCH_WINDOWS:
+        dataset = []
+        print "size", size
+        Hpatches[str(size)] = image.extract_patches_2d(Hraw, (size, size), SAMPLE_SIZE, 1)
+        Ppatches[str(size)] = image.extract_patches_2d(Praw, (size, size), SAMPLE_SIZE, 1)
+        Vpatches[str(size)] = image.extract_patches_2d(Vraw, (size, size), SAMPLE_SIZE, 1)
+        Mpatches[str(size)] = image.extract_patches_2d(Mraw, (size, size), SAMPLE_SIZE, 1)
+
+        for index, Ppatch in enumerate(Ppatches[str(size)]):
+            filenameP = directory + 'P-'+ str(size)+'-sample-' + str(index) + '.png'
+            cv2.imwrite(filenameP, Ppatches[str(size)][index])
+        for index, Mpatch in enumerate(Mpatches[str(size)]):
+            filenameM = directory + 'M'+ str(size)+'-sample-' + str(index) + '.png'
+            cv2.imwrite(filenameM, Mpatches[str(size)][index])
+
+        for index, Vpatch in enumerate(Vpatches[str(size)]):
+            filenameV = directory + 'V'+ str(size)+'-sample-' + str(index) + '.png'
+            cv2.imwrite(filenameV, Vpatches[str(size)][index])
+
+
+        for index, Hpatch in enumerate(Hpatches[str(size)]):
+            try:
+                glcm = greycomatrix(Hpatch, [1], [0, np.pi/4, np.pi/2, 3*np.pi/4], 256, symmetric=True, normed=True)
+                dissimilarity = greycoprops(glcm, 'dissimilarity')[0, 0]
+                contrast = greycoprops(glcm, 'contrast')[0, 0]
+                correlation = greycoprops(glcm, 'correlation')[0, 0]
+                asm = greycoprops(glcm, 'ASM')[0, 0]
+                energy = greycoprops(glcm, 'energy')[0, 0]
+
+                glcm_data = {
+                    'dissimilarity': dissimilarity,
+                    'contrast': contrast,
+                    'correlation': correlation,
+                    'asm': asm,
+                    'energy': energy
+                }
+
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
+
+                filename = directory + 'H'+ str(size)+'-sample-' + str(index) + '.png'
+                cv2.imwrite(filename, Hpatches[str(size)][index])
+
+                H = Hpatches[str(size)][index].ravel()
+                V = Vpatches[str(size)][index].ravel()
+                P = Ppatches[str(size)][index].ravel()
+                M = Mpatches[str(size)][index].ravel()
+
+                S1 = divide((H - V), (H + V))
+                S2 = divide((P - M), (P + M))
+
+                S1summary = datasummary(S1)
+                S2summary = datasummary(S2)
+
+                # Create the S1 and S2 Histogram
+                S1zipped = createhistogram(S1, np.arange(-1, 1.01, 0.01))
+                S2zipped = createhistogram(S2, np.arange(-1, 1.01, 0.01))
+
+                S1obj = {
+                    "data": S1zipped,
+                    "stats": S1summary
+                }
+
+                S2obj = {
+                    "data": S2zipped,
+                    "stats": S1summary
+                }
+                S = [list(t) for t in zip(S1, S2)]
+
+                stokes = {
+                    'filename': filename,
+                    'S1': S1obj,
+                    'S2': S2obj
+                }
+
+
+                data = {
+                    'stokes': stokes,
+                    'data': glcm_data
+                }
+
+
+
+                # binary_convert['glcm']['file'] = str(filename)
+                # binary_convert['glcm']['dissimilarity'] = dissimilarity
+                # binary_convert['glcm']['correlation'] = correlation
+                # binary_convert['glcm']['asm'] = asm
+                # binary_convert['glcm']['energy'] = energy
+                # binary_convert['glcm']['contrast'] = contrast
+                # binary_convert['glcm']['S1'] = Binary(cPickle.dumps(S1obj, protocol=2))
+                # binary_convert['glcm']['S2'] = Binary(cPickle.dumps(S2obj, protocol=2))
+                # binary_convert['size'] = size
+                # binary_convert['meta_id'] = ObjectId(exp_id)
+
+                dataset.append(data)
+
+            except ValueError:
+                print "ERROR"
+                pass
+
+        glcm_data = {
+                'meta_id': ObjectId(exp_id),
+                'glcm': Binary(cPickle.dumps(dataset, protocol=2)),
+                'size': size
+        }
+
+        result = glcmData.insert_one(glcm_data)
+        add_meta = discreteLMP.update_one(
+            {
+                '_id': ObjectId(exp_id)
+            },
+            {
+                '$set': {
+                    'glcm': ObjectId(str(result.inserted_id))
+                }
+            }
+
+        )
+    print "about to send response"
+    resp = jsonify({"data": 'Successfully inserted'})
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+
+    return resp
+
+@app.route('/api/experiments/new', methods=['POST'])
+def upload_new_discrete_LMP():
+    raw_data = json.loads(request.data)
+
+    title = raw_data['title']
+    summary = raw_data['summary']
+    description = raw_data['description']
+    images = raw_data['images']
 
     result = discreteLMP.insert_one(
         {
@@ -249,25 +534,7 @@ def upload_new_discrete_LMP():
             "summary": summary,
             "description": description,
             "date": str(datetime.utcnow()),
-            "images": images,
-            "histograms": {
-                "measurements": {
-                    "H": jsonify(Hzipped),
-                    "V": jsonify(Vzipped),
-                    "P": jsonify(Pzipped),
-                    "M": jsonify(Mzipped)
-                },
-                "stokes": {
-                    "S1": {
-                        "data": jsonify(S1zipped),
-                        "stats": jsonify(S1summary)
-                    },
-                    "S2": {
-                        "data": jsonify(S2zipped),
-                        "stats": jsonify(S2summary)
-                    }
-                }
-            }
+            "images": images
         }
     )
 
@@ -389,5 +656,5 @@ def catch_all(path):
     return render_template('index.html')
 
 if __name__ == '__main__':
-  socketio.run(app)
+    socketio.run(app, debug=True)
   # socketio.run(app)

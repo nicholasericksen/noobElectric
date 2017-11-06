@@ -16,7 +16,7 @@ float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind':float_formatter})
 
 #set the directory the images come from
-imagedirectory = 'red-oak-1-white-specular-1wk/'
+imagedirectory = 'sugar-maple-3-white-specular/'
 # sampledirectroy = os.path.join()
 
 #Read the images for discrete analysis and flatten them
@@ -29,6 +29,16 @@ zeroindex = []
 index = 0
 S1 = []
 S2 = []
+
+def divide( a, b ):
+    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
+    with np.errstate(divide='ignore', invalid='ignore'):
+        print "divide"
+        c = np.true_divide( a, b )
+        c[ ~ np.isfinite( c )] = 0  # -inf inf NaN
+    return c
+
+
 while (index < len(Hraw)):
     # Remove if all are 0 and/or Nan values
     if (np.isnan(Hraw[index])) and (np.isnan(Vraw[index])) or (np.isnan(Praw[index])) and (np.isnan(Mraw[index])):
@@ -41,8 +51,8 @@ while (index < len(Hraw)):
 
 
 try:
-    S1tmp = [(Hraw - Vraw) / 255.0]
-    S2tmp = [(Praw - Mraw) / 255.0]
+    S1tmp = [divide((Hraw - Vraw), (Hraw + Vraw))]
+    S2tmp = [divide((Praw - Mraw), (Praw + Mraw))]
     S1 = np.append(S1, S1tmp)
     S2 = np.append(S2, S2tmp)
 except:
@@ -113,7 +123,7 @@ Mzipped = createhistogram(M, np.arange(0, 256, 1))
 
 result = db.histograms.insert_one(
     {
-        'meta_id': ObjectId('59d5cedcb42de0f1f6e89b6a'),
+        'meta_id': ObjectId('59d254d2b42de0d4220dac92'),
         "histograms": {
             "measurements": {
                 "H": Hzipped,

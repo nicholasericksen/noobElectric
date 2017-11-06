@@ -15,7 +15,10 @@ export default class Experiment extends Component {
             stokesDataSet: null,
             index: 0,
             glcmDataset: null,
-            histogramDataset: null
+            histogramDataset: null,
+            hasGlcmData: false,
+            hasStokesData: false,
+            params: {}
         };
         this.requestData = this.requestData.bind(this);
         this.renderAll = this.renderAll.bind(this);
@@ -23,29 +26,44 @@ export default class Experiment extends Component {
         this.renderStatistics = this.renderStatistics.bind(this);
         this.requestGlcmData = this.requestGlcmData.bind(this);
         this.requestHistogramData = this.requestHistogramData.bind(this);
+        this.generateGlcmData = this.generateGlcmData.bind(this);
+        this.generateHistogramData = this.generateHistogramData.bind(this);
+    }
+    componentWillUnmount() {
+        this.setState({
+
+        })
     }
 
     componentDidMount() {
         this.requestData();
+        var expId = `${this.props.match.params.experiment}`;
+        let params =  {
+            id: expId
+        };
+
+        // this.requestGlcmData(params);
+        // this.requestHistogramData(params);
     }
 
     requestGlcmData(params) {
         var request = new XMLHttpRequest();
 
-        request.open('POST', 'http://localhost:5000/api/experiments/glcm', true);
+        request.open('POST', 'http://localhost:5000/api/experiments/glcm');
 
         request.onload = () => {
           if (request.status >= 200 && request.status < 400) {
             var rawdata = JSON.parse(request.responseText);
             var data = rawdata.exp;
             var dataset = [];
-            if (data.glcm) {
+            if (data && data.glcm) {
                 this.setState({
-                    glcmDataset: data.glcm
+                    glcmDataset: data.glcm,
+                    hasGlcmData: true
                 });
             }
             else {
-                // this.setState({data: data});
+                this.setState({hasGlcmData: false});
             }
 
           } else {
@@ -61,14 +79,14 @@ export default class Experiment extends Component {
     requestHistogramData(params) {
             var request = new XMLHttpRequest();
 
-            request.open('POST', 'http://localhost:5000/api/experiments/histograms', true);
+            request.open('POST', 'http://localhost:5000/api/experiments/histograms');
 
             request.onload = () => {
               if (request.status >= 200 && request.status < 400) {
                 var rawdata = JSON.parse(request.responseText);
                 var data = rawdata.exp;
                 var dataset = [];
-                if (data.histograms && data.histograms.stokes) {
+                if (data && data.histograms && data.histograms.stokes) {
                     const S1 = {data: data.histograms.stokes.S1.data, title: `S1 ${this.state.data.title}`};
                     const S2 = {data: data.histograms.stokes.S2.data, title: `S2 ${this.state.data.title}`};
 
@@ -79,18 +97,19 @@ export default class Experiment extends Component {
                         stokesDataSet: dataset,
                         histogramDataset: data
                     });
-                    console.log("NICHOLAS", this.state.histogramDataset);
+                    this.setState({hasStokesData: true})
                 }
                 else {
-                    // this.setState({data: data});
+                    this.setState({hasStokesData: false});
                 }
 
               } else {
                 // We reached our target server, but it returned an error
               }
             };
-            request.onerror = function() {
+            request.onerror = function(err) {
               // There was a connection error of some sort
+              console.log('err', err)
             };
             request.send(JSON.stringify(params));
     }
@@ -101,20 +120,37 @@ export default class Experiment extends Component {
         let params =  {
             id: expId
         };
+        this.setState({ params: {id: expId}});
 
-        this.requestGlcmData(params);
-        this.requestHistogramData(params);
+        // this.requestGlcmData(params);
+        // this.requestHistogramData(params);
 
-        request.open('POST', 'http://localhost:5000/api/experiments', true);
+        request.open('POST', 'http://localhost:5000/api/experiments');
 
         request.onload = () => {
           if (request.status >= 200 && request.status < 400) {
             var rawdata = JSON.parse(request.responseText);
             var data = rawdata.exp;
-            console.log("DATA", data);
             var dataset = [];
 
-                this.setState({data: data});
+            this.setState({data: data});
+
+            if (data && data.stokes) {
+                const hist_params =  {
+                    id: data.stokes.$oid
+                };
+                console.log("PARAMS", hist_params)
+                this.requestHistogramData(hist_params);
+
+            }
+
+            if (data && data.glcm) {
+                const glcm_params = {
+                    id: data.glcm.$oid
+                };
+
+                this.requestGlcmData(params)
+            }
 
           } else {
             // We reached our target server, but it returned an error
@@ -127,8 +163,6 @@ export default class Experiment extends Component {
     }
 
     setStokesDataset(index) {
-        console.log("histogram", this.state.histogramDataset);
-        console.log("jack", this.state.stokesDataSet);
         const S1 = this.state.histogramDataset ? {data: this.state.histogramDataset.histograms.stokes.S1.data, title: `S1 ${this.state.data.title}`} : [];
         const S2 = this.state.histogramDataset ? {data: this.state.histogramDataset.histograms.stokes.S2.data, title: `S2 ${this.state.data.title}`} : [];
 
@@ -141,7 +175,6 @@ export default class Experiment extends Component {
                 stokesDataSet: dataSet,
                 index: 0
             });
-            console.log("cow", stokesDataSet);
         }
         else if ( index === 1) {
             // const S1 = this.state.histogramDataset[0]
@@ -182,22 +215,80 @@ export default class Experiment extends Component {
         )
     }
 
+    generateGlcmData() {
+        var xhr = new XMLHttpRequest();
+        var expId = `${this.props.match.params.experiment}`;
+        const images = this.state.data.images;
+        let params =  {
+            id: expId,
+            images: images
+        };
+        // fetch('http://localhost:5000/api/generate/glcm', params, )
+        console.log("PARAMS", params);
+        xhr.open('POST', 'http://localhost:5000/api/generate/glcm', true);
+
+        xhr.onload = () => {
+            if(xhr.status >= 200 && xhr.status < 400) {
+                console.log("successful upload");
+                this.requestGlcmData(params);
+            } else {
+                console.log("An error was returned")
+            }
+        }
+
+        xhr.onerror = function(err) {
+            console.log("error: ", err);
+        }
+
+        xhr.send(JSON.stringify(params));
+    }
+
+    generateHistogramData() {
+        var xhr = new XMLHttpRequest();
+        var expId = `${this.props.match.params.experiment}`;
+        const images = this.state.data.images;
+        let params =  {
+            id: expId,
+            images: images
+        };
+        xhr.open('POST', 'http://localhost:5000/api/generate/stokes', true);
+
+        xhr.onload = () => {
+            if(xhr.status >= 200 && xhr.status < 400) {
+                console.log("successful upload");
+                // var tmpArr = this.state.experiments;
+                // var rawdata = JSON.parse(xhr.responseText).data;
+                // var data = tmpArr.concat(rawdata);
+                // this.setState({
+                //     experiments: data
+                // });
+                this.requestHistogramData(params);
+            } else {
+                console.log("An error was returned")
+            }
+        }
+
+        xhr.onerror = function(err) {
+            console.log("error: ", err);
+        }
+
+        xhr.send(JSON.stringify(params));
+    }
+
     renderAll() {
         if (this.state.data.images) {
             const scatterPlotData = [];
             const stokesScatter = [];
-            let glcmData = this.state.glcmDataset ? this.state.glcmDataset : null;
-            let glcm = '';
-            if (glcmData) {
-                glcm = JSON.parse(glcmData.replace(/'/g, '"'));
+            let glcm = this.state.glcmDataset ? this.state.glcmDataset : null;
+            if (glcm) {
                 glcm.map((sample, index) => {
-                    // stokesScatter.push([sample.S[index][0], sample.S[index][1]])
-                    scatterPlotData.push([sample.dissimilarity, sample.correlation])
+                    scatterPlotData.push([sample.data.dissimilarity, sample.data.correlation])
                 })
             }
-            console.log("ScatterPlotData", scatterPlotData);
             return(
                 <div>
+
+
                 <ExperimentHeader
                     title={this.state.data.title}
                     date={this.state.data.date}
@@ -206,6 +297,7 @@ export default class Experiment extends Component {
                 <ExperimentIntro
                     summary={this.state.data.summary}
                     description={this.state.data.description}
+                    id={this.state.data._id.$oid}
                 />
             {this.state.histogramDataset ?
                 <ExperimentImages
@@ -217,11 +309,16 @@ export default class Experiment extends Component {
                 <div className="stokes-container">
                     <div className="histogram-stokes">
                         <h4>Stokes Histograms</h4>
-                        <div className="histogram-filter-container">
-                            <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(0)}>All</span>
-                            <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(1)}>S1</span>
-                            <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(2)}>S2</span>
-                        </div>
+                        {this.state.hasStokesData ?
+                            <div className="histogram-filter-container">
+                                <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(0)}>All</span>
+                                <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(1)}>S1</span>
+                                <span className="histogram-filter button btn" onClick={() => this.setStokesDataset(2)}>S2</span>
+                            </div>
+                            :
+                            <div onClick={this.generateHistogramData}>Generate Histogram</div>
+                        }
+
                         {this.state.stokesDataSet ?
                             <Histogram
                                 data={this.state.stokesDataSet}
@@ -241,15 +338,14 @@ export default class Experiment extends Component {
                         {scatterPlotData ?
                             <div>
                                 <h4>GLCM Scatter Plot</h4>
-                                <ScatterPlot
-                                    data={scatterPlotData}
-                                    container={'glcm-scatter-plot'}
-                                />
-                            <h4>Stokes Comparision</h4>
-                                {/*<ScatterPlot
-                                    data={stokesScatter}
-                                    container={'stokes-scatter-plot'}
-                                />*/}
+                                {this.state.hasGlcmData ?
+                                    <ScatterPlot
+                                        data={[scatterPlotData]}
+                                        container={'glcm-scatter-plot'}
+                                    />
+                                    :
+                                    <div className="button" onClick={this.generateGlcmData}>Generate GLCM</div>
+                                }
                             </div>
 
                         : null}
@@ -260,17 +356,17 @@ export default class Experiment extends Component {
                         if (index <= 10) {
                             return(
                                 <div className="sample-container">
-                                    <img src={`http://localhost:8090/data/${sample.file}`} role="presentation"/>
+                                    <img src={`http://localhost:8090/data/${sample.stokes.filename}`} role="presentation"/>
                                     <div className="sample-stats-container">
                                         <div className="glcm-stats">
-                                            <div>GLCM Correlation{sample.correlation}</div>
-                                            <div> GLCM Disimilarity{sample.dissimilarity}</div>
+                                            <div>GLCM Correlation{sample.data.correlation}</div>
+                                            <div> GLCM Disimilarity{sample.data.dissimilarity}</div>
                                         </div>
                                         <div className="s1-sample-stats-container">
-                                            <div>S1 Mean: {sample.S1.stats.mean}</div>
-                                            <div>S1 Variance: {sample.S1.stats.std}</div>
+                                            <div>S1 Mean: {sample.stokes.S1.stats.mean}</div>
+                                            <div>S1 Variance: {sample.stokes.S1.stats.std}</div>
                                                 <Histogram
-                                                    data={[sample.S1]}
+                                                    data={[sample.stokes.S1]}
                                                     targetElement={`exp-S1-stokes-histograms-${index}`}
                                                     width={300}
                                                     height={150}
@@ -279,10 +375,10 @@ export default class Experiment extends Component {
                                         </div>
 
                                         <div className="s2-sample-stats-container">
-                                            <div>S2 Mean: {sample.S2.stats.mean}</div>
-                                            <div>S2 Variance: {sample.S2.stats.std}</div>
+                                            <div>S2 Mean: {sample.stokes.S2.stats.mean}</div>
+                                            <div>S2 Variance: {sample.stokes.S2.stats.std}</div>
                                                 <Histogram
-                                                    data={[sample.S2]}
+                                                    data={[sample.stokes.S2]}
                                                     targetElement={`exp-S2-stokes-histograms-${index}`}
                                                     width={300}
                                                     height={150}

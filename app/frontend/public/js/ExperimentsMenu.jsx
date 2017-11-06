@@ -14,6 +14,7 @@ export default class ExperimentsMenu extends Component {
         }
 
         this.requestData = this.requestData.bind(this);
+        this.exportGlcmData = this.exportGlcmData.bind(this);
     }
 
     componentDidMount() {
@@ -26,8 +27,9 @@ export default class ExperimentsMenu extends Component {
 
         request.onload = () => {
           if (request.status >= 200 && request.status < 400) {
-            var rawdata = JSON.parse(request.responseText);
-            var data = rawdata.exp;
+            const rawdata = JSON.parse(request.responseText);
+            const data = rawdata.exp;
+
             this.setState({
                 data: data
             });
@@ -43,8 +45,11 @@ export default class ExperimentsMenu extends Component {
 
         request.send();
     }
-    addCompare(id) {
-        let list = this.state.compareList;
+    addCompare(experiment) {
+        const id = experiment._id.$oid;
+        const list = this.state.compareList;
+        const exportList = this.state.exportList;
+
         if (list.includes(id)) {
             const i = list.indexOf(id);
             list.splice(i, 1);
@@ -55,11 +60,134 @@ export default class ExperimentsMenu extends Component {
             compareList: list
         });
     }
+    exportGlcmData() {
+        // var ids = `${this.props.match.params.ids}`;
+        const idArray = this.state.compareList;
+
+
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += 'Type,Color,Age,Direction,S1mean,S1std,S2mean,S2std,Corr,Diss,Contrast,Energy,ASM' + "\n";
+
+
+        idArray.map((id, index) => {
+            // var request = new XMLHttpRequest();
+
+            let params =  {
+                id: id
+            };
+            fetch('http://localhost:5000/api/experiments/glcm', {method: 'POST', body: JSON.stringify(params)})
+            .then((response) => {
+                return response.json();
+            })
+            .then((rawdata) => {
+                var data = rawdata.exp;
+                console.log("DASDF", data);
+                var glcm = data.glcm;
+                console.log("GLCM", glcm);
+                if(glcm) {
+                    glcm.map((sample, index) => {
+                        const S1 = sample.stokes.S1.stats;
+                        const S2 = sample.stokes.S2.stats;
+
+                        const S1mean = S1.mean;
+                        const S1std = S1.std;
+                        const S2mean = S2.mean;
+                        const S2std = S2.std;
+                        const corr = sample.data.correlation;
+                        const diss = sample.data.dissimilarity;
+                        const contrast = sample.data.contrast;
+                        const energy = sample.data.energy;
+                        const asm = sample.data.asm;
+
+                        const file = sample.stokes.filename.split('/');
+                        const info = file[0].split('-')
+                        // console.log("INFo", info);
+                        const color = info[3];
+                        const direction = info[4];
+
+                        const age = info[5] ? info[5] : '0wk';
+                        const type = info[0] + '-' + info[1];
+
+                        const all = [type, color, age, direction, S1mean, S1std, S2mean, S2std, corr, diss, contrast, energy, asm];
+                        // console.log("ALL", all);
+
+                        var dataString = all.join(",");
+                        csvContent += dataString+ "\n";
+                    })
+                }
+                console.log("index", index);
+                console.log("idlength", idArray.length);
+                if (index === idArray.length - 1) {
+                    console.log("sail away");
+                    var encodedUri = encodeURI(csvContent);
+                    window.open(encodedUri);
+                }
+            })
+
+        //     request.open('POST', 'http://localhost:5000/api/experiments/glcm', true);
+        //
+        //     request.onload = () => {
+        //       if (request.status >= 200 && request.status < 400) {
+        //         var rawdata = JSON.parse(request.responseText);
+        //         var data = rawdata.exp;
+        //         console.log("DASDF", data);
+        //         var glcm = data.glcm;
+        //         if(glcm) {
+        //             glcm.map((sample, index) => {
+        //                 const S1 = sample.stokes.S1.stats;
+        //                 const S2 = sample.stokes.S2.stats;
+        //
+        //                 const S1mean = S1.mean;
+        //                 const S1std = S1.std;
+        //                 const S2mean = S2.mean;
+        //                 const S2std = S2.std;
+        //                 const corr = sample.data.correlation;
+        //                 const diss = sample.data.dissimilarity;
+        //                 const contrast = sample.data.contrast;
+        //                 const energy = sample.data.energy;
+        //                 const asm = sample.data.asm;
+        //
+        //                 const file = sample.stokes.filename.split('/');
+        //                 const info = file[0].split('-')
+        //
+        //                 const color = info[3];
+        //                 const direction = info[4];
+        //
+        //                 const age = info[5] ? info[5] : '0wk';
+        //                 const type = info[0] + '-' + info[1];
+        //
+        //                 const all = [type, color, age, direction, S1mean, S1std, S2mean, S2std, corr, diss, contrast, energy, asm];
+        //                 // console.log("ALL", all);
+        //
+        //                 var dataString = all.join(",");
+        //                 csvContent += dataString+ "\n";
+        //             })
+        //         }
+        //
+        //
+        //         console.log('experiments', glcm);
+        //
+        //
+        //
+        //       } else {
+        //         // We reached our target server, but it returned an error
+        //       }
+        // // console.log("CSV", csvContent);
+        //
+        //     };
+        //     request.onerror = function() {
+        //       // There was a connection error of some sort
+        //     };
+        //     request.send(JSON.stringify(params));
+        });
+        // this.setState({compareList: []});
+        //
+
+    }
 
     render() {
         const data = this.state.data ? this.state.data : [];
         const inactive = this.state.compareList.length === 0 ? true : false;
-        console.log("inactive", inactive);
 
         return (
             <div>
@@ -70,7 +198,7 @@ export default class ExperimentsMenu extends Component {
                     new
                 </Link>
                 <Link className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")} to={`/experiments/compare/${this.state.compareList}`}>compare</Link>
-                <span className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")}>export</span>
+                <span onClick={this.exportGlcmData} className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")}>export</span>
                 {data ?
                     data.map((experiment, index) => {
                         const active = this.state.compareList.includes(experiment._id.$oid);
@@ -85,7 +213,7 @@ export default class ExperimentsMenu extends Component {
                                 </div>
                                 <div className="exp-buttons">
                                     <Link className="button" key={index} to={`/experiments/${experiment._id.$oid}`}>more</Link>
-                                    <span key={experiment._id.$oid} onClick={() => this.addCompare(experiment._id.$oid)} className={classNames({'active': active}, "compare", "button")}>select</span>
+                                    <span key={experiment._id.$oid} onClick={() => this.addCompare(experiment)} className={classNames({'active': active}, "compare", "button")}>select</span>
                                     {/*<span className="exp-menu-compare exp-btn">compare</span> */}
                                 </div>
                                 <hr />

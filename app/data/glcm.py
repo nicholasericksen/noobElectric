@@ -26,7 +26,7 @@ np.errstate(divide='ignore', invalid='ignore')
 old_err_state = np.seterr(divide='raise')
 ignored_states = np.seterr(**old_err_state)
 #set the directory the images come from
-EXPERIMENT_DIR = 'red-oak-1-white-specular-1wk/'
+EXPERIMENT_DIR = 'red-oak-4-white-diffuse-0wk/'
 
 #Read the images for discrete analysis and flatten them
 Hraw = np.array(cv2.imread(EXPERIMENT_DIR + 'H.png', 0), dtype=np.float32)
@@ -43,10 +43,10 @@ SAMPLE_SIZE = 500
 # Pdry = cv2.imread('sandpaper-brown-60-grit/90.png', 0)
 # Pwet = cv2.imread('sandpaper-100-grit-brown-red-filter/90.png', 0)
 
-Hpatches = image.extract_patches_2d(Hraw, (50, 50), SAMPLE_SIZE, 1)
-Ppatches = image.extract_patches_2d(Praw, (50, 50), SAMPLE_SIZE, 1)
-Vpatches = image.extract_patches_2d(Vraw, (50, 50), SAMPLE_SIZE, 1)
-Mpatches = image.extract_patches_2d(Mraw, (50, 50), SAMPLE_SIZE, 1)
+Hpatches = image.extract_patches_2d(Hraw, (150, 150), SAMPLE_SIZE, 1)
+Ppatches = image.extract_patches_2d(Praw, (150, 150), SAMPLE_SIZE, 1)
+Vpatches = image.extract_patches_2d(Vraw, (150, 150), SAMPLE_SIZE, 1)
+Mpatches = image.extract_patches_2d(Mraw, (150, 150), SAMPLE_SIZE, 1)
 
 # Pwet_patches = image.extract_patches_2d(Praw, (50, 50), SAMPLE_SIZE, 1)
 
@@ -104,9 +104,9 @@ for index, Vpatch in enumerate(Vpatches):
     cv2.imwrite(filenameV, Vpatches[index])
 
 
-for index, Hpatch in enumerate(Hpatches):
+for index, Hpatch in enumerate(Vpatches):
     try:
-        glcm = greycomatrix(Hpatch, [5], [0], 256, symmetric=True, normed=True)
+        glcm = greycomatrix(Hpatch, [1], [0, np.pi/4, np.pi/2, 3*np.pi/4], 256, symmetric=True, normed=True)
         dissimilarity = greycoprops(glcm, 'dissimilarity')[0, 0]
         correlation = greycoprops(glcm, 'correlation')[0, 0]
 
@@ -167,24 +167,24 @@ for index, Hpatch in enumerate(Hpatches):
 # jsonData = jsonify({"data": dataset})
 
 # print dataset
-result = db.glcm.insert(
-    {
-            'meta_id': ObjectId('59d5cedcb42de0f1f6e89b6a'),
-            'glcm': str(dataset)
-    }
-)
+# result = db.glcm.insert(
+#     {
+#             'meta_id': ObjectId('59d28946b42de0dc534fabbc'),
+#             'glcm': str(dataset)
+#     }
+# )
 
-#
-# fig, ax = plt.subplots()
-# ax.plot(xs[:len(Hpatches)], ys[:len(Hpatches)], 'go',
-#         label='Dry')
-# # ax.plot(xsWet[:len(Pwet_patches)], ysWet[:len(Pwet_patches)], 'rx',
-# #         label='Wet')
-#
-#
-# ax.set_xlabel('GLCM Dissimilarity')
-# ax.set_ylabel('GLCM Correlation')
-# ax.legend()
+
+fig, ax = plt.subplots()
+ax.plot(xs[:len(Hpatches)], ys[:len(Hpatches)], 'go',
+        label='Dry')
+# ax.plot(xsWet[:len(Pwet_patches)], ysWet[:len(Pwet_patches)], 'rx',
+#         label='Wet')
+
+
+ax.set_xlabel('GLCM Dissimilarity')
+ax.set_ylabel('GLCM Correlation')
+ax.legend()
 
 
 
@@ -236,4 +236,4 @@ result = db.glcm.insert(
 #     # cv2.imwrite('./test/' + filename, patches[i])
 #     i = i + 1
 
-# plt.show()
+plt.show()

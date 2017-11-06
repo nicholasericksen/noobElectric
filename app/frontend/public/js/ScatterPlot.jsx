@@ -7,24 +7,24 @@ export default class ScatterPlot extends Component {
         this.renderData = this.renderData.bind(this);
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data !== this.props.data) {
+        // if (nextProps.data !== this.props.data) {
             // this.setState({ledgend: []});
             console.log("nextProps", nextProps);
             this.renderData(nextProps.data);
-        }
+        // }
     }
-    renderData(data) {
-        console.log("SCATTER PLOT DAta", data);
+    renderData(dataSet) {
         d3.select(this.props.container + ' svg').remove();
             var margin = {top: 20, right: 15, bottom: 60, left: 60}
               , width = 600 - margin.left - margin.right
               , height = 300 - margin.top - margin.bottom;
 
-              var xMin = d3.min(data, function(d) { return d[0]; });
-              var xMax = d3.max(data, function(d) { return d[0]; });
+              var xMin = d3.min(dataSet[0], function(d) { return d[0]; });
+              var xMax = d3.max(dataSet[0], function(d) { return d[0]; });
 
-              var yMin = d3.min(data, function(d) { return d[1]; });
-              var yMax = d3.max(data, function(d) { return d[1]; });
+              var yMin = d3.min(dataSet[0], function(d) { return d[1]; });
+              var yMax = d3.max(dataSet[0], function(d) { return d[1]; });
+
 
             var x = d3.scale.linear()
                       .domain([ xMin, xMax ])
@@ -69,15 +69,20 @@ export default class ScatterPlot extends Component {
         	.attr('transform', 'translate(0,0)')
         	.attr('class', 'main axis date')
         	.call(yAxis);
-
+            console.log("SCATTER PLOT DAta Ericksen", dataSet);
             var g = main.append("svg:g");
+            const COLORS = ['steelblue', 'red', 'grey', 'green', 'black', 'purple'];
+            dataSet.map((data, index) => {
+                console.log("color", COLORS[index]);
+                g.selectAll("scatter-dots")
+                  .data(data)
+                  .enter().append("svg:circle")
+                      .style("fill", COLORS[index])
+                      .attr("cx", function (d,i) { return x(d[0]); } )
+                      .attr("cy", function (d) { return y(d[1]); } )
+                      .attr("r", 4);
+            })
 
-            g.selectAll("scatter-dots")
-              .data(data)
-              .enter().append("svg:circle")
-                  .attr("cx", function (d,i) { return x(d[0]); } )
-                  .attr("cy", function (d) { return y(d[1]); } )
-                  .attr("r", 4);
     }
     componentDidMount() {
         this.renderData(this.props.data);

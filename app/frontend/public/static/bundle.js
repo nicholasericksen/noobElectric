@@ -557,7 +557,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _prodInvariant = __webpack_require__(3);
 
 var DOMProperty = __webpack_require__(19);
-var ReactDOMComponentFlags = __webpack_require__(81);
+var ReactDOMComponentFlags = __webpack_require__(80);
 
 var invariant = __webpack_require__(1);
 
@@ -1361,7 +1361,7 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(80)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(79)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
@@ -1483,9 +1483,9 @@ module.exports = ReactCurrentOwner;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(5);
 
-var CallbackQueue = __webpack_require__(85);
+var CallbackQueue = __webpack_require__(84);
 var PooledClass = __webpack_require__(21);
-var ReactFeatureFlags = __webpack_require__(86);
+var ReactFeatureFlags = __webpack_require__(85);
 var ReactReconciler = __webpack_require__(24);
 var Transaction = __webpack_require__(38);
 
@@ -2424,7 +2424,7 @@ var warning = __webpack_require__(2);
 var canDefineProperty = __webpack_require__(35);
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-var REACT_ELEMENT_TYPE = __webpack_require__(76);
+var REACT_ELEMENT_TYPE = __webpack_require__(75);
 
 var RESERVED_PROPS = {
   key: true,
@@ -2883,7 +2883,7 @@ module.exports = PooledClass;
 
 var _assign = __webpack_require__(5);
 
-var ReactBaseClasses = __webpack_require__(74);
+var ReactBaseClasses = __webpack_require__(73);
 var ReactChildren = __webpack_require__(128);
 var ReactDOMFactories = __webpack_require__(132);
 var ReactElement = __webpack_require__(20);
@@ -2900,7 +2900,7 @@ var cloneElement = ReactElement.cloneElement;
 if (process.env.NODE_ENV !== 'production') {
   var lowPriorityWarning = __webpack_require__(46);
   var canDefineProperty = __webpack_require__(35);
-  var ReactElementValidator = __webpack_require__(78);
+  var ReactElementValidator = __webpack_require__(77);
   var didWarnPropTypesDeprecated = false;
   createElement = ReactElementValidator.createElement;
   createFactory = ReactElementValidator.createFactory;
@@ -3239,7 +3239,7 @@ var DOMNamespaces = __webpack_require__(54);
 var setInnerHTML = __webpack_require__(40);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(55);
-var setTextContent = __webpack_require__(90);
+var setTextContent = __webpack_require__(89);
 
 var ELEMENT_NODE_TYPE = 1;
 var DOCUMENT_FRAGMENT_NODE_TYPE = 11;
@@ -4143,8 +4143,8 @@ exports.decodePayloadAsBinary = function (data, binaryType, callback) {
 var EventPluginHub = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(48);
 
-var accumulateInto = __webpack_require__(82);
-var forEachAccumulated = __webpack_require__(83);
+var accumulateInto = __webpack_require__(81);
+var forEachAccumulated = __webpack_require__(82);
 var warning = __webpack_require__(2);
 
 var getListener = EventPluginHub.getListener;
@@ -4286,8 +4286,8 @@ var EventPluginRegistry = __webpack_require__(37);
 var EventPluginUtils = __webpack_require__(48);
 var ReactErrorUtils = __webpack_require__(49);
 
-var accumulateInto = __webpack_require__(82);
-var forEachAccumulated = __webpack_require__(83);
+var accumulateInto = __webpack_require__(81);
+var forEachAccumulated = __webpack_require__(82);
 var invariant = __webpack_require__(1);
 
 /**
@@ -4668,7 +4668,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BrowserRouter", function() { return __WEBPACK_IMPORTED_MODULE_0__BrowserRouter__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__HashRouter__ = __webpack_require__(233);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "HashRouter", function() { return __WEBPACK_IMPORTED_MODULE_1__HashRouter__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Link__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Link__ = __webpack_require__(108);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return __WEBPACK_IMPORTED_MODULE_2__Link__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__MemoryRouter__ = __webpack_require__(235);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "MemoryRouter", function() { return __WEBPACK_IMPORTED_MODULE_3__MemoryRouter__["a"]; });
@@ -4678,7 +4678,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Prompt", function() { return __WEBPACK_IMPORTED_MODULE_5__Prompt__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Redirect__ = __webpack_require__(243);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Redirect", function() { return __WEBPACK_IMPORTED_MODULE_6__Redirect__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(109);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Route", function() { return __WEBPACK_IMPORTED_MODULE_7__Route__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(66);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Router", function() { return __WEBPACK_IMPORTED_MODULE_8__Router__["a"]; });
@@ -5424,7 +5424,7 @@ module.exports = TransactionImpl;
 
 
 var SyntheticUIEvent = __webpack_require__(30);
-var ViewportMetrics = __webpack_require__(89);
+var ViewportMetrics = __webpack_require__(88);
 
 var getEventModifierState = __webpack_require__(52);
 
@@ -5734,7 +5734,7 @@ var _assign = __webpack_require__(5);
 
 var EventPluginRegistry = __webpack_require__(37);
 var ReactEventEmitterMixin = __webpack_require__(177);
-var ViewportMetrics = __webpack_require__(89);
+var ViewportMetrics = __webpack_require__(88);
 
 var getVendorPrefixedEventName = __webpack_require__(178);
 var isEventSupported = __webpack_require__(51);
@@ -6049,8 +6049,8 @@ module.exports = ReactBrowserEventEmitter;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return createLocation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return locationsAreEqual; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_resolve_pathname__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_value_equal__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_resolve_pathname__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_value_equal__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PathUtils__ = __webpack_require__(34);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -6756,7 +6756,7 @@ var ReactInstrumentation = __webpack_require__(12);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(55);
 var setInnerHTML = __webpack_require__(40);
-var setTextContent = __webpack_require__(90);
+var setTextContent = __webpack_require__(89);
 
 function getNodeAfter(parentNode, node) {
   // Special case for text components, which return [open, close] comments
@@ -7045,8 +7045,8 @@ module.exports = createMicrosoftUnsafeLocalFunction;
 
 var _prodInvariant = __webpack_require__(3);
 
-var ReactPropTypesSecret = __webpack_require__(94);
-var propTypesFactory = __webpack_require__(79);
+var ReactPropTypesSecret = __webpack_require__(93);
+var propTypesFactory = __webpack_require__(78);
 
 var React = __webpack_require__(22);
 var PropTypes = propTypesFactory(React.isValidElement);
@@ -8088,11 +8088,11 @@ exports.locationsAreEqual = exports.createLocation = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _resolvePathname = __webpack_require__(106);
+var _resolvePathname = __webpack_require__(105);
 
 var _resolvePathname2 = _interopRequireDefault(_resolvePathname);
 
-var _valueEqual = __webpack_require__(107);
+var _valueEqual = __webpack_require__(106);
 
 var _valueEqual2 = _interopRequireDefault(_valueEqual);
 
@@ -8547,185 +8547,6 @@ var createTransitionManager = function createTransitionManager() {
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(113);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Histogram = function (_Component) {
-    _inherits(Histogram, _Component);
-
-    function Histogram(props) {
-        _classCallCheck(this, Histogram);
-
-        var _this = _possibleConstructorReturn(this, (Histogram.__proto__ || Object.getPrototypeOf(Histogram)).call(this, props));
-
-        _this.state = {
-            g: null,
-            ledgend: []
-        };
-
-        _this.onRef = _this.onRef.bind(_this);
-        _this.renderHistogram = _this.renderHistogram.bind(_this);
-        return _this;
-    }
-
-    _createClass(Histogram, [{
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            if (nextProps.data !== this.props.data) {
-                this.setState({ ledgend: [] });
-                this.renderHistogram(nextProps.data);
-            }
-        }
-
-        // shouldComponentUpdate() { console.log("COMponent should update"); return false }
-
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.setState({ ledgend: [] });
-            this.renderHistogram(this.props.data);
-        }
-    }, {
-        key: 'onRef',
-        value: function onRef(ref) {
-            // this.setState({ g: d3.select(ref) }, () => this.renderHistogram(this.props.data))
-        }
-    }, {
-        key: 'renderHistogram',
-        value: function renderHistogram(dataSet) {
-            var _this2 = this;
-
-            // Initialize Axis and dimensions
-
-            var margin = { top: 20, right: 20, bottom: 70, left: 50 },
-                width = this.props.width - margin.left - margin.right,
-                height = this.props.height - margin.top - margin.bottom;
-
-            // Parse the date / time
-            // var	parseDate = d3.time.format("%Y-%m").parse;
-            var x = d3.scale.linear().range([0, width]);
-            // var x = d3.scale.linear().range([width, 0]);
-            var y = d3.scale.linear().range([height, 0]);
-
-            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
-
-            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(this.props.yTicks);
-
-            var targetElement = '.' + this.props.targetElement;
-            d3.select(targetElement + ' svg').remove();
-            var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            var yMax = 0;
-            var yMaxTmp = 0;
-
-            if (dataSet.length > 0) {
-
-                dataSet.map(function (experiment, index) {
-                    if (index === 0) {
-                        yMax = d3.max(dataSet[0].data, function (d) {
-                            return d[1];
-                        });
-                    } else {
-                        yMaxTmp = d3.max(dataSet[index].data, function (d) {
-                            return d[1];
-                        });
-                    }
-
-                    if (yMaxTmp > yMax) {
-                        yMax = yMaxTmp;
-                    }
-                });
-            }
-            x.domain([-1, d3.max(dataSet[0].data, function (d) {
-                return d[0];
-            })]);
-            y.domain([0, yMax]);
-
-            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
-
-            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("# of pxs");
-
-            var COLORS = ['steelblue', 'red', 'grey', 'green', 'black', 'purple'];
-
-            var tmpLedgendObject = [];
-
-            dataSet.map(function (experiment, index) {
-                svg.selectAll("bar").data(experiment.data).enter().append("rect").style("fill", COLORS[index]).attr("x", function (d) {
-                    return x(d[0]);
-                }).attr("width", 2).attr("y", function (d) {
-                    return y(d[1]);
-                }).attr("height", function (d) {
-                    return height - y(d[1]);
-                });
-
-                experiment.color = COLORS[index];
-
-                tmpLedgendObject.push(experiment);
-                _this2.setState({ ledgend: tmpLedgendObject });
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'ledgend' },
-                    this.state.ledgend ? this.state.ledgend.map(function (experiment, index) {
-                        return _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement('span', { className: (0, _classnames2.default)(["ledgend-color", experiment.color]) }),
-                            _react2.default.createElement(
-                                'span',
-                                { className: 'ledgend-experiment-title' },
-                                experiment.title
-                            )
-                        );
-                    }) : null
-                ),
-                _react2.default.createElement(
-                    'svg',
-                    { width: this.props.width, height: this.props.height, className: this.props.targetElement },
-                    _react2.default.createElement('g', { ref: this.onRef })
-                )
-            );
-        }
-    }]);
-
-    return Histogram;
-}(_react.Component);
-
-exports.default = Histogram;
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
 
 /**
  * Module dependencies.
@@ -9129,7 +8950,7 @@ function error() {
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {// browser shim for xmlhttprequest module
@@ -9173,7 +8994,7 @@ module.exports = function (opts) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9336,7 +9157,7 @@ Transport.prototype.onClose = function () {
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9355,7 +9176,7 @@ Transport.prototype.onClose = function () {
 var _prodInvariant = __webpack_require__(23),
     _assign = __webpack_require__(5);
 
-var ReactNoopUpdateQueue = __webpack_require__(75);
+var ReactNoopUpdateQueue = __webpack_require__(74);
 
 var canDefineProperty = __webpack_require__(35);
 var emptyObject = __webpack_require__(36);
@@ -9485,7 +9306,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9586,7 +9407,7 @@ module.exports = ReactNoopUpdateQueue;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9611,7 +9432,7 @@ var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol
 module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9657,7 +9478,7 @@ function getIteratorFn(maybeIterable) {
 module.exports = getIteratorFn;
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9687,7 +9508,7 @@ var ReactElement = __webpack_require__(20);
 var checkReactTypeSpec = __webpack_require__(133);
 
 var canDefineProperty = __webpack_require__(35);
-var getIteratorFn = __webpack_require__(77);
+var getIteratorFn = __webpack_require__(76);
 var warning = __webpack_require__(2);
 var lowPriorityWarning = __webpack_require__(46);
 
@@ -9918,7 +9739,7 @@ module.exports = ReactElementValidator;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9937,7 +9758,7 @@ module.exports = ReactElementValidator;
 // Therefore we re-export development-only version with all the PropTypes checks here.
 // However if one is migrating to the `prop-types` npm library, they will go through the
 // `index.js` entry point, and it will branch depending on the environment.
-var factory = __webpack_require__(80);
+var factory = __webpack_require__(79);
 module.exports = function(isValidElement) {
   // It is still allowed in 15.5.
   var throwOnDirectAccess = false;
@@ -9946,7 +9767,7 @@ module.exports = function(isValidElement) {
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10466,7 +10287,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10489,7 +10310,7 @@ var ReactDOMComponentFlags = {
 module.exports = ReactDOMComponentFlags;
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10553,7 +10374,7 @@ module.exports = accumulateInto;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10589,7 +10410,7 @@ function forEachAccumulated(arr, cb, scope) {
 module.exports = forEachAccumulated;
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10627,7 +10448,7 @@ function getTextContentAccessor() {
 module.exports = getTextContentAccessor;
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10752,7 +10573,7 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10779,7 +10600,7 @@ var ReactFeatureFlags = {
 module.exports = ReactFeatureFlags;
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10907,7 +10728,7 @@ var inputValueTracking = {
 module.exports = inputValueTracking;
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10963,7 +10784,7 @@ function isTextInputElement(elem) {
 module.exports = isTextInputElement;
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10993,7 +10814,7 @@ var ViewportMetrics = {
 module.exports = ViewportMetrics;
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11050,7 +10871,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setTextContent;
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11082,7 +10903,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11241,7 +11062,7 @@ var CSSProperty = {
 module.exports = CSSProperty;
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11482,7 +11303,7 @@ module.exports = DOMPropertyOperations;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11504,7 +11325,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11710,7 +11531,7 @@ module.exports = ReactDOMSelect;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11730,8 +11551,8 @@ var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(5);
 
 var ReactCompositeComponent = __webpack_require__(184);
-var ReactEmptyComponent = __webpack_require__(98);
-var ReactHostComponent = __webpack_require__(99);
+var ReactEmptyComponent = __webpack_require__(97);
+var ReactHostComponent = __webpack_require__(98);
 
 var getNextDebugID = __webpack_require__(187);
 var invariant = __webpack_require__(1);
@@ -11845,7 +11666,7 @@ module.exports = instantiateReactComponent;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11891,7 +11712,7 @@ module.exports = ReactNodeTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11926,7 +11747,7 @@ ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 module.exports = ReactEmptyComponent;
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12000,7 +11821,7 @@ module.exports = ReactHostComponent;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12182,7 +12003,7 @@ module.exports = traverseAllChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12265,7 +12086,7 @@ module.exports = EventListener;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12284,8 +12105,8 @@ module.exports = EventListener;
 var ReactDOMSelection = __webpack_require__(201);
 
 var containsNode = __webpack_require__(203);
-var focusNode = __webpack_require__(91);
-var getActiveElement = __webpack_require__(103);
+var focusNode = __webpack_require__(90);
+var getActiveElement = __webpack_require__(102);
 
 function isInDocument(node) {
   return containsNode(document.documentElement, node);
@@ -12393,7 +12214,7 @@ var ReactInputSelection = {
 module.exports = ReactInputSelection;
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12437,7 +12258,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12463,7 +12284,7 @@ var ReactCurrentOwner = __webpack_require__(15);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDOMContainerInfo = __webpack_require__(218);
 var ReactDOMFeatureFlags = __webpack_require__(219);
-var ReactFeatureFlags = __webpack_require__(86);
+var ReactFeatureFlags = __webpack_require__(85);
 var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(12);
 var ReactMarkupChecksum = __webpack_require__(220);
@@ -12472,7 +12293,7 @@ var ReactUpdateQueue = __webpack_require__(61);
 var ReactUpdates = __webpack_require__(16);
 
 var emptyObject = __webpack_require__(36);
-var instantiateReactComponent = __webpack_require__(96);
+var instantiateReactComponent = __webpack_require__(95);
 var invariant = __webpack_require__(1);
 var setInnerHTML = __webpack_require__(40);
 var shouldUpdateReactComponent = __webpack_require__(59);
@@ -12981,7 +12802,7 @@ module.exports = ReactMount;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12997,7 +12818,7 @@ module.exports = ReactMount;
 
 
 
-var ReactNodeTypes = __webpack_require__(97);
+var ReactNodeTypes = __webpack_require__(96);
 
 function getHostComponentFromComposite(inst) {
   var type;
@@ -13016,7 +12837,7 @@ function getHostComponentFromComposite(inst) {
 module.exports = getHostComponentFromComposite;
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13093,7 +12914,7 @@ function resolvePathname(to) {
 /* harmony default export */ __webpack_exports__["default"] = (resolvePathname);
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13138,7 +12959,7 @@ function valueEqual(a, b) {
 /* harmony default export */ __webpack_exports__["default"] = (valueEqual);
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13199,7 +13020,7 @@ var isExtraneousPopstateEvent = exports.isExtraneousPopstateEvent = function isE
 };
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13309,18 +13130,18 @@ Link.contextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Link);
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Route__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Route__ = __webpack_require__(110);
 // Written in this round about way for babel-transform-imports
 
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_react_router_es_Route__["a" /* default */]);
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13469,7 +13290,7 @@ Route.childContextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Route);
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13533,6 +13354,185 @@ var supportsGoWithoutReloadUsingHash = function supportsGoWithoutReloadUsingHash
 var isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
   return event.state === undefined && navigator.userAgent.indexOf('CriOS') === -1;
 };
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(113);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Histogram = function (_Component) {
+    _inherits(Histogram, _Component);
+
+    function Histogram(props) {
+        _classCallCheck(this, Histogram);
+
+        var _this = _possibleConstructorReturn(this, (Histogram.__proto__ || Object.getPrototypeOf(Histogram)).call(this, props));
+
+        _this.state = {
+            g: null,
+            ledgend: []
+        };
+
+        _this.onRef = _this.onRef.bind(_this);
+        _this.renderHistogram = _this.renderHistogram.bind(_this);
+        return _this;
+    }
+
+    _createClass(Histogram, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.data !== this.props.data) {
+                this.setState({ ledgend: [] });
+                this.renderHistogram(nextProps.data);
+            }
+        }
+
+        // shouldComponentUpdate() { console.log("COMponent should update"); return false }
+
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ ledgend: [] });
+            this.renderHistogram(this.props.data);
+        }
+    }, {
+        key: 'onRef',
+        value: function onRef(ref) {
+            // this.setState({ g: d3.select(ref) }, () => this.renderHistogram(this.props.data))
+        }
+    }, {
+        key: 'renderHistogram',
+        value: function renderHistogram(dataSet) {
+            var _this2 = this;
+
+            // Initialize Axis and dimensions
+
+            var margin = { top: 20, right: 20, bottom: 70, left: 50 },
+                width = this.props.width - margin.left - margin.right,
+                height = this.props.height - margin.top - margin.bottom;
+
+            // Parse the date / time
+            // var	parseDate = d3.time.format("%Y-%m").parse;
+            var x = d3.scale.linear().range([0, width]);
+            // var x = d3.scale.linear().range([width, 0]);
+            var y = d3.scale.linear().range([height, 0]);
+
+            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
+
+            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(this.props.yTicks);
+
+            var targetElement = '.' + this.props.targetElement;
+            d3.select(targetElement + ' svg').remove();
+            var svg = d3.select(targetElement).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var yMax = 0;
+            var yMaxTmp = 0;
+
+            if (dataSet.length > 0) {
+
+                dataSet.map(function (experiment, index) {
+                    if (index === 0) {
+                        yMax = d3.max(dataSet[0].data, function (d) {
+                            return d[1];
+                        });
+                    } else {
+                        yMaxTmp = d3.max(dataSet[index].data, function (d) {
+                            return d[1];
+                        });
+                    }
+
+                    if (yMaxTmp > yMax) {
+                        yMax = yMaxTmp;
+                    }
+                });
+            }
+            x.domain([-1, d3.max(dataSet[0].data, function (d) {
+                return d[0];
+            })]);
+            y.domain([0, yMax]);
+
+            svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)");
+
+            svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("# of pxs");
+
+            var COLORS = ['steelblue', 'red', 'grey', 'green', 'black', 'purple'];
+
+            var tmpLedgendObject = [];
+
+            dataSet.map(function (experiment, index) {
+                svg.selectAll("bar").data(experiment.data).enter().append("rect").style("fill", COLORS[index]).attr("x", function (d) {
+                    return x(d[0]);
+                }).attr("width", 2).attr("y", function (d) {
+                    return y(d[1]);
+                }).attr("height", function (d) {
+                    return height - y(d[1]);
+                });
+
+                experiment.color = COLORS[index];
+
+                tmpLedgendObject.push(experiment);
+                _this2.setState({ ledgend: tmpLedgendObject });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'ledgend' },
+                    this.state.ledgend ? this.state.ledgend.map(function (experiment, index) {
+                        return _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement('span', { className: (0, _classnames2.default)(["ledgend-color", experiment.color]) }),
+                            _react2.default.createElement(
+                                'span',
+                                { className: 'ledgend-experiment-title' },
+                                experiment.title ? experiment.title : 'tmp'
+                            )
+                        );
+                    }) : null
+                ),
+                _react2.default.createElement(
+                    'svg',
+                    { width: this.props.width, height: this.props.height, className: this.props.targetElement },
+                    _react2.default.createElement('g', { ref: this.onRef })
+                )
+            );
+        }
+    }]);
+
+    return Histogram;
+}(_react.Component);
+
+exports.default = Histogram;
 
 /***/ }),
 /* 113 */
@@ -13793,7 +13793,7 @@ function isBuf(obj) {
 var eio = __webpack_require__(275);
 var Socket = __webpack_require__(123);
 var Emitter = __webpack_require__(26);
-var parser = __webpack_require__(71);
+var parser = __webpack_require__(70);
 var on = __webpack_require__(124);
 var bind = __webpack_require__(125);
 var debug = __webpack_require__(18)('socket.io-client:manager');
@@ -14368,7 +14368,7 @@ Manager.prototype.onreconnect = function () {
  * Module dependencies
  */
 
-var XMLHttpRequest = __webpack_require__(72);
+var XMLHttpRequest = __webpack_require__(71);
 var XHR = __webpack_require__(279);
 var JSONP = __webpack_require__(287);
 var websocket = __webpack_require__(288);
@@ -14428,7 +14428,7 @@ function polling (opts) {
  * Module dependencies.
  */
 
-var Transport = __webpack_require__(73);
+var Transport = __webpack_require__(72);
 var parseqs = __webpack_require__(44);
 var parser = __webpack_require__(27);
 var inherit = __webpack_require__(45);
@@ -14446,7 +14446,7 @@ module.exports = Polling;
  */
 
 var hasXHR2 = (function () {
-  var XMLHttpRequest = __webpack_require__(72);
+  var XMLHttpRequest = __webpack_require__(71);
   var xhr = new XMLHttpRequest({ xdomain: false });
   return null != xhr.responseType;
 })();
@@ -14770,7 +14770,7 @@ module.exports = function(arr, obj){
  * Module dependencies.
  */
 
-var parser = __webpack_require__(71);
+var parser = __webpack_require__(70);
 var Emitter = __webpack_require__(26);
 var toArray = __webpack_require__(291);
 var on = __webpack_require__(124);
@@ -15622,9 +15622,9 @@ module.exports = PooledClass;
 var _prodInvariant = __webpack_require__(23);
 
 var ReactCurrentOwner = __webpack_require__(15);
-var REACT_ELEMENT_TYPE = __webpack_require__(76);
+var REACT_ELEMENT_TYPE = __webpack_require__(75);
 
-var getIteratorFn = __webpack_require__(77);
+var getIteratorFn = __webpack_require__(76);
 var invariant = __webpack_require__(1);
 var KeyEscapeUtils = __webpack_require__(131);
 var warning = __webpack_require__(2);
@@ -15874,7 +15874,7 @@ var ReactElement = __webpack_require__(20);
  */
 var createDOMFactory = ReactElement.createFactory;
 if (process.env.NODE_ENV !== 'production') {
-  var ReactElementValidator = __webpack_require__(78);
+  var ReactElementValidator = __webpack_require__(77);
   createDOMFactory = ReactElementValidator.createFactory;
 }
 
@@ -16189,7 +16189,7 @@ module.exports = ReactPropTypesSecret;
 var _require = __webpack_require__(20),
     isValidElement = _require.isValidElement;
 
-var factory = __webpack_require__(79);
+var factory = __webpack_require__(78);
 
 module.exports = factory(isValidElement);
 
@@ -16298,13 +16298,13 @@ module.exports = '15.6.1';
 
 
 
-var _require = __webpack_require__(74),
+var _require = __webpack_require__(73),
     Component = _require.Component;
 
 var _require2 = __webpack_require__(20),
     isValidElement = _require2.isValidElement;
 
-var ReactNoopUpdateQueue = __webpack_require__(75);
+var ReactNoopUpdateQueue = __webpack_require__(74);
 var factory = __webpack_require__(140);
 
 module.exports = factory(Component, isValidElement, ReactNoopUpdateQueue);
@@ -17264,13 +17264,13 @@ module.exports = __webpack_require__(143);
 
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDefaultInjection = __webpack_require__(144);
-var ReactMount = __webpack_require__(104);
+var ReactMount = __webpack_require__(103);
 var ReactReconciler = __webpack_require__(24);
 var ReactUpdates = __webpack_require__(16);
 var ReactVersion = __webpack_require__(222);
 
 var findDOMNode = __webpack_require__(223);
-var getHostComponentFromComposite = __webpack_require__(105);
+var getHostComponentFromComposite = __webpack_require__(104);
 var renderSubtreeIntoContainer = __webpack_require__(224);
 var warning = __webpack_require__(2);
 
@@ -17940,7 +17940,7 @@ var _assign = __webpack_require__(5);
 
 var PooledClass = __webpack_require__(21);
 
-var getTextContentAccessor = __webpack_require__(84);
+var getTextContentAccessor = __webpack_require__(83);
 
 /**
  * This helper class stores information about text content of a target node,
@@ -18126,10 +18126,10 @@ var ReactDOMComponentTree = __webpack_require__(6);
 var ReactUpdates = __webpack_require__(16);
 var SyntheticEvent = __webpack_require__(17);
 
-var inputValueTracking = __webpack_require__(87);
+var inputValueTracking = __webpack_require__(86);
 var getEventTarget = __webpack_require__(50);
 var isEventSupported = __webpack_require__(51);
-var isTextInputElement = __webpack_require__(88);
+var isTextInputElement = __webpack_require__(87);
 
 var eventTypes = {
   change: {
@@ -19977,15 +19977,15 @@ var CSSPropertyOperations = __webpack_require__(169);
 var DOMLazyTree = __webpack_require__(25);
 var DOMNamespaces = __webpack_require__(54);
 var DOMProperty = __webpack_require__(19);
-var DOMPropertyOperations = __webpack_require__(93);
+var DOMPropertyOperations = __webpack_require__(92);
 var EventPluginHub = __webpack_require__(29);
 var EventPluginRegistry = __webpack_require__(37);
 var ReactBrowserEventEmitter = __webpack_require__(42);
-var ReactDOMComponentFlags = __webpack_require__(81);
+var ReactDOMComponentFlags = __webpack_require__(80);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDOMInput = __webpack_require__(179);
 var ReactDOMOption = __webpack_require__(180);
-var ReactDOMSelect = __webpack_require__(95);
+var ReactDOMSelect = __webpack_require__(94);
 var ReactDOMTextarea = __webpack_require__(181);
 var ReactInstrumentation = __webpack_require__(12);
 var ReactMultiChild = __webpack_require__(182);
@@ -19996,7 +19996,7 @@ var escapeTextContentForBrowser = __webpack_require__(41);
 var invariant = __webpack_require__(1);
 var isEventSupported = __webpack_require__(51);
 var shallowEqual = __webpack_require__(58);
-var inputValueTracking = __webpack_require__(87);
+var inputValueTracking = __webpack_require__(86);
 var validateDOMNesting = __webpack_require__(62);
 var warning = __webpack_require__(2);
 
@@ -20985,7 +20985,7 @@ module.exports = ReactDOMComponent;
 
 var ReactDOMComponentTree = __webpack_require__(6);
 
-var focusNode = __webpack_require__(91);
+var focusNode = __webpack_require__(90);
 
 var AutoFocusUtils = {
   focusDOMComponent: function () {
@@ -21012,7 +21012,7 @@ module.exports = AutoFocusUtils;
 
 
 
-var CSSProperty = __webpack_require__(92);
+var CSSProperty = __webpack_require__(91);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactInstrumentation = __webpack_require__(12);
 
@@ -21315,7 +21315,7 @@ module.exports = camelize;
 
 
 
-var CSSProperty = __webpack_require__(92);
+var CSSProperty = __webpack_require__(91);
 var warning = __webpack_require__(2);
 
 var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -21694,7 +21694,7 @@ module.exports = getVendorPrefixedEventName;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(5);
 
-var DOMPropertyOperations = __webpack_require__(93);
+var DOMPropertyOperations = __webpack_require__(92);
 var LinkedValueUtils = __webpack_require__(56);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactUpdates = __webpack_require__(16);
@@ -21988,7 +21988,7 @@ var _assign = __webpack_require__(5);
 
 var React = __webpack_require__(22);
 var ReactDOMComponentTree = __webpack_require__(6);
-var ReactDOMSelect = __webpack_require__(95);
+var ReactDOMSelect = __webpack_require__(94);
 
 var warning = __webpack_require__(2);
 var didWarnInvalidOptionChildren = false;
@@ -22732,10 +22732,10 @@ module.exports = ReactMultiChild;
 
 var ReactReconciler = __webpack_require__(24);
 
-var instantiateReactComponent = __webpack_require__(96);
+var instantiateReactComponent = __webpack_require__(95);
 var KeyEscapeUtils = __webpack_require__(60);
 var shouldUpdateReactComponent = __webpack_require__(59);
-var traverseAllChildren = __webpack_require__(100);
+var traverseAllChildren = __webpack_require__(99);
 var warning = __webpack_require__(2);
 
 var ReactComponentTreeHook;
@@ -22898,7 +22898,7 @@ var ReactCurrentOwner = __webpack_require__(15);
 var ReactErrorUtils = __webpack_require__(49);
 var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(12);
-var ReactNodeTypes = __webpack_require__(97);
+var ReactNodeTypes = __webpack_require__(96);
 var ReactReconciler = __webpack_require__(24);
 
 if (process.env.NODE_ENV !== 'production') {
@@ -23798,7 +23798,7 @@ module.exports = ReactCompositeComponent;
 var _prodInvariant = __webpack_require__(3);
 
 var ReactPropTypeLocationNames = __webpack_require__(186);
-var ReactPropTypesSecret = __webpack_require__(94);
+var ReactPropTypesSecret = __webpack_require__(93);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -24018,7 +24018,7 @@ module.exports = getIteratorFn;
 
 
 var KeyEscapeUtils = __webpack_require__(60);
-var traverseAllChildren = __webpack_require__(100);
+var traverseAllChildren = __webpack_require__(99);
 var warning = __webpack_require__(2);
 
 var ReactComponentTreeHook;
@@ -24789,7 +24789,7 @@ module.exports = ReactDefaultBatchingStrategy;
 
 var _assign = __webpack_require__(5);
 
-var EventListener = __webpack_require__(101);
+var EventListener = __webpack_require__(100);
 var ExecutionEnvironment = __webpack_require__(7);
 var PooledClass = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(6);
@@ -24995,9 +24995,9 @@ var DOMProperty = __webpack_require__(19);
 var EventPluginHub = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(48);
 var ReactComponentEnvironment = __webpack_require__(57);
-var ReactEmptyComponent = __webpack_require__(98);
+var ReactEmptyComponent = __webpack_require__(97);
 var ReactBrowserEventEmitter = __webpack_require__(42);
-var ReactHostComponent = __webpack_require__(99);
+var ReactHostComponent = __webpack_require__(98);
 var ReactUpdates = __webpack_require__(16);
 
 var ReactInjection = {
@@ -25032,10 +25032,10 @@ module.exports = ReactInjection;
 
 var _assign = __webpack_require__(5);
 
-var CallbackQueue = __webpack_require__(85);
+var CallbackQueue = __webpack_require__(84);
 var PooledClass = __webpack_require__(21);
 var ReactBrowserEventEmitter = __webpack_require__(42);
-var ReactInputSelection = __webpack_require__(102);
+var ReactInputSelection = __webpack_require__(101);
 var ReactInstrumentation = __webpack_require__(12);
 var Transaction = __webpack_require__(38);
 var ReactUpdateQueue = __webpack_require__(61);
@@ -25217,7 +25217,7 @@ module.exports = ReactReconcileTransaction;
 var ExecutionEnvironment = __webpack_require__(7);
 
 var getNodeForCharacterOffset = __webpack_require__(202);
-var getTextContentAccessor = __webpack_require__(84);
+var getTextContentAccessor = __webpack_require__(83);
 
 /**
  * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -25925,11 +25925,11 @@ module.exports = SVGDOMPropertyConfig;
 var EventPropagators = __webpack_require__(28);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactDOMComponentTree = __webpack_require__(6);
-var ReactInputSelection = __webpack_require__(102);
+var ReactInputSelection = __webpack_require__(101);
 var SyntheticEvent = __webpack_require__(17);
 
-var getActiveElement = __webpack_require__(103);
-var isTextInputElement = __webpack_require__(88);
+var getActiveElement = __webpack_require__(102);
+var isTextInputElement = __webpack_require__(87);
 var shallowEqual = __webpack_require__(58);
 
 var skipSelectionChangeEvent = ExecutionEnvironment.canUseDOM && 'documentMode' in document && document.documentMode <= 11;
@@ -26118,7 +26118,7 @@ module.exports = SelectEventPlugin;
 
 var _prodInvariant = __webpack_require__(3);
 
-var EventListener = __webpack_require__(101);
+var EventListener = __webpack_require__(100);
 var EventPropagators = __webpack_require__(28);
 var ReactDOMComponentTree = __webpack_require__(6);
 var SyntheticAnimationEvent = __webpack_require__(209);
@@ -27064,7 +27064,7 @@ var ReactCurrentOwner = __webpack_require__(15);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInstanceMap = __webpack_require__(31);
 
-var getHostComponentFromComposite = __webpack_require__(105);
+var getHostComponentFromComposite = __webpack_require__(104);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
@@ -27124,7 +27124,7 @@ module.exports = findDOMNode;
 
 
 
-var ReactMount = __webpack_require__(104);
+var ReactMount = __webpack_require__(103);
 
 module.exports = ReactMount.renderSubtreeIntoContainer;
 
@@ -27714,7 +27714,7 @@ var _createTransitionManager = __webpack_require__(65);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _DOMUtils = __webpack_require__(108);
+var _DOMUtils = __webpack_require__(107);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28091,7 +28091,7 @@ var _createTransitionManager = __webpack_require__(65);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _DOMUtils = __webpack_require__(108);
+var _DOMUtils = __webpack_require__(107);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28657,8 +28657,8 @@ exports.default = createMemoryHistory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Route__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Link__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Route__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Link__ = __webpack_require__(108);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -29430,7 +29430,7 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(111);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -29734,7 +29734,7 @@ var createBrowserHistory = function createBrowserHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(111);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -30543,7 +30543,7 @@ Switch.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__ = __webpack_require__(256);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Route__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Route__ = __webpack_require__(110);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -30682,7 +30682,7 @@ var _ScatterPlot = __webpack_require__(261);
 
 var _ScatterPlot2 = _interopRequireDefault(_ScatterPlot);
 
-var _Histogram = __webpack_require__(70);
+var _Histogram = __webpack_require__(112);
 
 var _Histogram2 = _interopRequireDefault(_Histogram);
 
@@ -30707,7 +30707,10 @@ var Experiment = function (_Component) {
             stokesDataSet: null,
             index: 0,
             glcmDataset: null,
-            histogramDataset: null
+            histogramDataset: null,
+            hasGlcmData: false,
+            hasStokesData: false,
+            params: {}
         };
         _this.requestData = _this.requestData.bind(_this);
         _this.renderAll = _this.renderAll.bind(_this);
@@ -30715,13 +30718,27 @@ var Experiment = function (_Component) {
         _this.renderStatistics = _this.renderStatistics.bind(_this);
         _this.requestGlcmData = _this.requestGlcmData.bind(_this);
         _this.requestHistogramData = _this.requestHistogramData.bind(_this);
+        _this.generateGlcmData = _this.generateGlcmData.bind(_this);
+        _this.generateHistogramData = _this.generateHistogramData.bind(_this);
         return _this;
     }
 
     _createClass(Experiment, [{
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.setState({});
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.requestData();
+            var expId = '' + this.props.match.params.experiment;
+            var params = {
+                id: expId
+            };
+
+            // this.requestGlcmData(params);
+            // this.requestHistogramData(params);
         }
     }, {
         key: 'requestGlcmData',
@@ -30730,23 +30747,24 @@ var Experiment = function (_Component) {
 
             var request = new XMLHttpRequest();
 
-            request.open('POST', 'http://localhost:5000/api/experiments/glcm', true);
+            request.open('POST', 'http://localhost:5000/api/experiments/glcm');
 
             request.onload = function () {
                 if (request.status >= 200 && request.status < 400) {
                     var rawdata = JSON.parse(request.responseText);
                     var data = rawdata.exp;
                     var dataset = [];
-                    if (data.glcm) {
+                    if (data && data.glcm) {
                         _this2.setState({
-                            glcmDataset: data.glcm
+                            glcmDataset: data.glcm,
+                            hasGlcmData: true
                         });
                     } else {
-                        // this.setState({data: data});
+                        _this2.setState({ hasGlcmData: false });
                     }
                 } else {
-                        // We reached our target server, but it returned an error
-                    }
+                    // We reached our target server, but it returned an error
+                }
             };
             request.onerror = function () {
                 // There was a connection error of some sort
@@ -30760,14 +30778,14 @@ var Experiment = function (_Component) {
 
             var request = new XMLHttpRequest();
 
-            request.open('POST', 'http://localhost:5000/api/experiments/histograms', true);
+            request.open('POST', 'http://localhost:5000/api/experiments/histograms');
 
             request.onload = function () {
                 if (request.status >= 200 && request.status < 400) {
                     var rawdata = JSON.parse(request.responseText);
                     var data = rawdata.exp;
                     var dataset = [];
-                    if (data.histograms && data.histograms.stokes) {
+                    if (data && data.histograms && data.histograms.stokes) {
                         var S1 = { data: data.histograms.stokes.S1.data, title: 'S1 ' + _this3.state.data.title };
                         var S2 = { data: data.histograms.stokes.S2.data, title: 'S2 ' + _this3.state.data.title };
 
@@ -30778,16 +30796,17 @@ var Experiment = function (_Component) {
                             stokesDataSet: dataset,
                             histogramDataset: data
                         });
-                        console.log("NICHOLAS", _this3.state.histogramDataset);
+                        _this3.setState({ hasStokesData: true });
                     } else {
-                        // this.setState({data: data});
+                        _this3.setState({ hasStokesData: false });
                     }
                 } else {
-                        // We reached our target server, but it returned an error
-                    }
+                    // We reached our target server, but it returned an error
+                }
             };
-            request.onerror = function () {
+            request.onerror = function (err) {
                 // There was a connection error of some sort
+                console.log('err', err);
             };
             request.send(JSON.stringify(params));
         }
@@ -30801,20 +30820,36 @@ var Experiment = function (_Component) {
             var params = {
                 id: expId
             };
+            this.setState({ params: { id: expId } });
 
-            this.requestGlcmData(params);
-            this.requestHistogramData(params);
+            // this.requestGlcmData(params);
+            // this.requestHistogramData(params);
 
-            request.open('POST', 'http://localhost:5000/api/experiments', true);
+            request.open('POST', 'http://localhost:5000/api/experiments');
 
             request.onload = function () {
                 if (request.status >= 200 && request.status < 400) {
                     var rawdata = JSON.parse(request.responseText);
                     var data = rawdata.exp;
-                    console.log("DATA", data);
                     var dataset = [];
 
                     _this4.setState({ data: data });
+
+                    if (data && data.stokes) {
+                        var hist_params = {
+                            id: data.stokes.$oid
+                        };
+                        console.log("PARAMS", hist_params);
+                        _this4.requestHistogramData(hist_params);
+                    }
+
+                    if (data && data.glcm) {
+                        var glcm_params = {
+                            id: data.glcm.$oid
+                        };
+
+                        _this4.requestGlcmData(params);
+                    }
                 } else {
                     // We reached our target server, but it returned an error
                 }
@@ -30827,8 +30862,6 @@ var Experiment = function (_Component) {
     }, {
         key: 'setStokesDataset',
         value: function setStokesDataset(index) {
-            console.log("histogram", this.state.histogramDataset);
-            console.log("jack", this.state.stokesDataSet);
             var S1 = this.state.histogramDataset ? { data: this.state.histogramDataset.histograms.stokes.S1.data, title: 'S1 ' + this.state.data.title } : [];
             var S2 = this.state.histogramDataset ? { data: this.state.histogramDataset.histograms.stokes.S2.data, title: 'S2 ' + this.state.data.title } : [];
 
@@ -30841,7 +30874,6 @@ var Experiment = function (_Component) {
                     stokesDataSet: dataSet,
                     index: 0
                 });
-                console.log("cow", stokesDataSet);
             } else if (index === 1) {
                 // const S1 = this.state.histogramDataset[0]
                 this.setState({
@@ -30948,23 +30980,85 @@ var Experiment = function (_Component) {
             );
         }
     }, {
+        key: 'generateGlcmData',
+        value: function generateGlcmData() {
+            var _this5 = this;
+
+            var xhr = new XMLHttpRequest();
+            var expId = '' + this.props.match.params.experiment;
+            var images = this.state.data.images;
+            var params = {
+                id: expId,
+                images: images
+            };
+            // fetch('http://localhost:5000/api/generate/glcm', params, )
+            console.log("PARAMS", params);
+            xhr.open('POST', 'http://localhost:5000/api/generate/glcm', true);
+
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    console.log("successful upload");
+                    _this5.requestGlcmData(params);
+                } else {
+                    console.log("An error was returned");
+                }
+            };
+
+            xhr.onerror = function (err) {
+                console.log("error: ", err);
+            };
+
+            xhr.send(JSON.stringify(params));
+        }
+    }, {
+        key: 'generateHistogramData',
+        value: function generateHistogramData() {
+            var _this6 = this;
+
+            var xhr = new XMLHttpRequest();
+            var expId = '' + this.props.match.params.experiment;
+            var images = this.state.data.images;
+            var params = {
+                id: expId,
+                images: images
+            };
+            xhr.open('POST', 'http://localhost:5000/api/generate/stokes', true);
+
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    console.log("successful upload");
+                    // var tmpArr = this.state.experiments;
+                    // var rawdata = JSON.parse(xhr.responseText).data;
+                    // var data = tmpArr.concat(rawdata);
+                    // this.setState({
+                    //     experiments: data
+                    // });
+                    _this6.requestHistogramData(params);
+                } else {
+                    console.log("An error was returned");
+                }
+            };
+
+            xhr.onerror = function (err) {
+                console.log("error: ", err);
+            };
+
+            xhr.send(JSON.stringify(params));
+        }
+    }, {
         key: 'renderAll',
         value: function renderAll() {
-            var _this5 = this;
+            var _this7 = this;
 
             if (this.state.data.images) {
                 var scatterPlotData = [];
                 var stokesScatter = [];
-                var glcmData = this.state.glcmDataset ? this.state.glcmDataset : null;
-                var glcm = '';
-                if (glcmData) {
-                    glcm = JSON.parse(glcmData.replace(/'/g, '"'));
+                var glcm = this.state.glcmDataset ? this.state.glcmDataset : null;
+                if (glcm) {
                     glcm.map(function (sample, index) {
-                        // stokesScatter.push([sample.S[index][0], sample.S[index][1]])
-                        scatterPlotData.push([sample.dissimilarity, sample.correlation]);
+                        scatterPlotData.push([sample.data.dissimilarity, sample.data.correlation]);
                     });
                 }
-                console.log("ScatterPlotData", scatterPlotData);
                 return _react2.default.createElement(
                     'div',
                     null,
@@ -30975,7 +31069,8 @@ var Experiment = function (_Component) {
                     }),
                     _react2.default.createElement(_ExperimentIntro2.default, {
                         summary: this.state.data.summary,
-                        description: this.state.data.description
+                        description: this.state.data.description,
+                        id: this.state.data._id.$oid
                     }),
                     this.state.histogramDataset ? _react2.default.createElement(_ExperimentImages2.default, {
                         images: this.state.data.images,
@@ -30992,30 +31087,34 @@ var Experiment = function (_Component) {
                                 null,
                                 'Stokes Histograms'
                             ),
-                            _react2.default.createElement(
+                            this.state.hasStokesData ? _react2.default.createElement(
                                 'div',
                                 { className: 'histogram-filter-container' },
                                 _react2.default.createElement(
                                     'span',
                                     { className: 'histogram-filter button btn', onClick: function onClick() {
-                                            return _this5.setStokesDataset(0);
+                                            return _this7.setStokesDataset(0);
                                         } },
                                     'All'
                                 ),
                                 _react2.default.createElement(
                                     'span',
                                     { className: 'histogram-filter button btn', onClick: function onClick() {
-                                            return _this5.setStokesDataset(1);
+                                            return _this7.setStokesDataset(1);
                                         } },
                                     'S1'
                                 ),
                                 _react2.default.createElement(
                                     'span',
                                     { className: 'histogram-filter button btn', onClick: function onClick() {
-                                            return _this5.setStokesDataset(2);
+                                            return _this7.setStokesDataset(2);
                                         } },
                                     'S2'
                                 )
+                            ) : _react2.default.createElement(
+                                'div',
+                                { onClick: this.generateHistogramData },
+                                'Generate Histogram'
                             ),
                             this.state.stokesDataSet ? _react2.default.createElement(_Histogram2.default, {
                                 data: this.state.stokesDataSet,
@@ -31041,14 +31140,13 @@ var Experiment = function (_Component) {
                                     null,
                                     'GLCM Scatter Plot'
                                 ),
-                                _react2.default.createElement(_ScatterPlot2.default, {
-                                    data: scatterPlotData,
+                                this.state.hasGlcmData ? _react2.default.createElement(_ScatterPlot2.default, {
+                                    data: [scatterPlotData],
                                     container: 'glcm-scatter-plot'
-                                }),
-                                _react2.default.createElement(
-                                    'h4',
-                                    null,
-                                    'Stokes Comparision'
+                                }) : _react2.default.createElement(
+                                    'div',
+                                    { className: 'button', onClick: this.generateGlcmData },
+                                    'Generate GLCM'
                                 )
                             ) : null
                         ),
@@ -31065,7 +31163,7 @@ var Experiment = function (_Component) {
                                     return _react2.default.createElement(
                                         'div',
                                         { className: 'sample-container' },
-                                        _react2.default.createElement('img', { src: 'http://localhost:8090/data/' + sample.file, role: 'presentation' }),
+                                        _react2.default.createElement('img', { src: 'http://localhost:8090/data/' + sample.stokes.filename, role: 'presentation' }),
                                         _react2.default.createElement(
                                             'div',
                                             { className: 'sample-stats-container' },
@@ -31076,13 +31174,13 @@ var Experiment = function (_Component) {
                                                     'div',
                                                     null,
                                                     'GLCM Correlation',
-                                                    sample.correlation
+                                                    sample.data.correlation
                                                 ),
                                                 _react2.default.createElement(
                                                     'div',
                                                     null,
                                                     ' GLCM Disimilarity',
-                                                    sample.dissimilarity
+                                                    sample.data.dissimilarity
                                                 )
                                             ),
                                             _react2.default.createElement(
@@ -31092,16 +31190,16 @@ var Experiment = function (_Component) {
                                                     'div',
                                                     null,
                                                     'S1 Mean: ',
-                                                    sample.S1.stats.mean
+                                                    sample.stokes.S1.stats.mean
                                                 ),
                                                 _react2.default.createElement(
                                                     'div',
                                                     null,
                                                     'S1 Variance: ',
-                                                    sample.S1.stats.std
+                                                    sample.stokes.S1.stats.std
                                                 ),
                                                 _react2.default.createElement(_Histogram2.default, {
-                                                    data: [sample.S1],
+                                                    data: [sample.stokes.S1],
                                                     targetElement: 'exp-S1-stokes-histograms-' + index,
                                                     width: 300,
                                                     height: 150,
@@ -31115,16 +31213,16 @@ var Experiment = function (_Component) {
                                                     'div',
                                                     null,
                                                     'S2 Mean: ',
-                                                    sample.S2.stats.mean
+                                                    sample.stokes.S2.stats.mean
                                                 ),
                                                 _react2.default.createElement(
                                                     'div',
                                                     null,
                                                     'S2 Variance: ',
-                                                    sample.S2.stats.std
+                                                    sample.stokes.S2.stats.std
                                                 ),
                                                 _react2.default.createElement(_Histogram2.default, {
-                                                    data: [sample.S2],
+                                                    data: [sample.stokes.S2],
                                                     targetElement: 'exp-S2-stokes-histograms-' + index,
                                                     width: 300,
                                                     height: 150,
@@ -31256,27 +31354,151 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ExperimentIntro = function (_Component) {
     _inherits(ExperimentIntro, _Component);
 
-    function ExperimentIntro() {
+    function ExperimentIntro(props) {
         _classCallCheck(this, ExperimentIntro);
 
-        return _possibleConstructorReturn(this, (ExperimentIntro.__proto__ || Object.getPrototypeOf(ExperimentIntro)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (ExperimentIntro.__proto__ || Object.getPrototypeOf(ExperimentIntro)).call(this, props));
+
+        _this.state = {
+            tags: ['polarizance', 'diattenuation', 'red-oak', 'american-ash', 'sugar-maple', 'red', 'broadband', '0wk', '1wk', 'specular', 'diffuse'],
+            activeTags: []
+        };
+
+        _this.handleTagClick = _this.handleTagClick.bind(_this);
+        _this.handleTagSave = _this.handleTagSave.bind(_this);
+        _this.handleTagCancel = _this.handleTagCancel.bind(_this);
+        return _this;
     }
 
     _createClass(ExperimentIntro, [{
-        key: "render",
+        key: 'handleTagClick',
+        value: function handleTagClick(tag) {
+            var activeTags = this.state.activeTags;
+            var tags = this.state.tags;
+            var tagIndexToRemove = tags.indexOf(tag);
+            var activeTagIndexToRemove = activeTags.indexOf(tag);
+
+            if (tagIndexToRemove > -1) {
+                tags.splice(tagIndexToRemove, 1);
+                // console.log("newTags", newTags);
+                activeTags.push(tag);
+
+                this.setState({
+                    tags: tags,
+                    activeTags: activeTags
+                });
+            } else if (activeTagIndexToRemove > -1) {
+                activeTags.splice(activeTagIndexToRemove, 1);
+                // console.log("newTags", newTags);
+                tags.push(tag);
+
+                this.setState({
+                    tags: tags,
+                    activeTags: activeTags
+                });
+            }
+        }
+    }, {
+        key: 'handleTagSave',
+        value: function handleTagSave() {
+            // var expId = `${this.props.match.params.experiment}`;
+            var params = {
+                id: this.props.id,
+                tags: this.state.activeTags
+            };
+            console.log('params', JSON.stringify(params));
+
+            var request = new XMLHttpRequest();
+
+            request.open('POST', 'http://localhost:5000/api/experiments/tags', true);
+
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    var rawdata = JSON.parse(request.responseText);
+                    var data = rawdata.exp;
+                    var dataset = [];
+
+                    console.log("data", data);
+                    // this.setState({data: data});
+                } else {
+                        // We reached our target server, but it returned an error
+                    }
+            };
+            request.onerror = function () {
+                // There was a connection error of some sort
+            };
+            request.send(JSON.stringify(params));
+        }
+    }, {
+        key: 'handleTagCancel',
+        value: function handleTagCancel() {
+            var expId = '' + this.props.match.params.experiment;
+            var params = {
+                id: expId
+            };
+        }
+    }, {
+        key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            var activeTags = this.state.activeTags;
+
+            console.log(typeof activeTags !== 'undefined' && activeTags.length > 0);
+            console.log("tabfdgb", activeTags);
+
             return _react2.default.createElement(
-                "div",
-                { className: "exp-introduction" },
+                'div',
+                { className: 'exp-introduction' },
                 _react2.default.createElement(
-                    "p",
+                    'p',
                     null,
                     this.props.summary
                 ),
                 _react2.default.createElement(
-                    "p",
+                    'p',
                     null,
                     this.props.description
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'tags-container' },
+                    _react2.default.createElement(
+                        'span',
+                        { onClick: this.handleTagSave },
+                        'save'
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        { onClick: this.handleTagCancel },
+                        'cancel'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'activeTags' },
+                        typeof activeTags !== 'undefined' && activeTags.length > 0 ? activeTags.map(function (tag, index) {
+                            return _react2.default.createElement(
+                                'span',
+                                { className: 'tag btn button', onClick: function onClick() {
+                                        return _this2.handleTagClick(tag);
+                                    } },
+                                tag
+                            );
+                        }) : null
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'tags' },
+                        this.state.tags ? this.state.tags.map(function (tag, index) {
+                            return _react2.default.createElement(
+                                'span',
+                                { className: 'tag btn button', onClick: function onClick() {
+                                        return _this2.handleTagClick(tag);
+                                    } },
+                                tag
+                            );
+                        }) : null
+                    )
                 )
             );
         }
@@ -31304,7 +31526,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Histogram = __webpack_require__(70);
+var _Histogram = __webpack_require__(112);
 
 var _Histogram2 = _interopRequireDefault(_Histogram);
 
@@ -31491,34 +31713,33 @@ var ScatterPlot = function (_Component) {
     }
 
     _createClass(ScatterPlot, [{
-        key: "componentWillReceiveProps",
+        key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            if (nextProps.data !== this.props.data) {
-                // this.setState({ledgend: []});
-                console.log("nextProps", nextProps);
-                this.renderData(nextProps.data);
-            }
+            // if (nextProps.data !== this.props.data) {
+            // this.setState({ledgend: []});
+            console.log("nextProps", nextProps);
+            this.renderData(nextProps.data);
+            // }
         }
     }, {
-        key: "renderData",
-        value: function renderData(data) {
-            console.log("SCATTER PLOT DAta", data);
+        key: 'renderData',
+        value: function renderData(dataSet) {
             d3.select(this.props.container + ' svg').remove();
             var margin = { top: 20, right: 15, bottom: 60, left: 60 },
                 width = 600 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
 
-            var xMin = d3.min(data, function (d) {
+            var xMin = d3.min(dataSet[0], function (d) {
                 return d[0];
             });
-            var xMax = d3.max(data, function (d) {
+            var xMax = d3.max(dataSet[0], function (d) {
                 return d[0];
             });
 
-            var yMin = d3.min(data, function (d) {
+            var yMin = d3.min(dataSet[0], function (d) {
                 return d[1];
             });
-            var yMax = d3.max(data, function (d) {
+            var yMax = d3.max(dataSet[0], function (d) {
                 return d[1];
             });
 
@@ -31542,32 +31763,35 @@ var ScatterPlot = function (_Component) {
             // .text('#of pxs')
 
             main.append('g').attr('transform', 'translate(0,0)').attr('class', 'main axis date').call(yAxis);
-
+            console.log("SCATTER PLOT DAta Ericksen", dataSet);
             var g = main.append("svg:g");
-
-            g.selectAll("scatter-dots").data(data).enter().append("svg:circle").attr("cx", function (d, i) {
-                return x(d[0]);
-            }).attr("cy", function (d) {
-                return y(d[1]);
-            }).attr("r", 4);
+            var COLORS = ['steelblue', 'red', 'grey', 'green', 'black', 'purple'];
+            dataSet.map(function (data, index) {
+                console.log("color", COLORS[index]);
+                g.selectAll("scatter-dots").data(data).enter().append("svg:circle").style("fill", COLORS[index]).attr("cx", function (d, i) {
+                    return x(d[0]);
+                }).attr("cy", function (d) {
+                    return y(d[1]);
+                }).attr("r", 4);
+            });
         }
     }, {
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             this.renderData(this.props.data);
         }
     }, {
-        key: "componentWillUnmount",
+        key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             d3.select(this.props.container + ' svg').remove();
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                "div",
+                'div',
                 null,
-                _react2.default.createElement("svg", { width: 600, height: 300, className: this.props.container })
+                _react2.default.createElement('svg', { width: 600, height: 300, className: this.props.container })
             );
         }
     }]);
@@ -31622,6 +31846,7 @@ var ExperimentsMenu = function (_Component) {
         };
 
         _this.requestData = _this.requestData.bind(_this);
+        _this.exportGlcmData = _this.exportGlcmData.bind(_this);
         return _this;
     }
 
@@ -31642,6 +31867,7 @@ var ExperimentsMenu = function (_Component) {
                 if (request.status >= 200 && request.status < 400) {
                     var rawdata = JSON.parse(request.responseText);
                     var data = rawdata.exp;
+
                     _this2.setState({
                         data: data
                     });
@@ -31658,8 +31884,11 @@ var ExperimentsMenu = function (_Component) {
         }
     }, {
         key: 'addCompare',
-        value: function addCompare(id) {
+        value: function addCompare(experiment) {
+            var id = experiment._id.$oid;
             var list = this.state.compareList;
+            var exportList = this.state.exportList;
+
             if (list.includes(id)) {
                 var i = list.indexOf(id);
                 list.splice(i, 1);
@@ -31671,13 +31900,133 @@ var ExperimentsMenu = function (_Component) {
             });
         }
     }, {
+        key: 'exportGlcmData',
+        value: function exportGlcmData() {
+            // var ids = `${this.props.match.params.ids}`;
+            var idArray = this.state.compareList;
+
+            var csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += 'Type,Color,Age,Direction,S1mean,S1std,S2mean,S2std,Corr,Diss,Contrast,Energy,ASM' + "\n";
+
+            idArray.map(function (id, index) {
+                // var request = new XMLHttpRequest();
+
+                var params = {
+                    id: id
+                };
+                fetch('http://localhost:5000/api/experiments/glcm', { method: 'POST', body: JSON.stringify(params) }).then(function (response) {
+                    return response.json();
+                }).then(function (rawdata) {
+                    var data = rawdata.exp;
+                    console.log("DASDF", data);
+                    var glcm = data.glcm;
+                    console.log("GLCM", glcm);
+                    if (glcm) {
+                        glcm.map(function (sample, index) {
+                            var S1 = sample.stokes.S1.stats;
+                            var S2 = sample.stokes.S2.stats;
+
+                            var S1mean = S1.mean;
+                            var S1std = S1.std;
+                            var S2mean = S2.mean;
+                            var S2std = S2.std;
+                            var corr = sample.data.correlation;
+                            var diss = sample.data.dissimilarity;
+                            var contrast = sample.data.contrast;
+                            var energy = sample.data.energy;
+                            var asm = sample.data.asm;
+
+                            var file = sample.stokes.filename.split('/');
+                            var info = file[0].split('-');
+                            // console.log("INFo", info);
+                            var color = info[3];
+                            var direction = info[4];
+
+                            var age = info[5] ? info[5] : '0wk';
+                            var type = info[0] + '-' + info[1];
+
+                            var all = [type, color, age, direction, S1mean, S1std, S2mean, S2std, corr, diss, contrast, energy, asm];
+                            // console.log("ALL", all);
+
+                            var dataString = all.join(",");
+                            csvContent += dataString + "\n";
+                        });
+                    }
+                    console.log("index", index);
+                    console.log("idlength", idArray.length);
+                    if (index === idArray.length - 1) {
+                        console.log("sail away");
+                        var encodedUri = encodeURI(csvContent);
+                        window.open(encodedUri);
+                    }
+                });
+
+                //     request.open('POST', 'http://localhost:5000/api/experiments/glcm', true);
+                //
+                //     request.onload = () => {
+                //       if (request.status >= 200 && request.status < 400) {
+                //         var rawdata = JSON.parse(request.responseText);
+                //         var data = rawdata.exp;
+                //         console.log("DASDF", data);
+                //         var glcm = data.glcm;
+                //         if(glcm) {
+                //             glcm.map((sample, index) => {
+                //                 const S1 = sample.stokes.S1.stats;
+                //                 const S2 = sample.stokes.S2.stats;
+                //
+                //                 const S1mean = S1.mean;
+                //                 const S1std = S1.std;
+                //                 const S2mean = S2.mean;
+                //                 const S2std = S2.std;
+                //                 const corr = sample.data.correlation;
+                //                 const diss = sample.data.dissimilarity;
+                //                 const contrast = sample.data.contrast;
+                //                 const energy = sample.data.energy;
+                //                 const asm = sample.data.asm;
+                //
+                //                 const file = sample.stokes.filename.split('/');
+                //                 const info = file[0].split('-')
+                //
+                //                 const color = info[3];
+                //                 const direction = info[4];
+                //
+                //                 const age = info[5] ? info[5] : '0wk';
+                //                 const type = info[0] + '-' + info[1];
+                //
+                //                 const all = [type, color, age, direction, S1mean, S1std, S2mean, S2std, corr, diss, contrast, energy, asm];
+                //                 // console.log("ALL", all);
+                //
+                //                 var dataString = all.join(",");
+                //                 csvContent += dataString+ "\n";
+                //             })
+                //         }
+                //
+                //
+                //         console.log('experiments', glcm);
+                //
+                //
+                //
+                //       } else {
+                //         // We reached our target server, but it returned an error
+                //       }
+                // // console.log("CSV", csvContent);
+                //
+                //     };
+                //     request.onerror = function() {
+                //       // There was a connection error of some sort
+                //     };
+                //     request.send(JSON.stringify(params));
+            });
+            // this.setState({compareList: []});
+            //
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this3 = this;
 
             var data = this.state.data ? this.state.data : [];
             var inactive = this.state.compareList.length === 0 ? true : false;
-            console.log("inactive", inactive);
 
             return _react2.default.createElement(
                 'div',
@@ -31694,7 +32043,7 @@ var ExperimentsMenu = function (_Component) {
                 ),
                 _react2.default.createElement(
                     'span',
-                    { className: (0, _classnames2.default)({ 'inactive': inactive }, "subheading", "btn-primary", "btn") },
+                    { onClick: this.exportGlcmData, className: (0, _classnames2.default)({ 'inactive': inactive }, "subheading", "btn-primary", "btn") },
                     'export'
                 ),
                 data ? data.map(function (experiment, index) {
@@ -31724,7 +32073,7 @@ var ExperimentsMenu = function (_Component) {
                             _react2.default.createElement(
                                 'span',
                                 { key: experiment._id.$oid, onClick: function onClick() {
-                                        return _this3.addCompare(experiment._id.$oid);
+                                        return _this3.addCompare(experiment);
                                     }, className: (0, _classnames2.default)({ 'active': active }, "compare", "button") },
                                 'select'
                             )
@@ -31952,15 +32301,21 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Histogram = __webpack_require__(70);
+var _Histogram = __webpack_require__(112);
 
 var _Histogram2 = _interopRequireDefault(_Histogram);
+
+var _ScatterPlot = __webpack_require__(261);
+
+var _ScatterPlot2 = _interopRequireDefault(_ScatterPlot);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31979,8 +32334,14 @@ var ExperimentComparision = function (_Component) {
         var _this = _possibleConstructorReturn(this, (ExperimentComparision.__proto__ || Object.getPrototypeOf(ExperimentComparision)).call(this, props));
 
         _this.state = {
-            experiments: []
+            experiments: [],
+            meta: {},
+            histogramDataset: null,
+            glcmDataset: []
         };
+        _this.requestHistogramData = _this.requestHistogramData.bind(_this);
+        _this.requestMetaData = _this.requestMetaData.bind(_this);
+        _this.requestGlcmData = _this.requestGlcmData.bind(_this);
         return _this;
     }
 
@@ -31993,52 +32354,175 @@ var ExperimentComparision = function (_Component) {
             var idArray = ids.split(',');
 
             idArray.map(function (id, index) {
-                var request = new XMLHttpRequest();
-
                 var params = {
                     id: id
                 };
 
-                request.open('POST', 'http://localhost:5000/api/experiments', true);
+                console.log("ID", id);
+                _this2.requestMetaData(params);
 
-                request.onload = function () {
-                    if (request.status >= 200 && request.status < 400) {
-                        var rawdata = JSON.parse(request.responseText);
-                        var data = rawdata.exp;
-                        var experiments = _this2.state.experiments;
-                        experiments.push(data);
-
-                        _this2.setState({
-                            experiments: experiments
-                        });
-                    } else {
-                        // We reached our target server, but it returned an error
-                    }
-                };
-                request.onerror = function () {
-                    // There was a connection error of some sort
-                };
-                request.send(JSON.stringify(params));
+                // this.requestGlcmData(params);
             });
+        }
+    }, {
+        key: 'requestMetaData',
+        value: function requestMetaData(params) {
+            var _this3 = this;
+
+            fetch('http://localhost:5000/api/experiments', { method: 'POST', body: JSON.stringify(params) }).then(function (response) {
+                return response.json();
+            }).then(function (rawdata) {
+                var data = rawdata.exp;
+                var experiments = _this3.state.meta;
+                var key = data._id.$oid;
+
+                experiments[key] = data;
+
+                _this3.setState({
+                    meta: experiments
+                });
+
+                if (data && data.stokes) {
+                    var hist_params = {
+                        id: data.stokes.$oid
+                    };
+                    _this3.requestHistogramData(hist_params);
+                }
+
+                if (data && data.glcm) {
+                    var glcm_params = {
+                        id: data.glcm.$oid
+                    };
+                    _this3.requestGlcmData(glcm_params);
+                }
+                console.log("THIS.state.experiments", _this3.state.experiments);
+            }).catch(function (err) {
+                console.log("error getting the meta data");
+            });
+        }
+    }, {
+        key: 'requestHistogramData',
+        value: function requestHistogramData(params) {
+            var _this4 = this;
+
+            // var request = new XMLHttpRequest();
+            console.log("Params", params);
+
+            fetch('http://localhost:5000/api/experiments/histograms', { method: 'POST', body: JSON.stringify(params) }).then(function (response) {
+                return response.json();
+            }).then(function (rawdata) {
+                console.log("RESPONSEES", rawdata);
+                var data = rawdata.exp;
+                var dataset = [];
+                if (data && data.histograms && data.histograms.stokes) {
+
+                    var S1 = { meta_id: data.meta_id, data: data.histograms.stokes.S1.data, title: 'S1' };
+                    var S2 = { meta_id: data.meta_id, data: data.histograms.stokes.S2.data, title: 'S2' };
+
+                    dataset.push(S1);
+                    dataset.push(S2);
+
+                    var experiments = _this4.state.experiments;
+                    experiments.push(dataset);
+
+                    _this4.setState({
+                        experiments: experiments
+                    });
+                }
+            }).catch(function (err) {
+                console.log("Error fetching Histogram Data", err);
+            });
+        }
+    }, {
+        key: 'requestGlcmData',
+        value: function requestGlcmData(params) {
+            var _this5 = this;
+
+            // var request = new XMLHttpRequest();
+
+            fetch('http://localhost:5000/api/experiments/glcm', { method: 'POST', body: JSON.stringify(params) }).then(function (response) {
+                return response.json();
+            }).then(function (rawdata) {
+                var data = rawdata.exp;
+                var dataset = _this5.state.glcmDataset;
+                var scatterPlotData = [];
+                var glcm = data.glcm;
+                if (glcm) {
+
+                    glcm.map(function (sample, index) {
+                        // stokesScatter.push([sample.S[index][0], sample.S[index][1]])
+                        scatterPlotData.push([sample.data.dissimilarity, sample.data.correlation]);
+                    });
+                    dataset.push(scatterPlotData);
+                    _this5.setState({
+                        glcmDataset: dataset
+                    });
+                    console.log("this.state.glcmDataset", _this5.state.glcmDataset);
+                }
+            }).catch(function (err) {
+                console.log("There was en error gneerating GLCM", err);
+            });
+
+            // request.open('POST', 'http://localhost:5000/api/experiments/glcm', true);
+            //
+            // request.onload = () => {
+            //   if (request.status >= 200 && request.status < 400) {
+            //     var rawdata = JSON.parse(request.responseText);
+            //     var data = rawdata.exp;
+            //     var dataset = this.state.glcmDataset;
+            //     var scatterPlotData = [];
+            //     var glcm = data.glcm;
+            //     if (glcm) {
+            //
+            //         glcm.map((sample, index) => {
+            //             // stokesScatter.push([sample.S[index][0], sample.S[index][1]])
+            //             scatterPlotData.push([sample.data.dissimilarity, sample.data.correlation]);
+            //         })
+            //         dataset.push(scatterPlotData);
+            //         this.setState({
+            //             glcmDataset: dataset
+            //         });
+            //         console.log("this.state.glcmDataset", this.state.glcmDataset);
+            //     }
+            //     else {
+            //         // this.setState({data: data});
+            //     }
+            //
+            //   } else {
+            //     // We reached our target server, but it returned an error
+            //   }
+            // };
+            // request.onerror = function() {
+            //   // There was a connection error of some sort
+            // };
+            // request.send(JSON.stringify(params));
         }
     }, {
         key: 'render',
         value: function render() {
+            var _this6 = this;
+
             var S1 = [];
             var S2 = [];
+            console.log("META", this.state.meta);
+            var stokes = this.state.experiments.length === Object.keys(this.state.meta).length ? this.state.experiments.map(function (experiment, index) {
+                debugger;
+                var meta_id = _this6.state.experiments[index][index].meta_id;
+                var title = _this6.state.meta[meta_id].title;
 
-            var stokes = this.state.experiments.length > 0 ? this.state.experiments.map(function (experiment, index) {
-                var experimentS1 = { data: experiment.histograms.stokes.S1.data, title: 'S1 ' + experiment.title };
-                var experimentS2 = { data: experiment.histograms.stokes.S2.data, title: 'S2 ' + experiment.title };
+                var experimentS1 = { data: experiment[0].data, title: 'S1 ' + title };
+                var experimentS2 = { data: experiment[1].data, title: 'S2 ' + title };
 
                 S1.push(experimentS1);
                 S2.push(experimentS2);
             }) : null;
 
+            console.log("s1", S1);
+
             return _react2.default.createElement(
                 'div',
                 null,
-                this.state.experiments.length > 0 ? _react2.default.createElement(
+                S1.length > 0 && (typeof S1 === 'undefined' ? 'undefined' : _typeof(S1)) !== undefined ? _react2.default.createElement(
                     'div',
                     null,
                     _react2.default.createElement(
@@ -32064,6 +32548,19 @@ var ExperimentComparision = function (_Component) {
                         width: 600,
                         height: 300,
                         yTicks: 10
+                    })
+                ) : null,
+                this.state.glcmDataset.length > 0 && _typeof(this.state.glcmDataset) !== undefined ? _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        'GLCM Comparison'
+                    ),
+                    _react2.default.createElement(_ScatterPlot2.default, {
+                        data: this.state.glcmDataset,
+                        container: 'glcm-scatter-plot'
                     })
                 ) : null
             );
@@ -32560,7 +33057,7 @@ exports.default = Webcam;
  */
 
 var url = __webpack_require__(269);
-var parser = __webpack_require__(71);
+var parser = __webpack_require__(70);
 var Manager = __webpack_require__(118);
 var debug = __webpack_require__(18)('socket.io-client');
 
@@ -33440,7 +33937,7 @@ Socket.protocol = parser.protocol; // this is an int
  */
 
 Socket.Socket = Socket;
-Socket.Transport = __webpack_require__(73);
+Socket.Transport = __webpack_require__(72);
 Socket.transports = __webpack_require__(119);
 Socket.parser = __webpack_require__(27);
 
@@ -34074,7 +34571,7 @@ try {
  * Module requirements.
  */
 
-var XMLHttpRequest = __webpack_require__(72);
+var XMLHttpRequest = __webpack_require__(71);
 var Polling = __webpack_require__(120);
 var Emitter = __webpack_require__(26);
 var inherit = __webpack_require__(45);
@@ -35291,7 +35788,7 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
  * Module dependencies.
  */
 
-var Transport = __webpack_require__(73);
+var Transport = __webpack_require__(72);
 var parser = __webpack_require__(27);
 var parseqs = __webpack_require__(44);
 var inherit = __webpack_require__(45);
@@ -35770,7 +36267,7 @@ exports = module.exports = __webpack_require__(295)(undefined);
 
 
 // module
-exports.push([module.i, "body,\nhtml {\n  margin: 30px;\n  padding: 0;\n}\nbody .button,\nhtml .button {\n  color: #333;\n  font-weight: 300;\n  padding: 0 5px;\n}\nbody .button.active,\nhtml .button.active {\n  background-color: #bbb;\n  color: #fdfdfd;\n}\nbody input[type=text],\nhtml input[type=text] {\n  background: transparent;\n  border: none;\n  border-bottom: 1px solid #000000;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.subheading {\n  margin: 0 5px;\n}\n.subheading.btn-primary {\n  padding: 3px 12px;\n}\n.subheading.inactive {\n  background-color: #d8d7d7;\n  border-color: #e2e2e2;\n}\n.subheading.inactive:hover {\n  cursor: none;\n  pointer-events: none;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  width: 158px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container {\n  clear: both;\n  position: relative;\n  height: 225px;\n}\n.stokes-stats-container .stokes-stats {\n  width: 250px;\n  float: left;\n}\n.stokes-stats-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n.webcam-container {\n  position: relative;\n  width: 640px;\n  background-color: black;\n  height: 480px;\n}\n.webcam-container .webcam-capture-preview {\n  position: absolute;\n  left: 0;\n}\n.webcam-control-container {\n  padding: 15px;\n  position: relative;\n}\n.webcam-control-container .btn-warning {\n  position: absolute;\n  top: 55px;\n  left: 24;\n}\n.webcam-control-container span {\n  font-size: 12px;\n}\n.webcam-control-container div {\n  margin: 0 10px;\n}\n.directory-heading {\n  padding-left: 10px;\n}\n.directory-heading span {\n  display: block;\n}\n.voltage-container {\n  font-size: 35px;\n  height: 250px;\n  line-height: 250px;\n  text-align: center;\n}\n.current-directory-images {\n  position: absolute;\n  top: 0;\n  width: 300px;\n  right: -300px;\n  height: 480px;\n  overflow-y: auto;\n}\n.current-directory-images .directory-image-container {\n  position: relative;\n}\n.current-directory-images .directory-image-container .directory-image-name {\n  position: absolute;\n  bottom: 13px;\n  left: 76px;\n  color: white;\n  font-family: monospace;\n}\n.current-directory-images .directory-image-container img {\n  width: 185px;\n  padding: 10px;\n  margin: 0 auto;\n  display: block;\n}\n.experiment-button {\n  height: 12px;\n  width: 12px;\n  background-color: #616060;\n  border-radius: 6px;\n  color: white;\n  text-align: center;\n  margin: 0;\n  position: absolute;\n  top: 133px;\n  left: 247px;\n  border: 1px solid #333;\n  z-index: 999999;\n}\n.experiment-button span {\n  font-size: 8px;\n}\n.ledgend-color {\n  height: 10px;\n  width: 10px;\n  position: relative;\n  display: inline-block;\n  margin-right: 5px;\n}\n.steelblue {\n  background-color: steelblue;\n}\n.red {\n  background-color: red;\n}\n.grey {\n  background-color: grey;\n}\n.green {\n  background-color: green;\n}\n.black {\n  background-color: black;\n}\n.histogram-filter-container .histogram-filter {\n  padding-left: 10px;\n}\n.glcm-container {\n  height: 450px;\n  clear: both;\n}\n.glcm-container .sample-stats-container {\n  height: 223px;\n  width: 100%;\n  display: block;\n  margin: 0 auto;\n  position: absolute;\n  top: 75px;\n}\n.glcm-container .sample-stats-container .s2-sample-stats-container,\n.glcm-container .sample-stats-container .s1-sample-stats-container {\n  width: 50%;\n  display: inline-block;\n}\n.glcm-container .glcm-stats {\n  height: 50px;\n}\n.sample-container {\n  height: 325px;\n  position: relative;\n  display: block;\n}\n", ""]);
+exports.push([module.i, "body,\nhtml {\n  margin: 30px;\n  padding: 0;\n}\nbody .button,\nhtml .button {\n  color: #333;\n  font-weight: 300;\n  padding: 0 5px;\n}\nbody .button.active,\nhtml .button.active {\n  background-color: #bbb;\n  color: #fdfdfd;\n}\nbody input[type=text],\nhtml input[type=text] {\n  background: transparent;\n  border: none;\n  border-bottom: 1px solid #000000;\n}\n.axis {\n  font: 10px sans-serif;\n}\n.axis line,\n.axis path {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.exp-btn:hover {\n  cursor: pointer;\n  border: 1px solid black;\n}\n.subheading {\n  margin: 0 5px;\n}\n.subheading.btn-primary {\n  padding: 3px 12px;\n}\n.subheading.inactive {\n  background-color: #d8d7d7;\n  border-color: #e2e2e2;\n}\n.subheading.inactive:hover {\n  cursor: none;\n  pointer-events: none;\n}\n.noobelectric {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .main-title {\n  text-align: center;\n  padding-bottom: 20px;\n}\n.noobelectric .header {\n  height: 50px;\n}\n.noobelectric .header .home-btn {\n  font-size: 25px;\n}\n.noobelectric .main-content {\n  clear: both;\n  padding: 5%;\n}\n.noobelectric .home-menu {\n  width: 585px;\n  text-align: center;\n  margin: 0 auto;\n}\n.noobelectric .home-menu .button {\n  float: left;\n  padding: 0 35px;\n  font-weight: 300;\n}\n.noobelectric .quote {\n  font-size: 20px;\n}\n.noobelectric .exp {\n  width: 650px;\n  margin: 0 auto;\n}\n.noobelectric .exp .exp-description {\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-menu-more {\n  padding-right: 15px;\n}\n.noobelectric .exp .exp-introduction {\n  min-height: 50px;\n  padding-bottom: 35px;\n}\n.noobelectric .exp .image-container {\n  height: 170px;\n  position: relative;\n}\n.noobelectric .exp .exp-image {\n  float: left;\n  padding: 0 8px;\n  width: 158px;\n  position: relative;\n}\n.noobelectric .exp .exp-image .exp-image-subtitle {\n  position: absolute;\n  bottom: -21px;\n  left: 62px;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-image img {\n  padding: 0;\n  height: 95px;\n  border-radius: 10px;\n}\n.noobelectric .exp .sub-heading {\n  color: #868585;\n  font-size: 10px;\n}\n.noobelectric .exp .exp-header {\n  position: relative;\n  padding-bottom: 25px;\n}\n.noobelectric .exp .exp-date {\n  position: absolute;\n  right: 0;\n  font-size: 12px;\n  font-weight: 200;\n}\n.noobelectric .exp .exp-id {\n  font-size: 12px;\n  font-weight: 200;\n}\n.histogram-small-container {\n  width: 300px;\n  float: left;\n}\n.stokes-container {\n  clear: both;\n  position: relative;\n}\n.stokes-stats-container {\n  clear: both;\n  position: relative;\n  height: 225px;\n}\n.stokes-stats-container .stokes-stats {\n  width: 250px;\n  float: left;\n}\n.stokes-stats-container .stokes-stats h5 {\n  text-decoration: underline;\n}\n.exp-image-full img {\n  width: 295px;\n  padding: 10px;\n  margin-top: 20px;\n  float: left;\n}\n.exp-image-full-histogram {\n  float: left;\n  width: 232px;\n  margin-top: 25px;\n  margin-left: 10px;\n}\n.webcam-container {\n  position: relative;\n  width: 640px;\n  background-color: black;\n  height: 480px;\n}\n.webcam-container .webcam-capture-preview {\n  position: absolute;\n  left: 0;\n}\n.webcam-control-container {\n  padding: 15px;\n  position: relative;\n}\n.webcam-control-container .btn-warning {\n  position: absolute;\n  top: 55px;\n  left: 24;\n}\n.webcam-control-container span {\n  font-size: 12px;\n}\n.webcam-control-container div {\n  margin: 0 10px;\n}\n.directory-heading {\n  padding-left: 10px;\n}\n.directory-heading span {\n  display: block;\n}\n.voltage-container {\n  font-size: 35px;\n  height: 250px;\n  line-height: 250px;\n  text-align: center;\n}\n.current-directory-images {\n  position: absolute;\n  top: 0;\n  width: 300px;\n  right: -300px;\n  height: 480px;\n  overflow-y: auto;\n}\n.current-directory-images .directory-image-container {\n  position: relative;\n}\n.current-directory-images .directory-image-container .directory-image-name {\n  position: absolute;\n  bottom: 13px;\n  left: 76px;\n  color: white;\n  font-family: monospace;\n}\n.current-directory-images .directory-image-container img {\n  width: 185px;\n  padding: 10px;\n  margin: 0 auto;\n  display: block;\n}\n.experiment-button {\n  height: 12px;\n  width: 12px;\n  background-color: #616060;\n  border-radius: 6px;\n  color: white;\n  text-align: center;\n  margin: 0;\n  position: absolute;\n  top: 133px;\n  left: 247px;\n  border: 1px solid #333;\n  z-index: 999999;\n}\n.experiment-button span {\n  font-size: 8px;\n}\n.ledgend-color {\n  height: 10px;\n  width: 10px;\n  position: relative;\n  display: inline-block;\n  margin-right: 5px;\n}\n.steelblue {\n  background-color: steelblue;\n}\n.red {\n  background-color: red;\n}\n.grey {\n  background-color: grey;\n}\n.green {\n  background-color: green;\n}\n.black {\n  background-color: black;\n}\n.histogram-filter-container .histogram-filter {\n  padding-left: 10px;\n}\n.glcm-container {\n  height: 450px;\n  clear: both;\n}\n.glcm-container .sample-stats-container {\n  height: 223px;\n  width: 100%;\n  display: block;\n  margin: 0 auto;\n  position: absolute;\n  top: 75px;\n}\n.glcm-container .sample-stats-container .s2-sample-stats-container,\n.glcm-container .sample-stats-container .s1-sample-stats-container {\n  width: 50%;\n  display: inline-block;\n}\n.glcm-container .glcm-stats {\n  height: 50px;\n}\n.sample-container {\n  height: 325px;\n  position: relative;\n  display: block;\n}\n.tags-container .active-tags {\n  border-bottom: 1px solid;\n  margin-bottom: 8px;\n}\n.tags-container .tag {\n  height: 30px;\n  border: 1px solid #d0d0d0;\n  min-width: 120px;\n  display: inline-block;\n  border-radius: 5px;\n  text-align: center;\n  line-height: 24px;\n  margin: 5px;\n}\n", ""]);
 
 // exports
 
