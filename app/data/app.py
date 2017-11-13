@@ -288,35 +288,22 @@ def generate_discrete_stokes_data():
     raw_data = json.loads(request.data)
     exp_id = raw_data['id']
     images = raw_data['images']
-    # float_formatter = lambda x: "%.2f" % x
-    # np.set_printoptions(formatter={'float_kind':float_formatter})
 
     #set the directory the images come from
     imagedirectory = images
 
-    Hraw = np.array(cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel(), dtype=np.float64)
-    Vraw = np.array(cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel(), dtype=np.float64)
-    Praw = np.array(cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel(), dtype=np.float64)
-    Mraw = np.array(cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel(), dtype=np.float64)
-    zeroindex = []
-    index = 0
-    S1 = []
-    S2 = []
+    H = cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel()
+    V = cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel()
+    P = cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel()
+    M = cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel()
 
     S1 = divide((Hraw - Vraw), (Hraw + Vraw))
     S2 = divide((Praw - Mraw), (Praw + Mraw))
-    # Remove values from all arrays equally so as to retain the size
-    H = np.delete(Hraw, zeroindex, axis=0)
-    V = np.delete(Vraw, zeroindex, axis=0)
-    P = np.delete(Praw, zeroindex, axis=0)
-    M = np.delete(Mraw, zeroindex, axis=0)
 
-    # Print statistics about Stokes data
     S1summary = datasummary(S1)
-    S2summary = datasummary(S2)
-
-    # Create the S1 and S2 Histogram
     S1zipped = createhistogram(S1, np.arange(-1, 1.01, 0.01))
+
+    S2summary = datasummary(S2)
     S2zipped = createhistogram(S2, np.arange(-1, 1.01, 0.01))
 
     # Create measurement Histograms
@@ -375,10 +362,10 @@ def generate_discrete_glcm_samples():
 
     EXPERIMENT_DIR = images
     #Read the images for discrete analysis and flatten them
-    Hraw = np.array(cv2.imread(EXPERIMENT_DIR + '/H.png', 0), dtype=np.float64)
-    Vraw = np.array(cv2.imread(EXPERIMENT_DIR + '/V.png', 0), dtype=np.float64)
-    Praw = np.array(cv2.imread(EXPERIMENT_DIR + '/P.png', 0), dtype=np.float64)
-    Mraw = np.array(cv2.imread(EXPERIMENT_DIR + '/M.png', 0), dtype=np.float64)
+    Hraw = cv2.imread(EXPERIMENT_DIR + '/H.png', 0)
+    Vraw = cv2.imread(EXPERIMENT_DIR + '/V.png', 0)
+    Praw = cv2.imread(EXPERIMENT_DIR + '/P.png', 0)
+    Mraw = cv2.imread(EXPERIMENT_DIR + '/M.png', 0)
 
     SAMPLE_SIZE = 500
     print "HELLO"

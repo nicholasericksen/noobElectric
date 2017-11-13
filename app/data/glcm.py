@@ -127,12 +127,12 @@ for index, Hpatch in enumerate(Vpatches):
         M = Mpatches[index].ravel()
 
         # try:
-        S1 = divide((H - V), 255.0)
+        S1 = divide((H - V), (H + V))
         # except:
         # S1 = [0]
         # try:
         # print 'S1', S1
-        S2 = divide((P - M), 255.0)
+        S2 = divide((P - M), (P + M))
         # print 'S2', S2
         # except:
         # S2 = [0]
