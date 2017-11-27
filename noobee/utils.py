@@ -44,7 +44,7 @@ def createhistogram(data, bins):
     Returns:
         array: zipped values for each bin.
     """
-    hist = np.histogram(data, bins=bins)
+    hist = np.histogram(data, bins=bins, density=True)
     bins = hist[1].tolist()
     values = hist[0].tolist()
 

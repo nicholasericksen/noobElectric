@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import io from 'socket.io-client'
+
 import ExperimentHeader from './ExperimentHeader';
 import ExperimentIntro from './ExperimentIntro';
 import ExperimentImages from './ExperimentImages';
@@ -14,12 +16,15 @@ export default class Experiment extends Component {
             data: {},
             stokesDataSet: null,
             index: 0,
-            glcmDataset: null,
+            glcmDataset: [],
             histogramDataset: null,
             hasGlcmData: false,
             hasStokesData: false,
             params: {}
         };
+
+        this.socket = io(`http://localhost:5000/test`);
+
         this.requestData = this.requestData.bind(this);
         this.renderAll = this.renderAll.bind(this);
         this.setStokesDataset = this.setStokesDataset.bind(this);
@@ -39,9 +44,44 @@ export default class Experiment extends Component {
         this.requestData();
         var expId = `${this.props.match.params.experiment}`;
         let params =  {
-            id: expId
+            id: expId,
+            skip: 0,
+            limit: 50
         };
+        this.socket.on(`glcm_sent`, (rawdata) => {
+                // console.log(data);
+                console.log("DATATATA", rawdata.exp);
+                // this.setVoltage(data);
+                // var rawdata = JSON.parse(request.responseText);
+                var data = rawdata.exp;
+                console.log("nnnn", data);
+                var dataset = this.state.glcmDataset;
+                console.log("dataset", data);
+                let final = dataset.concat(data);
+                console.log("dasdsad", final);
+                if (final.length > 0) {
+                    this.setState({
+                        glcmDataset: final,
+                        hasGlcmData: true
+                    });
+                    let new_params = params;
+                    params['skip'] = params['limit'];
+                    params['limit'] += 50;
 
+                    setTimeout(() => this.socket.emit(`request_glcm_samples`, JSON.stringify(params)), 500);
+                }
+                else {
+                    this.setState({hasGlcmData: false});
+                }
+                // socket.emit(`message`, 'hey');
+                console.log("the state version", this.state.glcmDataset);
+        });
+
+
+
+        // this.interval = setInterval(() => {
+            console.log("EMIT");
+        this.socket.emit(`request_glcm_samples`, JSON.stringify(params));
         // this.requestGlcmData(params);
         // this.requestHistogramData(params);
     }
@@ -149,7 +189,7 @@ export default class Experiment extends Component {
                     id: data.glcm.$oid
                 };
 
-                this.requestGlcmData(params)
+                // this.requestGlcmData(params)
             }
 
           } else {
@@ -279,12 +319,14 @@ export default class Experiment extends Component {
         if (this.state.data.images) {
             const scatterPlotData = [];
             const stokesScatter = [];
-            let glcm = this.state.glcmDataset ? this.state.glcmDataset : null;
-            if (glcm) {
-                glcm.map((sample, index) => {
-                    scatterPlotData.push([sample.data.dissimilarity, sample.data.correlation])
+            // let glcm = this.state.glcmDataset && this.state.glcmDataset.length > 1 ? this.state.glcmDataset : [];
+            // console.log('glcm', this.state.glcmDataset.length)
+            // if (glcm) {
+                console.log("bout to map");
+                this.state.glcmDataset.map((sample, index) => {
+                    scatterPlotData.push([sample.glcm.dissimilarity, sample.glcm.correlation])
                 })
-            }
+            // }
             return(
                 <div>
 
@@ -352,15 +394,15 @@ export default class Experiment extends Component {
                     </div>
                     <div className="glcm-samples">
                         <h4>GLCM Samples</h4>
-                    {glcm ? glcm.map((sample, index) => {
+                    {this.state.glcmDataset.length > 1 ? this.state.glcmDataset.map((sample, index) => {
                         if (index <= 10) {
                             return(
                                 <div className="sample-container">
                                     <img src={`http://localhost:8090/data/${sample.stokes.filename}`} role="presentation"/>
                                     <div className="sample-stats-container">
                                         <div className="glcm-stats">
-                                            <div>GLCM Correlation{sample.data.correlation}</div>
-                                            <div> GLCM Disimilarity{sample.data.dissimilarity}</div>
+                                            <div>GLCM Correlation{sample.glcm.correlation}</div>
+                                            <div> GLCM Disimilarity{sample.glcm.dissimilarity}</div>
                                         </div>
                                         <div className="s1-sample-stats-container">
                                             <div>S1 Mean: {sample.stokes.S1.stats.mean}</div>

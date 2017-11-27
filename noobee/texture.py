@@ -148,3 +148,4 @@ def classify(img_src_1, img_src_2):
 if __name__ == '__main__':
     import sys
     classify(str(sys.argv[1]), str(sys.argv[2]))
+    # classify('./texture/brown-oak.png', './texture/green-oak.png')

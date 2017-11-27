@@ -92,8 +92,9 @@ def datasummary(data):
     }
 
 def createhistogram(data, bins):
+    # bins = np.arange(np.floor(data.min()),np.ceil(data.max()))
     hist = np.histogram(data, bins=bins)
-    bins = hist[1].tolist()
+    bins = bins.tolist()
     values = hist[0].tolist()
 
     # Convert the tuples into arrays for smaller formatting
@@ -167,7 +168,7 @@ def get_histograms_by_id():
 
     exp_id = json.loads(request.data)['id'];
     data = histogramData.find_one({'_id': ObjectId(exp_id) })
-    print "data", data
+    # print "data", data
 
     if not data:
         resp = jsonify({"exp": 'data_sanatized'})
@@ -297,14 +298,14 @@ def generate_discrete_stokes_data():
     P = cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel()
     M = cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel()
 
-    S1 = divide((Hraw - Vraw), (Hraw + Vraw))
-    S2 = divide((Praw - Mraw), (Praw + Mraw))
+    S1 = divide((H - V), (H + V))
+    S2 = divide((P - M), (P + M))
 
     S1summary = datasummary(S1)
-    S1zipped = createhistogram(S1, np.arange(-1, 1.01, 0.01))
+    S1zipped = createhistogram(S1, np.linspace(-1,1,200))
 
     S2summary = datasummary(S2)
-    S2zipped = createhistogram(S2, np.arange(-1, 1.01, 0.01))
+    S2zipped = createhistogram(S2, np.linspace(-1,1,200))
 
     # Create measurement Histograms
     Hzipped = createhistogram(H, np.arange(0, 256, 1))
@@ -458,10 +459,10 @@ def generate_discrete_glcm_samples():
                 }
 
 
-                data = {
-                    'stokes': stokes,
-                    'data': glcm_data
-                }
+                # data = {
+                #     'stokes': stokes,
+                #     'data': glcm_data
+                # }
 
 
 
@@ -476,30 +477,33 @@ def generate_discrete_glcm_samples():
                 # binary_convert['size'] = size
                 # binary_convert['meta_id'] = ObjectId(exp_id)
 
-                dataset.append(data)
+                # dataset.append(data)
+
+
+                glcm_data = {
+                        'meta_id': ObjectId(exp_id),
+                        'glcm': glcm_data,
+                        'window_size': size,
+                        'stokes': stokes
+                }
+
+                result = glcmData.insert_one(glcm_data)
 
             except ValueError:
                 print "ERROR"
                 pass
 
-        glcm_data = {
-                'meta_id': ObjectId(exp_id),
-                'glcm': Binary(cPickle.dumps(dataset, protocol=2)),
-                'size': size
-        }
-
-        result = glcmData.insert_one(glcm_data)
-        add_meta = discreteLMP.update_one(
-            {
-                '_id': ObjectId(exp_id)
-            },
-            {
-                '$set': {
-                    'glcm': ObjectId(str(result.inserted_id))
-                }
-            }
-
-        )
+        # add_meta = discreteLMP.update_one(
+        #     {
+        #         '_id': ObjectId(exp_id)
+        #     },
+        #     {
+        #         '$set': {
+        #             'glcm': ObjectId(str(result.inserted_id))
+        #         }
+        #     }
+        #
+        # )
     print "about to send response"
     resp = jsonify({"data": 'Successfully inserted'})
     resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -570,7 +574,73 @@ def retrieve_files():
 #         print info
 
 
+@socketio.on('request_glcm_samples', namespace='/test')
+def paginate_glcm_samples(request_data):
+    # exp_id = json.loads(request.data)['id'];
+    print "SOCET", request_data
+    exp_id = json.loads(request_data)['id']
+    print "looking for glcm data", exp_id
+    loading = True
+    skip = json.loads(request_data)['skip']
+    limit = json.loads(request_data)['limit']
 
+
+
+    # while(loading):
+    data = glcmData.find({'meta_id': ObjectId(exp_id), "window_size": 25 })
+    if not data:
+        print 'no data'
+        resp = jsonify({"exp": 'binary_convert'})
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+
+        return resp
+    # print data
+    # binary_convert = data
+    # binary_convert['glcm'] = {}
+    # binary_convert['glcm']['file'] = data['glcm']['file']
+    # binary_convert['glcm']['dissimilarity'] = data['glcm']['dissimilarity']
+    # binary_convert['glcm']['correlation'] = data['glcm']['correlation']
+    # binary_convert['glcm']['asm'] = data['glcm']['asm']
+    # binary_convert['glcm']['energy'] = data['glcm']['energy']
+    # binary_convert['glcm']['contrast'] = data['glcm']['contrast']
+    #
+    # binary_convert['glcm']['S1'] = {}
+    # binary_convert['glcm']['S2'] = {}
+    # print "converting glcm", list(data[1:4])
+
+
+
+    # data[0]['glcm'] = cPickle.loads(data[0]['glcm'])
+    # data[0]['meta_id'] = data[0]['meta_id']
+
+    # print cPickle.loads(data[0]['glcm'])
+    # print "done converting", data
+    # binary_convert['glcm']['data'] = cPickle.loads(data['glcm']['data'])
+    # binary_convert['size'] = 25
+    # binary_convert['meta_id'] = ObjectId(exp_id)
+    paginate = data
+
+    data_sanatized = json.loads(json_util.dumps(list(paginate[skip:limit])))
+    # print "sanatized", data_sanatized
+    resp = {"exp": data_sanatized}
+    print "SEND"
+    if limit < 500:
+        print "DONE DONE"
+        # resp.headers['Access-Control-Allow-Origin'] = '*'
+        emit('glcm_sent', resp, namespace='/test')
+    else:
+        print "blah"
+    # resp = jsonify({"exp": 'binary_convert'})
+    # resp.headers['Access-Control-Allow-Origin'] = '*'
+    #
+    # return resp
+        # skip = limit
+        # print "skip", skip
+        # print "limit", limit
+        # limit += 50
+
+        # if limit > 500:
+        #     loading = False
 # @app.route('/lightsensor')
 # def sensor_reading():
 #     port = "/dev/cu.usbmodem1411"
