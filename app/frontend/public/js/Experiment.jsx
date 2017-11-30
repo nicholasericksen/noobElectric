@@ -33,6 +33,7 @@ export default class Experiment extends Component {
         this.requestHistogramData = this.requestHistogramData.bind(this);
         this.generateGlcmData = this.generateGlcmData.bind(this);
         this.generateHistogramData = this.generateHistogramData.bind(this);
+        this.requestBGR = this.requestBGR.bind(this);
     }
     componentWillUnmount() {
         this.setState({
@@ -154,6 +155,17 @@ export default class Experiment extends Component {
             request.send(JSON.stringify(params));
     }
 
+    requestBGR(params) {
+        fetch('http://localhost:5000/api/experiments/histograms/bgr', {method: 'POST', body: JSON.stringify(params)})
+        .then((response) => {
+            return response.json();
+        })
+        .then((rawdata) => {
+            console.log("cat", rawdata);
+            this.setState({bgrDataset: rawdata});
+        })
+    }
+
     requestData(props) {
         var request = new XMLHttpRequest();
         var expId = `${this.props.match.params.experiment}`;
@@ -179,9 +191,13 @@ export default class Experiment extends Component {
                 const hist_params =  {
                     id: data.stokes.$oid
                 };
-                console.log("PARAMS", hist_params)
-                this.requestHistogramData(hist_params);
+                console.log("PARAMS", params)
+                this.requestHistogramData(params);
 
+            }
+
+            if (data && data.stokes_bgr) {
+                this.requestBGR(params);
             }
 
             if (data && data.glcm) {

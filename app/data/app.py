@@ -43,6 +43,7 @@ db = client.experiments
 discreteLMP = db.meta
 glcmData = db.glcm
 histogramData = db.histograms
+stokes_bgr = db.stokes_bgr
 # from LMP import sensor_reading
 
 # Import flask
@@ -76,7 +77,8 @@ class MyEncoder(json.JSONEncoder):
             return obj.tolist()
         else:
             return super(MyEncoder, self).default(obj)
-def datasummary(data):
+def datasummary(raw_data):
+    data = raw_data.ravel()
     maxValue = np.amax(data)
     minValue = np.amin(data)
     length = len(data)
@@ -91,17 +93,30 @@ def datasummary(data):
         "numpts": length
     }
 
-def createhistogram(data, bins):
+def createhistogram(raw_data, bins):
+    data = raw_data.ravel()
     # bins = np.arange(np.floor(data.min()),np.ceil(data.max()))
     hist = np.histogram(data, bins=bins)
     bins = bins.tolist()
-    values = hist[0].tolist()
+    # / len(data) to normalize to 1
+    values = hist[0] / len(data)
 
     # Convert the tuples into arrays for smaller formatting
-    zipped = [list(t) for t in zip(bins, values)]
+    zipped = [list(t) for t in zip(bins, values.tolist())]
 
     return zipped
 
+def calculate_stokes(P1, P2):
+    P1 = P1.astype(np.int16)
+    P2 = P2.astype(np.int16)
+
+    S = (P1 - P2) / (P1 + P2)
+
+    # These represent values that have not been illuminated by the source
+    # ie they are the product of masking and shadowing.
+    S[~np.isfinite(S)] = 0
+
+    return S
 
 def divide( a, b ):
     """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
@@ -167,7 +182,7 @@ def get_histograms_by_id():
     print "request.data", request.data
 
     exp_id = json.loads(request.data)['id'];
-    data = histogramData.find_one({'_id': ObjectId(exp_id) })
+    data = histogramData.find_one({'meta_id': ObjectId(exp_id) })
     # print "data", data
 
     if not data:
@@ -200,9 +215,61 @@ def get_histograms_by_id():
 
     data_sanatized = json.loads(json.dumps(binary_convert, cls=MyEncoder))
 
-    resp = jsonify({"exp": binary_convert})
+    resp = jsonify({"exp": data_sanatized})
     resp.headers['Access-Control-Allow-Origin'] = '*'
+    print "semt"
+    return resp
 
+@app.route('/api/experiments/histograms/bgr', methods=['POST'])
+def get_bgr_histograms_by_id():
+    print "request.data", request.data
+
+    exp_id = json.loads(request.data)['id'];
+    data = stokes_bgr.find_one({'meta_id': ObjectId(exp_id) })
+    # print "data", data
+
+    if not data:
+        resp = jsonify({"exp": 'data_sanatized'})
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+    # data_sanatized = json.loads(json_util.dumps(data))
+    # print cPickle.loads(data['histograms']['measurements']['V'])
+
+
+    binary_convert = {}
+
+    binary_convert['meta_id'] = str(data['meta_id'])
+
+    binary_convert['histograms'] = {}
+    binary_convert['histograms']['S1'] = {}
+    binary_convert['histograms']['S1']['b'] = {}
+    binary_convert['histograms']['S1']['g'] = {}
+    binary_convert['histograms']['S1']['r'] = {}
+
+    binary_convert['histograms']['S2'] = {}
+    binary_convert['histograms']['S2']['b'] = {}
+    binary_convert['histograms']['S2']['g'] = {}
+    binary_convert['histograms']['S2']['r'] = {}
+
+    binary_convert['histograms']['S1']['b']['data'] = cPickle.loads(data['histograms']['S1']['b']['data'])
+    binary_convert['histograms']['S1']['b']['stats'] = cPickle.loads(data['histograms']['S1']['b']['stats'])
+    binary_convert['histograms']['S1']['g']['data'] = cPickle.loads(data['histograms']['S1']['g']['data'])
+    binary_convert['histograms']['S1']['g']['stats'] = cPickle.loads(data['histograms']['S1']['g']['stats'])
+    binary_convert['histograms']['S1']['r']['data'] = cPickle.loads(data['histograms']['S1']['r']['data'])
+    binary_convert['histograms']['S1']['r']['stats'] = cPickle.loads(data['histograms']['S1']['r']['stats'])
+
+    binary_convert['histograms']['S2']['b']['data'] = cPickle.loads(data['histograms']['S2']['b']['data'])
+    binary_convert['histograms']['S2']['b']['stats'] = cPickle.loads(data['histograms']['S2']['b']['stats'])
+    binary_convert['histograms']['S2']['g']['data'] = cPickle.loads(data['histograms']['S2']['g']['data'])
+    binary_convert['histograms']['S2']['g']['stats'] = cPickle.loads(data['histograms']['S2']['g']['stats'])
+    binary_convert['histograms']['S2']['r']['data'] = cPickle.loads(data['histograms']['S2']['r']['data'])
+    binary_convert['histograms']['S2']['r']['stats'] = cPickle.loads(data['histograms']['S2']['r']['stats'])
+    print "about to sanitize"
+    data_sanatized = json.loads(json.dumps(binary_convert, cls=MyEncoder))
+
+    resp = jsonify({"exp": data_sanatized})
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    print "sent"
     return resp
 
 @app.route('/api/experiments/glcm', methods=['POST'])
@@ -293,14 +360,59 @@ def generate_discrete_stokes_data():
     #set the directory the images come from
     imagedirectory = images
 
-    H = cv2.imread(os.path.join(imagedirectory, 'H.png'), 0).ravel()
-    V = cv2.imread(os.path.join(imagedirectory, 'V.png'), 0).ravel()
-    P = cv2.imread(os.path.join(imagedirectory, 'P.png'), 0).ravel()
-    M = cv2.imread(os.path.join(imagedirectory, 'M.png'), 0).ravel()
+    H = cv2.imread(os.path.join(imagedirectory, 'H.png'), 1)
+    V = cv2.imread(os.path.join(imagedirectory, 'V.png'), 1)
+    P = cv2.imread(os.path.join(imagedirectory, 'P.png'), 1)
+    M = cv2.imread(os.path.join(imagedirectory, 'M.png'), 1)
 
-    S1 = divide((H - V), (H + V))
-    S2 = divide((P - M), (P + M))
+    H_gray = cv2.imread(os.path.join(imagedirectory, 'H.png'), 0)
+    V_gray = cv2.imread(os.path.join(imagedirectory, 'V.png'), 0)
+    P_gray = cv2.imread(os.path.join(imagedirectory, 'P.png'), 0)
+    M_gray = cv2.imread(os.path.join(imagedirectory, 'M.png'), 0)
 
+    S1 = calculate_stokes(H_gray, V_gray)
+    S2 = calculate_stokes(P_gray, M_gray)
+
+    print "S1", S1
+    # Calculate the color channel stokes params
+    Hb, Hg, Hr = cv2.split(H)
+    Vb, Vg, Vr = cv2.split(V)
+    Pb, Pg, Pr = cv2.split(P)
+    Mb, Mg, Mr = cv2.split(M)
+
+    S1b = calculate_stokes(Hb, Vb)
+    S1g = calculate_stokes(Hg, Vg)
+    S1r = calculate_stokes(Hr, Vr)
+
+    S2b = calculate_stokes(Pb, Mb)
+    S2g = calculate_stokes(Pg, Mg)
+    S2r = calculate_stokes(Pr, Mr)
+
+    # Save the images of the color channels
+    # cv2.imwrite('img.png', img * 255)
+    # cv2.imwrite('img.png', img * 255)
+    # cv2.imwrite('img.png', img * 255)
+    # cv2.imwrite('img.png', img * 255)
+    # cv2.imwrite('img.png', img * 255)
+    # cv2.imwrite('img.png', img * 255)
+
+    # Create Histograms for the color stokes channels
+    S1bsummary = datasummary(S1b)
+    S1bzipped = createhistogram(S1b, np.linspace(-1,1,200))
+    S1gsummary = datasummary(S1g)
+    S1gzipped = createhistogram(S1g, np.linspace(-1,1,200))
+    S1rsummary = datasummary(S1r)
+    S1rzipped = createhistogram(S1r, np.linspace(-1,1,200))
+
+    S2bsummary = datasummary(S2b)
+    S2bzipped = createhistogram(S2b, np.linspace(-1,1,200))
+    S2gsummary = datasummary(S2g)
+    S2gzipped = createhistogram(S2g, np.linspace(-1,1,200))
+    S2rsummary = datasummary(S2r)
+    S2rzipped = createhistogram(S2r, np.linspace(-1,1,200))
+
+
+    # Create summary for white light stokes
     S1summary = datasummary(S1)
     S1zipped = createhistogram(S1, np.linspace(-1,1,200))
 
@@ -337,6 +449,43 @@ def generate_discrete_stokes_data():
         }
     )
 
+    bgr_result = stokes_bgr.insert_one(
+        {
+            'meta_id': ObjectId(exp_id),
+            'histograms': {
+                'S1': {
+                    'b': {
+                        'data': Binary(cPickle.dumps(S1bzipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S1bsummary, protocol=2))
+                    },
+                    'g': {
+                        'data': Binary(cPickle.dumps(S1gzipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S1gsummary, protocol=2))
+                    },
+                    'r': {
+                        'data': Binary(cPickle.dumps(S1rzipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S1rsummary, protocol=2))
+                    }
+
+                },
+                'S2': {
+                    'b': {
+                        'data': Binary(cPickle.dumps(S2bzipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S2bsummary, protocol=2))
+                    },
+                    'g': {
+                        'data': Binary(cPickle.dumps(S2gzipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S2gsummary, protocol=2))
+                    },
+                    'r': {
+                        'data': Binary(cPickle.dumps(S2rzipped, protocol=2)),
+                        'stats': Binary(cPickle.dumps(S2rsummary, protocol=2))
+                    }
+                }
+            }
+        }
+    )
+
     print "about to send response", result.inserted_id
     add_meta = discreteLMP.update_one(
         {
@@ -344,7 +493,8 @@ def generate_discrete_stokes_data():
         },
         {
             '$set': {
-                'stokes': ObjectId(str(result.inserted_id))
+                'stokes': ObjectId(str(result.inserted_id)),
+                'stokes_bgr': ObjectId(str(bgr_result.inserted_id))
             }
         }
 

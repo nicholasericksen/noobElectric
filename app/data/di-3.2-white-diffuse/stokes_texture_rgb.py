@@ -4,17 +4,17 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def calculate_stokes(H, V):
-    H = H.astype(np.int16)
-    V = V.astype(np.int16)
+def calculate_stokes(P1, P2):
+    P1 = P1.astype(np.int16)
+    P2 = P2.astype(np.int16)
 
-    S1 = (H - V) / (H + V)
+    S = (P1 - P2) / (P1 + P2)
 
     # These represent values that have not been illuminated by the source
     # ie they are the product of masking and shadowing.
-    S1[~np.isfinite(S1)] = 0
+    S[~np.isfinite(S)] = 0
 
-    return S1
+    return S
 
 H = cv2.imread('../di-3_1-white-specular/H.png', 1)
 V = cv2.imread('../di-3_1-white-specular/V.png', 1)
@@ -43,9 +43,9 @@ cv2.destroyAllWindows()
 cv2.waitKey(1)
 
 
-cv2.imshow("S1b", S1b)
-cv2.imshow("S1g", S1g)
-cv2.imshow("S1r", S1r)
+cv2.imshow("S1b", np.abs(S1b))
+cv2.imshow("S1g", np.abs(S1g))
+cv2.imshow("S1r", np.abs(S1r))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

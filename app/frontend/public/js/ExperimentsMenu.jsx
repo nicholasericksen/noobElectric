@@ -15,6 +15,7 @@ export default class ExperimentsMenu extends Component {
 
         this.requestData = this.requestData.bind(this);
         this.exportGlcmData = this.exportGlcmData.bind(this);
+        this.exportBGRHistograms = this.exportBGRHistograms.bind(this);
     }
 
     componentDidMount() {
@@ -58,6 +59,52 @@ export default class ExperimentsMenu extends Component {
         }
         this.setState({
             compareList: list
+        });
+    }
+    exportBGRHistograms() {
+        const idArray = this.state.compareList;
+
+
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += 'RWC,S1bmean,S1bstd,S1gmean,S1gstd,S1rmean,S1rstd,S2bmean,S2bstd,S2gmean,S2gstd,S2rmean,S2rstd' + "\n";
+        var successCounter = 0;
+        idArray.map((id, index) => {
+            // var request = new XMLHttpRequest();
+
+            let params =  {
+                id: id
+            };
+            fetch('http://localhost:5000/api/experiments/histograms/bgr', {method: 'POST', body: JSON.stringify(params)})
+            .then((response) => {
+                return response.json();
+            })
+            .then((rawdata) => {
+                var data = rawdata.exp;
+                var bgr = data.histograms;
+                if(bgr) {
+                    // glcm.map((sample, index) => {
+
+                    // const all = [successCounter, bgr.S1.b.stats.mean, bgr.S1.b.stats.std, bgr.S1.g.stats.mean, bgr.S1.g.stats.std,bgr.S1.r.stats.mean, bgr.S1.r.stats.std, bgr.S2.b.stats.mean, bgr.S2.b.stats.std, bgr.S2.g.stats.mean, bgr.S2.g.stats.std,bgr.S2.r.stats.mean, bgr.S2.r.stats.std];
+                    // console.log("ALL", all);
+                    const all = [successCounter, [bgr.S1.b.data], [bgr.S1.g.data], [bgr.S1.r.data]];
+                    console.log("ALL", all);
+                    var dataString = all.join(",");
+                    csvContent += dataString+ "\n";
+                    successCounter += 1;
+                    // })
+                    //  console.log("index", successCounter);
+                    if (successCounter === idArray.length) {
+
+                        console.log('length', idArray.length);
+                        console.log("sail away", csvContent);
+                        var encodedUri = encodeURI(csvContent);
+                        window.open(encodedUri);
+                    }
+                }
+
+
+            })
+
         });
     }
     exportGlcmData() {
@@ -118,7 +165,7 @@ export default class ExperimentsMenu extends Component {
                 console.log("index", index);
                 console.log("idlength", idArray.length);
                 if (index === idArray.length - 1) {
-                    console.log("sail away");
+                    console.log("sail away", csvContent);
                     var encodedUri = encodeURI(csvContent);
                     window.open(encodedUri);
                 }
@@ -198,7 +245,7 @@ export default class ExperimentsMenu extends Component {
                     new
                 </Link>
                 <Link className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")} to={`/experiments/compare/${this.state.compareList}`}>compare</Link>
-                <span onClick={this.exportGlcmData} className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")}>export</span>
+                <span onClick={this.exportBGRHistograms} className={classNames({'inactive': inactive}, "subheading","btn-primary","btn")}>export</span>
                 {data ?
                     data.map((experiment, index) => {
                         const active = this.state.compareList.includes(experiment._id.$oid);

@@ -30953,6 +30953,7 @@ var Experiment = function (_Component) {
         _this.requestHistogramData = _this.requestHistogramData.bind(_this);
         _this.generateGlcmData = _this.generateGlcmData.bind(_this);
         _this.generateHistogramData = _this.generateHistogramData.bind(_this);
+        _this.requestBGR = _this.requestBGR.bind(_this);
         return _this;
     }
 
@@ -31080,9 +31081,21 @@ var Experiment = function (_Component) {
             request.send(JSON.stringify(params));
         }
     }, {
+        key: 'requestBGR',
+        value: function requestBGR(params) {
+            var _this5 = this;
+
+            fetch('http://localhost:5000/api/experiments/histograms/bgr', { method: 'POST', body: JSON.stringify(params) }).then(function (response) {
+                return response.json();
+            }).then(function (rawdata) {
+                console.log("cat", rawdata);
+                _this5.setState({ bgrDataset: rawdata });
+            });
+        }
+    }, {
         key: 'requestData',
         value: function requestData(props) {
-            var _this5 = this;
+            var _this6 = this;
 
             var request = new XMLHttpRequest();
             var expId = '' + this.props.match.params.experiment;
@@ -31102,14 +31115,18 @@ var Experiment = function (_Component) {
                     var data = rawdata.exp;
                     var dataset = [];
 
-                    _this5.setState({ data: data });
+                    _this6.setState({ data: data });
 
                     if (data && data.stokes) {
                         var hist_params = {
                             id: data.stokes.$oid
                         };
-                        console.log("PARAMS", hist_params);
-                        _this5.requestHistogramData(hist_params);
+                        console.log("PARAMS", params);
+                        _this6.requestHistogramData(params);
+                    }
+
+                    if (data && data.stokes_bgr) {
+                        _this6.requestBGR(params);
                     }
 
                     if (data && data.glcm) {
@@ -31251,7 +31268,7 @@ var Experiment = function (_Component) {
     }, {
         key: 'generateGlcmData',
         value: function generateGlcmData() {
-            var _this6 = this;
+            var _this7 = this;
 
             var xhr = new XMLHttpRequest();
             var expId = '' + this.props.match.params.experiment;
@@ -31267,7 +31284,7 @@ var Experiment = function (_Component) {
             xhr.onload = function () {
                 if (xhr.status >= 200 && xhr.status < 400) {
                     console.log("successful upload");
-                    _this6.requestGlcmData(params);
+                    _this7.requestGlcmData(params);
                 } else {
                     console.log("An error was returned");
                 }
@@ -31282,7 +31299,7 @@ var Experiment = function (_Component) {
     }, {
         key: 'generateHistogramData',
         value: function generateHistogramData() {
-            var _this7 = this;
+            var _this8 = this;
 
             var xhr = new XMLHttpRequest();
             var expId = '' + this.props.match.params.experiment;
@@ -31302,7 +31319,7 @@ var Experiment = function (_Component) {
                     // this.setState({
                     //     experiments: data
                     // });
-                    _this7.requestHistogramData(params);
+                    _this8.requestHistogramData(params);
                 } else {
                     console.log("An error was returned");
                 }
@@ -31317,7 +31334,7 @@ var Experiment = function (_Component) {
     }, {
         key: 'renderAll',
         value: function renderAll() {
-            var _this8 = this;
+            var _this9 = this;
 
             if (this.state.data.images) {
                 var scatterPlotData = [];
@@ -31364,21 +31381,21 @@ var Experiment = function (_Component) {
                                 _react2.default.createElement(
                                     'span',
                                     { className: 'histogram-filter button btn', onClick: function onClick() {
-                                            return _this8.setStokesDataset(0);
+                                            return _this9.setStokesDataset(0);
                                         } },
                                     'All'
                                 ),
                                 _react2.default.createElement(
                                     'span',
                                     { className: 'histogram-filter button btn', onClick: function onClick() {
-                                            return _this8.setStokesDataset(1);
+                                            return _this9.setStokesDataset(1);
                                         } },
                                     'S1'
                                 ),
                                 _react2.default.createElement(
                                     'span',
                                     { className: 'histogram-filter button btn', onClick: function onClick() {
-                                            return _this8.setStokesDataset(2);
+                                            return _this9.setStokesDataset(2);
                                         } },
                                     'S2'
                                 )
@@ -35072,6 +35089,7 @@ var ExperimentsMenu = function (_Component) {
 
         _this.requestData = _this.requestData.bind(_this);
         _this.exportGlcmData = _this.exportGlcmData.bind(_this);
+        _this.exportBGRHistograms = _this.exportBGRHistograms.bind(_this);
         return _this;
     }
 
@@ -35122,6 +35140,48 @@ var ExperimentsMenu = function (_Component) {
             }
             this.setState({
                 compareList: list
+            });
+        }
+    }, {
+        key: 'exportBGRHistograms',
+        value: function exportBGRHistograms() {
+            var idArray = this.state.compareList;
+
+            var csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += 'RWC,S1bmean,S1bstd,S1gmean,S1gstd,S1rmean,S1rstd,S2bmean,S2bstd,S2gmean,S2gstd,S2rmean,S2rstd' + "\n";
+            var successCounter = 0;
+            idArray.map(function (id, index) {
+                // var request = new XMLHttpRequest();
+
+                var params = {
+                    id: id
+                };
+                fetch('http://localhost:5000/api/experiments/histograms/bgr', { method: 'POST', body: JSON.stringify(params) }).then(function (response) {
+                    return response.json();
+                }).then(function (rawdata) {
+                    var data = rawdata.exp;
+                    var bgr = data.histograms;
+                    if (bgr) {
+                        // glcm.map((sample, index) => {
+
+                        // const all = [successCounter, bgr.S1.b.stats.mean, bgr.S1.b.stats.std, bgr.S1.g.stats.mean, bgr.S1.g.stats.std,bgr.S1.r.stats.mean, bgr.S1.r.stats.std, bgr.S2.b.stats.mean, bgr.S2.b.stats.std, bgr.S2.g.stats.mean, bgr.S2.g.stats.std,bgr.S2.r.stats.mean, bgr.S2.r.stats.std];
+                        // console.log("ALL", all);
+                        var all = [successCounter, [bgr.S1.b.data], [bgr.S1.g.data], [bgr.S1.r.data]];
+                        console.log("ALL", all);
+                        var dataString = all.join(",");
+                        csvContent += dataString + "\n";
+                        successCounter += 1;
+                        // })
+                        //  console.log("index", successCounter);
+                        if (successCounter === idArray.length) {
+
+                            console.log('length', idArray.length);
+                            console.log("sail away", csvContent);
+                            var encodedUri = encodeURI(csvContent);
+                            window.open(encodedUri);
+                        }
+                    }
+                });
             });
         }
     }, {
@@ -35180,7 +35240,7 @@ var ExperimentsMenu = function (_Component) {
                     console.log("index", index);
                     console.log("idlength", idArray.length);
                     if (index === idArray.length - 1) {
-                        console.log("sail away");
+                        console.log("sail away", csvContent);
                         var encodedUri = encodeURI(csvContent);
                         window.open(encodedUri);
                     }
@@ -35268,7 +35328,7 @@ var ExperimentsMenu = function (_Component) {
                 ),
                 _react2.default.createElement(
                     'span',
-                    { onClick: this.exportGlcmData, className: (0, _classnames2.default)({ 'inactive': inactive }, "subheading", "btn-primary", "btn") },
+                    { onClick: this.exportBGRHistograms, className: (0, _classnames2.default)({ 'inactive': inactive }, "subheading", "btn-primary", "btn") },
                     'export'
                 ),
                 data ? data.map(function (experiment, index) {
