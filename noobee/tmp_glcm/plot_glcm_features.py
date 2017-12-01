@@ -39,7 +39,7 @@ img_dirs = ['../../app/data/grit-80-sandpaper-specular', '../../app/data/grit-10
 
 markers = ['o', 'x', '*', '+']
 colors = ['r', 'g', 'b', 'y']
-size = 75
+size = 115
 count = 50
 
 for index, img_dir in enumerate(img_dirs):
