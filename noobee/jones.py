@@ -26,6 +26,24 @@ def j(j0, j1):
     """
     return np.array([[j0], [j1]])
 
+def lp(phi):
+    """
+    General Linear Polarizer
+
+    Args:
+        phi (float): Transmission axis is degrees relative
+            to the X axis.
+
+    Returns:
+        array: Jones matrix
+    """
+    a = np.power(np.cos(phi), 2)
+    b = np.sin(phi)*np.cos(phi)
+    c = np.sin(phi)*np.cos(phi)
+    d = np.power(np.sin(phi), 2)
+
+    return np.matrix([[a,b], [c,d]])
+
 def lph():
     """
     Linear Polarizer with transmission axis at 0 degrees.
@@ -33,7 +51,7 @@ def lph():
     Returns:
         array: numpy array representation for LPH.
     """
-    return np.array([[1,0], [0,0]])
+    return np.matrix([[1,0], [0,0]])
 
 def lpv():
     """
@@ -42,7 +60,7 @@ def lpv():
     Returns:
         array: numpy array representation of LPV.
     """
-    return np.array([[0,0], [0,1]])
+    return np.matrix([[0,0], [0,1]])
 
 def lp45():
     """
@@ -51,7 +69,7 @@ def lp45():
     Returns:
         array: numpy array representation for LP45.
     """
-    return 0.5 * np.array([[1,1],[1,1]])
+    return 0.5 * np.matrix([[1,1],[1,1]])
 
 def lp135():
     """
@@ -60,7 +78,7 @@ def lp135():
     Returns:
         array: numpy array representation for LP135.
     """
-    return 0.5 * np.array([[1,-1], [-1,1]])
+    return 0.5 * np.matrix([[1,-1], [-1,1]])
 
 def rcp():
     """
@@ -69,7 +87,7 @@ def rcp():
     Returns:
         array: numpy array representation for RCP.
     """
-    return 0.5 * np.array([[1,1j],[-1j, 1]])
+    return 0.5 * np.matrix([[1,1j],[-1j, 1]])
 
 def lcp():
     """
@@ -78,7 +96,7 @@ def lcp():
     Returns:
         array: numpy array representation for a LCP.
     """
-    return 0.5 * np.array([[1,-1j], [1j, 1]])
+    return 0.5 * np.matrix([[1,-1j], [1j, 1]])
 
 def qwp(theta):
     """

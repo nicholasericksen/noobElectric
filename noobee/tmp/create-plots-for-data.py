@@ -13,7 +13,8 @@ def calculate_stokes((P1, P2)):
 
     # These represent values that have not been illuminated by the source
     # ie they are the product of masking and shadowing.
-    S[~np.isfinite(S)] = 0
+    # S[~np.isfinite(S)] = 0
+    S = S[np.isfinite(S)]
 
     return S
 
@@ -37,8 +38,8 @@ def generate_stokes_total_histograms(img_dirs):
 
     # plt.scatter(S1.ravel(), S2.ravel())
     # plt.show()
-    # S1_hist = createhistogram(S1, np.linspace(-1, 1, 200))
-    # S2_hist = createhistogram(S2, np.linspace(-1, 1, 200))
+    # S1_hist = createhistogram(S1, [-1,-0.5,0.5,1])
+    # S2_hist = createhistogram(S2, [-1,-0.5,0.5,1])
     # print S1_hist
 
     cv2.imwrite('S1.png', normed(S1) * 255)
@@ -46,8 +47,8 @@ def generate_stokes_total_histograms(img_dirs):
 
     plt.title('Polarizance Paramaters')
 
-    plt.hist(S1.ravel(), bins=np.linspace(-1, 1, 200), normed=True)
-    plt.hist(S2.ravel(), bins=np.linspace(-1, 1, 200), normed=True)
+    plt.hist(S1.ravel(), bins=np.linspace(-1,1,100), normed=True)
+    plt.hist(S2.ravel(), bins=np.linspace(-1,1,100), normed=True)
 
     plt.show()
 
@@ -102,22 +103,22 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('RGB')
-        plt.hist(S1.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S1.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.subplot(222)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Blue Channel')
-        plt.hist(S1_b.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S1_b.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.subplot(223)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Green Channel')
-        plt.hist(S1_g.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S1_g.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.subplot(224)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Red Channel')
-        plt.hist(S1_r.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S1_r.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.legend()
 
         plt.figure(2)
@@ -126,29 +127,41 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
         plt.title('RGB')
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
-        plt.hist(S2.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S2.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.subplot(222)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Blue Channel')
-        plt.hist(S2_b.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S2_b.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.subplot(223)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Green Channel')
-        plt.hist(S2_g.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S2_g.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.subplot(224)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Red Channel')
-        plt.hist(S2_r.ravel(), bins=np.linspace(-1, 1, 200), normed=True, label=labels[index])
+        plt.hist(S2_r.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
         plt.legend()
 
     plt.show()
 
-labels = ['American Ash', 'Sugar Maple', 'Red Oak']
-img_dirs = ['../../app/data/american-ash-2-white-diffuse', '../../app/data/sugar-maple-1-white-diffuse', '../../app/data/red-oak-1-white-diffuse']
+# for all 0 wk
+# labels = ['American Ash 1', 'American Ash 2', 'American Ash 3', 'Sugar Maple 1', 'Sugar Maple 2','Sugar Maple 3', 'Red Oak 1', 'Red Oak 2', 'Red Oak 3']
+# img_dirs = ['../../app/data/american-ash-1-white-diffuse','../../app/data/american-ash-2-white-diffuse', '../../app/data/american-ash-3-white-diffuse', '../../app/data/sugar-maple-1-white-diffuse','../../app/data/sugar-maple-2-white-diffuse','../../app/data/sugar-maple-3-white-diffuse', '../../app/data/red-oak-1-white-diffuse', '../../app/data/red-oak-2-white-diffuse', '../../app/data/red-oak-3-white-diffuse']
+# labels = ['American Ash 0wk', 'American Ash 1wk', 'Sugar Maple 0wk', 'Sugar Maple 1wk', 'Red Oak 0wk', 'Red Oak 1wk']
+# img_dirs = ['../../app/data/american-ash-1-white-diffuse','../../app/data/american-ash-1-white-diffuse-1wk', '../../app/data/sugar-maple-1-white-diffuse','../../app/data/sugar-maple-1-white-diffuse-1wk', '../../app/data/red-oak-1-white-diffuse', '../../app/data/red-oak-1-white-diffuse-1wk']
 
-# labels = ['60 Grit', '100 Grit']
-# img_dirs = ['../../app/data/sandpaper-brown-60-grit', '../../app/data/sandpaper-100-grit-brown-red-filter']
+# labels = ['DI - 99 %', 'DI - 95%', 'DI - 97%']
+# img_dirs = ['../../app/data/di-3_1-white-specular','../../app/data/di-3+1-white-specular', '../../app/data/di-3+2-white-specular']
+
+labels = ['80 Grit', '100 Grit', '150 grit', '220 grit']
+img_dirs = ['../../app/data/grit-80-sandpaper-specular', '../../app/data/grit-100-sandpaper-specular', '../../app/data/grit-150-sandpaper-specular', '../../app/data/grit-220-sandpaper-specular']
+
+# labels = ['80 Grit', '220 grit']
+# #
+# img_dirs = ['../../app/data/grit-80-sandpaper-specular', '../../app/data/grit-220-sandpaper-specular']
+
+
 generate_stokes_bgr_histograms(img_dirs, labels)

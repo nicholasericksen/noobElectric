@@ -74,9 +74,9 @@ def calculate_stokes((P1, P2)):
     return S
 
 # Settings
-img_dir = '../app/data/sandpaper-100-grit-brown-red-filter'
+img_dir = '../app/data/di-1.1-white-specular'
 size = 75
-count = 300
+count = 50
 # H = cv2.imread(os.path.join(img_dir, 'H.png'), 1)
 # V = cv2.imread(os.path.join(img_dir, 'V.png'), 1)
 # P = cv2.imread(os.path.join(img_dir, 'P.png'), 1)
@@ -141,7 +141,7 @@ M_b_texture, M_g_texture, M_r_texture = [extract_texture(samples) for samples in
 # features = np.concatenate((S1_b_features, S1_g_features, S1_r_features, S2_b_features, S2_g_features, S2_r_features), axis=1)
 features = np.concatenate((S1_b_summary, S1_g_summary, S1_r_summary, S2_b_summary, S2_g_summary, S2_r_summary, H_b_texture, H_g_texture, H_r_texture, V_b_texture, V_g_texture, V_r_texture, P_b_texture, P_g_texture, P_r_texture, M_b_texture, M_g_texture, M_r_texture), axis=1)
 
-with open('sandpaper-new.csv', 'a') as f:
+with open('rwc-specular.csv', 'a') as f:
     np.savetxt(f, features, delimiter=',', fmt="%g")
 
 

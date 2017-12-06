@@ -36,10 +36,12 @@ def extract_texture(samples):
 # labels = ['American Ash', 'Sugar Maple', 'Red Oak']
 labels = ['80 Grit', '100 Grit', '150 Grit', '220 Grit']
 img_dirs = ['../../app/data/grit-80-sandpaper-specular', '../../app/data/grit-100-sandpaper-specular', '../../app/data/grit-150-sandpaper-specular', '../../app/data/grit-220-sandpaper-specular']
+# labels = ['90%', '99%']
+# img_dirs = ['../../app/data/di-1_1-white-specular', '../../app/data/di-2+1-white-specular']
 
 markers = ['o', 'x', '*', '+']
 colors = ['r', 'g', 'b', 'y']
-size = 115
+size = 75
 count = 50
 
 for index, img_dir in enumerate(img_dirs):
