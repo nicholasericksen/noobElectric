@@ -5,40 +5,44 @@ import numpy as np
 
 from sklearn.metrics import roc_curve, auc
 
-from sklearn.preprocessing import label_binarize
+from sklearn.preprocessing import label_binarize, normalize, scale
 from sklearn.multiclass import OneVsRestClassifier
 from scipy import interp
 import matplotlib.pyplot as plt
 from itertools import cycle
 
-X = np.genfromtxt('sandpaper-new.csv', delimiter=',')
+X = np.genfromtxt('specular-trees.csv', delimiter=',')
+X = scale(X)
+# X = normalize(X, axis=0)
 # print X
 
-# ash_label = np.full((300,), 0)
-# oak_label = np.full((300,), 1)
-# maple_label = np.full((300,),2)
+ash_label = np.full((300,), 0)
+oak_label = np.full((300,), 1)
+maple_label = np.full((300,),2)
 
-grit_100 = np.full((300,), 1)
-grit_60 = np.full((300,), 0)
+# grit_220 = np.full((100,), 3)
+# grit_150 = np.full((100,), 2)
+# grit_100 = np.full((100,), 1)
+# grit_60 = np.full((100,), 0)
 
 
 # print ash_label
-# y = np.concatenate((ash_label, oak_label, maple_label))
-y = np.concatenate((grit_60, grit_100))
+y = np.concatenate((ash_label, oak_label, maple_label))
+# y = np.concatenate((grit_60, grit_100, grit_150, grit_220))
 
 # binarize the labels for roc_curve
 # y = label_binarize(y, classes=[0,1,2])
-y = label_binarize(y, classes=[0,1])
+y = label_binarize(y, classes=[0,1,2])
 n_classes = y.shape[1]
 print "n", n_classes
 # print y
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0)
 
 
 #############################################
 # roc specific
-classifier = OneVsRestClassifier(svm.SVC(kernel='linear', C=0.1))
+classifier = OneVsRestClassifier(svm.SVC(kernel='linear', C=1))
 y_score = classifier.fit(X_train, y_train).decision_function(X_test)
 
 # Compute ROC curve and ROC area for each class
@@ -114,14 +118,14 @@ plt.show()
 
 #############################################
 print "split"
-clf = svm.SVC(kernel='linear', C=.1)
-
-fit = clf.fit(X_train, y_train)
-
-#simple score
-score = fit.score(X_test, y_test)
-print score
+# clf = svm.SVC(kernel='linear', C=1)
+#
+# fit = clf.fit(X_train, y_train)
+#
+# #simple score
+# score = fit.score(X_test, y_test)
+# print score
 
 # corss validated scores
-# scores = cross_val_score(clf, X, y, cv=3)
-# print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+scores = cross_val_score(classifier, X, y, cv=10)
+print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))

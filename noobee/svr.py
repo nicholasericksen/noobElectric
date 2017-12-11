@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score, explained_variance_score, mean_squared_error
+from sklearn.preprocessing import label_binarize, scale, normalize
 # data = np.genfromtxt('rwc-raw.csv', skip_header=1, delimiter=',')
 # y = [data[0] for data in data]
 # print "Y", len(y)
@@ -14,14 +15,15 @@ from sklearn.metrics import r2_score, explained_variance_score, mean_squared_err
 # X = data
 # print len(X)
 # rwc-specular is a measure of 50 75px x 75 px samples of each leaf
-data = np.genfromtxt('rwc-specular-plant2.csv', delimiter=',')
-X_unnormed = data[:,1:]
+data = np.genfromtxt('rwc-specular-all-less-rwc-precision-75.csv', delimiter=',')
+X = data[:,1:]
+X = normalize(X)
 y = data[:,0]
 
 
-X = (X_unnormed - X_unnormed.min())/(X_unnormed.max() - X_unnormed.min())
+# X = (X_unnormed - X_unnormed.min())/(X_unnormed.max() - X_unnormed.min())
 # print X
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 # X = [[1,1,1],[2,2,2], [3,3,3], [4,4,4],[5,5,5], [6,6,6], [7,7,7], [8,8,8], [9,9,9]]
 # y=[1,2,3,4,5,6,7,8,9]
@@ -33,7 +35,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_
 
 # tuned_parameters = [{'kernel': ['linear'], 'C': [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,3,4,5,6, 10, 100], 'epsilon': [1e-1, .3,.4,.5,.7,.6,.9]}]
 # #
-# clfer = GridSearchCV(svm.SVR(), tuned_parameters, cv=2)
+# clfer = GridSearchCV(svm.SVR(), tuned_parameters, cv=5)
 # clfer.fit(X_train, y_train)
 # print "clf score: ", clfer.score(X_test, y_test)
 # print("Best parameters set found on development set:")
@@ -42,7 +44,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_
 
 #(3, .5) (.5, .01) (1, .5) (2, .6) (.6, .08)
 
-clf = svm.SVR(kernel='linear', C=10, epsilon=1)
+clf = svm.SVR(kernel='sigmoid', C=10, epsilon=.0001)
 pca = sklearnPCA(n_components=2)
 trans = pca.fit_transform(X)
 X_trans = trans[:, 0]
@@ -53,7 +55,7 @@ print "score: ", fit.score(X_test, y_test)
 print "r2: ", r2_score(y, fit_y, multioutput='variance_weighted')
 print "explained_variance_score: ", explained_variance_score(y, fit_y)
 print "root mean squared: ", mean_squared_error(y, fit_y)
-scores = cross_val_score(clf, X_train, y_train, cv=2)
+scores = cross_val_score(clf, X_train, y_train, cv=5)
 print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
 
@@ -96,7 +98,7 @@ plt.scatter(X_trans, fit_y, marker='x', s=30, label='model', color='r')
 # X_trans, fit_y = zip(*sorted(zip(X_trans,fit_y)))
 
 p = X_trans.argsort()
-plt.plot(X_trans[p], fit_y[p])
+plt.plot(X_trans[p].reshape(-1, 1), fit_y[p])
 plt.title('Relative Water Content (RWC)')
 plt.xlabel('First Principal Component')
 plt.ylabel('RWC (%)')

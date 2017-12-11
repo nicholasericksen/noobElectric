@@ -13,8 +13,8 @@ def calculate_stokes((P1, P2)):
 
     # These represent values that have not been illuminated by the source
     # ie they are the product of masking and shadowing.
-    # S[~np.isfinite(S)] = 0
-    S = S[np.isfinite(S)]
+    S[~np.isfinite(S)] = 0
+    # S = S[np.isfinite(S)]
 
     return S
 
@@ -47,8 +47,8 @@ def generate_stokes_total_histograms(img_dirs):
 
     plt.title('Polarizance Paramaters')
 
-    plt.hist(S1.ravel(), bins=np.linspace(-1,1,100), normed=True)
-    plt.hist(S2.ravel(), bins=np.linspace(-1,1,100), normed=True)
+    plt.hist(S1.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True)
+    plt.hist(S2.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True)
 
     plt.show()
 
@@ -66,20 +66,20 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
 
         S1 = calculate_stokes((H, V))
         S2 = calculate_stokes((P, M))
-        cv2.imwrite(os.path.join(img_dir, 'S1.png'), normed(S1) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'S2.png'), normed(S2) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'H_b.png'), normed(H_b) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'H_g.png'), normed(H_g) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'H_r.png'), normed(H_r) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'V_b.png'), normed(V_b) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'V_g.png'), normed(V_g) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'V_r.png'), normed(V_r) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'P_b.png'), normed(P_b) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'P_g.png'), normed(P_g) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'P_r.png'), normed(P_r) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'M_b.png'), normed(M_b) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'M_g.png'), normed(M_g) * 255)
-        cv2.imwrite(os.path.join(img_dir, 'M_r.png'), normed(M_r) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'S1.png'), normed(S1) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'S2.png'), normed(S2) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'H_b.png'), normed(H_b) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'H_g.png'), normed(H_g) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'H_r.png'), normed(H_r) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'V_b.png'), normed(V_b) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'V_g.png'), normed(V_g) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'V_r.png'), normed(V_r) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'P_b.png'), normed(P_b) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'P_g.png'), normed(P_g) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'P_r.png'), normed(P_r) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'M_b.png'), normed(M_b) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'M_g.png'), normed(M_g) * 255)
+        # cv2.imwrite(os.path.join(img_dir, 'M_r.png'), normed(M_r) * 255)
 
 
         S1_b = calculate_stokes((H_b, V_b))
@@ -103,22 +103,22 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('RGB')
-        plt.hist(S1.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S1.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.subplot(222)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Blue Channel')
-        plt.hist(S1_b.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S1_b.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.subplot(223)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Green Channel')
-        plt.hist(S1_g.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S1_g.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.subplot(224)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Red Channel')
-        plt.hist(S1_r.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S1_r.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.legend()
 
         plt.figure(2)
@@ -127,29 +127,29 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
         plt.title('RGB')
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
-        plt.hist(S2.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S2.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.subplot(222)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Blue Channel')
-        plt.hist(S2_b.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S2_b.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.subplot(223)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Green Channel')
-        plt.hist(S2_g.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S2_g.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.subplot(224)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Red Channel')
-        plt.hist(S2_r.ravel(), bins=np.linspace(-1,1,100), normed=True, label=labels[index], alpha=.4)
+        plt.hist(S2_r.ravel(), bins=[-1,-.9,-.8,-.7,-.6,-.5,-.4,-.3,-.2,-.1,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1], normed=True, label=labels[index], alpha=.4)
         plt.legend()
 
     plt.show()
 
 # for all 0 wk
 # labels = ['American Ash 1', 'American Ash 2', 'American Ash 3', 'Sugar Maple 1', 'Sugar Maple 2','Sugar Maple 3', 'Red Oak 1', 'Red Oak 2', 'Red Oak 3']
-# img_dirs = ['../../app/data/american-ash-1-white-diffuse','../../app/data/american-ash-2-white-diffuse', '../../app/data/american-ash-3-white-diffuse', '../../app/data/sugar-maple-1-white-diffuse','../../app/data/sugar-maple-2-white-diffuse','../../app/data/sugar-maple-3-white-diffuse', '../../app/data/red-oak-1-white-diffuse', '../../app/data/red-oak-2-white-diffuse', '../../app/data/red-oak-3-white-diffuse']
+# img_dirs = ['../../app/data/american-ash-1-white-specular','../../app/data/american-ash-2-white-specular', '../../app/data/american-ash-3-white-specular', '../../app/data/sugar-maple-1-white-specular','../../app/data/sugar-maple-2-white-specular','../../app/data/sugar-maple-3-white-specular', '../../app/data/red-oak-1-white-specular', '../../app/data/red-oak-2-white-specular', '../../app/data/red-oak-3-white-specular']
 # labels = ['American Ash 0wk', 'American Ash 1wk', 'Sugar Maple 0wk', 'Sugar Maple 1wk', 'Red Oak 0wk', 'Red Oak 1wk']
 # img_dirs = ['../../app/data/american-ash-1-white-diffuse','../../app/data/american-ash-1-white-diffuse-1wk', '../../app/data/sugar-maple-1-white-diffuse','../../app/data/sugar-maple-1-white-diffuse-1wk', '../../app/data/red-oak-1-white-diffuse', '../../app/data/red-oak-1-white-diffuse-1wk']
 
