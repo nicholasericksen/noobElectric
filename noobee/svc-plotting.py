@@ -105,7 +105,7 @@ X_bar = np.arange(0,coef.shape[1],1)
 p = coef[0].argsort()
 
 plt.bar(X_bar, coef[0], color='r')
-# plt.xticks(X_bar, feature_labels, rotation=90)
+plt.xticks(X_bar, feature_labels, rotation=90)
 plt.show()
 
 

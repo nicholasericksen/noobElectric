@@ -78,11 +78,11 @@ def calculate_stokes((P1, P2)):
     return S
 
 # Settings
-# labels = ['80 Grit', '100 Grit', '150 Grit', '220 Grit']
-# img_dirs = ['../app/data/grit-80-sandpaper-specular', '../app/data/grit-100-sandpaper-specular', '../app/data/grit-150-sandpaper-specular', '../app/data/grit-220-sandpaper-specular']
+labels = ['80 Grit', '100 Grit', '150 Grit', '220 Grit']
+img_dirs = ['../app/data/grit-80-sandpaper-specular', '../app/data/grit-100-sandpaper-specular', '../app/data/grit-150-sandpaper-specular', '../app/data/grit-220-sandpaper-specular']
 
-img_dirs = ['../app/data/american-ash-1-white-diffuse', '../app/data/american-ash-2-white-diffuse','../app/data/american-ash-3-white-diffuse', '../app/data/sugar-maple-1-white-diffuse','../app/data/sugar-maple-2-white-diffuse','../app/data/sugar-maple-3-white-diffuse', '../app/data/red-oak-1-white-diffuse','../app/data/red-oak-2-white-diffuse','../app/data/red-oak-3-white-diffuse']
-labels = ['American Ash 1', 'American Ash 2', 'American Ash 3', 'Sugar Maple 1', 'Sugar Maple 2', 'Sugar Maple 3', 'Red Oak 1','Red Oak 2','Red Oak 3']
+# img_dirs = ['../app/data/american-ash-1-white-diffuse','../app/data/american-ash-1-white-diffuse-1wk', '../app/data/american-ash-2-white-diffuse','../app/data/american-ash-2-white-diffuse-1wk','../app/data/american-ash-3-white-diffuse','../app/data/american-ash-3-white-diffuse-1wk', '../app/data/sugar-maple-1-white-diffuse','../app/data/sugar-maple-1-white-diffuse-1wk','../app/data/sugar-maple-2-white-diffuse','../app/data/sugar-maple-2-white-diffuse-1wk','../app/data/sugar-maple-3-white-diffuse','../app/data/sugar-maple-3-white-diffuse-1wk', '../app/data/red-oak-1-white-diffuse','../app/data/red-oak-1-white-diffuse-1wk','../app/data/red-oak-2-white-diffuse','../app/data/red-oak-2-white-diffuse-1wk','../app/data/red-oak-3-white-diffuse','../app/data/red-oak-3-white-diffuse-1wk']
+# labels = ['American Ash 1', 'American Ash 1 - 1 week','American Ash 2', 'American Ash 3', 'Sugar Maple 1', 'Sugar Maple 2', 'Sugar Maple 3', 'Red Oak 1','Red Oak 2','Red Oak 3']
 #
 size = 75
 count = 100
@@ -152,7 +152,7 @@ for img_dir in img_dirs:
     # features = np.concatenate((S1_b_features, S1_g_features, S1_r_features, S2_b_features, S2_g_features, S2_r_features), axis=1)
     features = np.concatenate((S1_b_summary, S1_g_summary, S1_r_summary, S2_b_summary, S2_g_summary, S2_r_summary, H_b_texture, H_g_texture, H_r_texture, V_b_texture, V_g_texture, V_r_texture, P_b_texture, P_g_texture, P_r_texture, M_b_texture, M_g_texture, M_r_texture), axis=1)
 
-    with open('diffuse-trees.csv', 'a') as f:
+    with open('sandpaper-specular-75.csv', 'a') as f:
         np.savetxt(f, features, delimiter=',', fmt="%g")
 
 
