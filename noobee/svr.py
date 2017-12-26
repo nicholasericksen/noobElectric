@@ -33,18 +33,18 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0)
 
-# tuned_parameters = [{'kernel': ['linear'], 'C': [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,3,4,5,6, 10, 100], 'epsilon': [1e-1, .3,.4,.5,.7,.6,.9]}]
+tuned_parameters = [{'kernel': ['linear'], 'C': [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,3,4,5,6, 10, 100], 'epsilon': [1e-1, .3,.4,.5,.7,.6,.9]}]
 # #
-# clfer = GridSearchCV(svm.SVR(), tuned_parameters, cv=5)
-# clfer.fit(X_train, y_train)
-# print "clf score: ", clfer.score(X_test, y_test)
-# print("Best parameters set found on development set:")
+clfer = GridSearchCV(svm.SVR(), tuned_parameters, cv=5)
+clfer.fit(X_train, y_train)
+print "clf score: ", clfer.score(X_test, y_test)
+print("Best parameters set found on development set:")
 # print()
-# print(clfer.best_params_)
+print(clfer.best_params_)
 
 #(3, .5) (.5, .01) (1, .5) (2, .6) (.6, .08)
 
-clf = svm.SVR(kernel='sigmoid', C=10, epsilon=.0001)
+clf = svm.SVR(kernel='linear', C=6, epsilon=.4)
 pca = sklearnPCA(n_components=2)
 trans = pca.fit_transform(X)
 X_trans = trans[:, 0]

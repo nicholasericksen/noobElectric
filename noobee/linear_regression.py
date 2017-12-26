@@ -53,6 +53,10 @@ print "root mean squared: ", mean_squared_error(y, y_pred)
 scores = cross_val_score(regr, X, y, cv=10)
 print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
+
+plt.title('Linear Regression For Relative Water Content')
+plt.xlabel('First Principal Component')
+plt.ylabel('Relative Water Content')
 plt.scatter(X[:,0], y)
 plt.plot(X[:,0].reshape(-1, 1), y_pred)
 

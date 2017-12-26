@@ -25,8 +25,8 @@ def calculate_stokes((P1, P2)):
     P2 = P2.astype(np.float32)
     print "P1", P1
     print "P2", P2
-    # P1[np.abs(P1) < 1] = 0
-    # P2[np.abs(P2) < 1] = 0
+    P1[np.abs(P1) < 1] = 0
+    P2[np.abs(P2) < 1] = 0
 
     S = (P1 - P2) / (P1 + P2)
 
@@ -69,8 +69,8 @@ def generate_stokes_total_histograms(img_dirs):
 
     plt.title('Polarizance Paramaters')
 
-    plt.hist(S1.ravel(),histtype='barstacked', bins=np.linspace(-1,1,20))
-    plt.hist(S2.ravel(),histtype='barstacked', bins=np.linspace(-1,1,20))
+    plt.hist(S1.ravel(),histtype='barstacked', bins=256)
+    plt.hist(S2.ravel(),histtype='barstacked', bins=256)
 
     plt.show()
 
@@ -136,16 +136,28 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
 
         # S1_hist = S1[indexes]
         print "LENGTH", len(S1)
-        S1 = S1[~(((H == 0) & (V == 0)) | ((P == 0) & (M == 0)))]
-        S2 = S2[~(((P == 0) & (M == 0)) | ((H == 0) & (V == 0)))]
+        # S1 = S1[~(((H == 0) & (V == 0)) | ((P == 0) & (M == 0)))]
+        # S2 = S2[~(((P == 0) & (M == 0)) | ((H == 0) & (V == 0)))]
+        #
+        # S1_b = S1_b[~(((H_b == 0) & (V_b == 0)) | ((P_b == 0) & (M_b == 0)))]
+        # S1_g = S1_g[~(((H_g == 0) & (V_g == 0)) | ((P_g == 0) & (M_g == 0)))]
+        # S1_r = S1_r[~(((H_r == 0) & (V_r == 0)) | ((P_r == 0) & (M_r == 0)))]
+        #
+        # S2_b = S2_b[~(((P_b == 0) & (M_b == 0)) | ((H_b == 0) & (V_b == 0)))]
+        # S2_g = S2_g[~(((P_g == 0) & (M_g == 0)) | ((H_g == 0) & (V_g == 0)))]
+        # S2_r = S2_r[~(((P_r == 0) & (M_r == 0)) | ((H_r == 0) & (V_r == 0)))]
 
-        S1_b = S1_b[~(((H_b == 0) & (V_b == 0)) | ((P_b == 0) & (M_b == 0)))]
-        S1_g = S1_g[~(((H_g == 0) & (V_g == 0)) | ((P_g == 0) & (M_g == 0)))]
-        S1_r = S1_r[~(((H_r == 0) & (V_r == 0)) | ((P_r == 0) & (M_r == 0)))]
 
-        S2_b = S2_b[~(((P_b == 0) & (M_b == 0)) | ((H_b == 0) & (V_b == 0)))]
-        S2_g = S2_g[~(((P_g == 0) & (M_g == 0)) | ((H_g == 0) & (V_g == 0)))]
-        S2_r = S2_r[~(((P_r == 0) & (M_r == 0)) | ((H_r == 0) & (V_r == 0)))]
+        S1 = S1[~((H == 0) | (V == 0))]
+        S2 = S2[~((P == 0) | (M == 0))]
+
+        S1_b = S1_b[~((H_b == 0) | (V_b == 0))]
+        S1_g = S1_g[~((H_g == 0) | (V_g == 0))]
+        S1_r = S1_r[~((H_r == 0) | (V_r == 0))]
+
+        S2_b = S2_b[~((P_b == 0) | (M_b == 0))]
+        S2_g = S2_g[~((P_g == 0) | (M_g == 0))]
+        S2_r = S2_r[~((P_r == 0) | (M_r == 0))]
 
         S1_weights = np.ones_like(S1)/float(len(S1))
         S1_b_weights = np.ones_like(S1_b)/float(len(S1_b))
@@ -164,25 +176,25 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('RGB')
-        plt.hist(S1.ravel(),histtype='barstacked',weights=S1_weights, bins=np.linspace(-1,1,20), alpha=0.6,label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1.ravel()), np.std(S1.ravel())))
+        plt.hist(S1.ravel(),histtype='barstacked',weights=S1_weights, bins=256, alpha=0.6,label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1.ravel()), np.std(S1.ravel())))
         plt.legend(loc=2, fontsize=12)
         plt.subplot(222)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Blue Channel')
-        plt.hist(S1_b.ravel(),histtype='barstacked',weights=S1_b_weights, bins=np.linspace(-1,1,20), alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1_b.ravel()), np.std(S1_b.ravel())))
+        plt.hist(S1_b.ravel(),histtype='barstacked',weights=S1_b_weights, bins=256, alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1_b.ravel()), np.std(S1_b.ravel())))
         plt.legend(loc=2, fontsize=12)
         plt.subplot(223)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Green Channel')
-        plt.hist(S1_g.ravel(),histtype='barstacked',weights=S1_g_weights, bins=np.linspace(-1,1,20), alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1_g.ravel()), np.std(S1_g.ravel())))
+        plt.hist(S1_g.ravel(),histtype='barstacked',weights=S1_g_weights, bins=256, alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1_g.ravel()), np.std(S1_g.ravel())))
         plt.legend(loc=2, fontsize=12)
         plt.subplot(224)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Red Channel')
-        plt.hist(S1_r.ravel(),histtype='barstacked', weights=S1_r_weights, bins=np.linspace(-1,1,20), alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1_r.ravel()), np.std(S1_r.ravel())))
+        plt.hist(S1_r.ravel(),histtype='barstacked', weights=S1_r_weights, bins=256, alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S1_r.ravel()), np.std(S1_r.ravel())))
         plt.legend(loc=2, fontsize=12)
 
         plt.figure(2)
@@ -191,31 +203,31 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
         plt.title('RGB')
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
-        plt.hist(S2.ravel(),histtype='barstacked', weights=S2_weights, bins=np.linspace(-1,1,20), alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2.ravel()), np.std(S2.ravel())))
+        plt.hist(S2.ravel(),histtype='barstacked', weights=S2_weights, bins=256, alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2.ravel()), np.std(S2.ravel())))
         plt.legend(loc=2, fontsize=12)
         plt.subplot(222)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Blue Channel')
-        plt.hist(S2_b.ravel(),histtype='barstacked', weights=S2_b_weights, bins=np.linspace(-1,1,20), alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2_b.ravel()), np.std(S2_b.ravel())))
+        plt.hist(S2_b.ravel(),histtype='barstacked', weights=S2_b_weights, bins=256, alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2_b.ravel()), np.std(S2_b.ravel())))
         plt.legend(loc=2, fontsize=12)
         plt.subplot(223)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Green Channel')
-        plt.hist(S2_g.ravel(),histtype='barstacked', weights=S2_g_weights, bins=np.linspace(-1,1,20), alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2_g.ravel()), np.std(S2_g.ravel())))
+        plt.hist(S2_g.ravel(),histtype='barstacked', weights=S2_g_weights, bins=256, alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2_g.ravel()), np.std(S2_g.ravel())))
         plt.legend(loc=2, fontsize=12)
         plt.subplot(224)
         plt.xlabel('Polarization Intensity', fontsize=9)
         plt.ylabel('Normalized Frequency', fontsize=9)
         plt.title('Red Channel')
-        plt.hist(S2_r.ravel(),histtype='barstacked', weights=S2_r_weights, bins=np.linspace(-1,1,20), alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2_r.ravel()), np.std(S2_r.ravel())))
+        plt.hist(S2_r.ravel(),histtype='barstacked', weights=S2_r_weights, bins=256, alpha=0.6, label='%s (mean = %0.2f +/- %0.2f)' % (labels[index], np.mean(S2_r.ravel()), np.std(S2_r.ravel())))
         plt.legend(loc=2, fontsize=12)
 
     plt.show()
 
 # labels = ['American Ash', 'Sugar Maple',  'Red Oak', ]
-# img_dirs = ['../../app/data/american-ash-1-white-diffuse', '../../app/data/sugar-maple-2-white-diffuse', '../../app/data/red-oak-3-white-diffuse' ]
+# img_dirs = ['../../app/data/american-ash-1-white-diffuse', '../../app/data/sugar-maple-3-white-diffuse', '../../app/data/red-oak-2-white-diffuse' ]
 
 # labels = ['American Ash 0wk', 'Americazn Ash 1wk' ]
 
@@ -229,10 +241,11 @@ def generate_stokes_bgr_histograms(img_dirs, labels):
 
 
 
-labels = ['Red Oak 0wk', 'Red Oak 1wk' ]
-img_dirs = ['../../app/data/sugar-maple-2-white-specular', '../../app/data/sugar-maple-2-white-specular-1wk' ]
+# labels = ['Red Oak 0wk', 'Red Oak 1wk' ]
+# img_dirs = ['../../app/data/red-oak-2-white-specular', '../../app/data/red-oak-2-white-specular-1wk' ]
 
-
+# labels = ['Red Oak 0wk', 'Red Oak 1wk' ]
+# img_dirs = ['../../app/data/red-oak-3-white-diffuse', '../../app/data/red-oak-1-white-diffuse-1wk' ]
 
 
 
@@ -242,8 +255,8 @@ img_dirs = ['../../app/data/sugar-maple-2-white-specular', '../../app/data/sugar
 # labels = ['American Ash 0wk', 'American Ash 1wk', 'Sugar Maple 0wk', 'Sugar Maple 1wk', 'Red Oak 0wk', 'Red Oak 1wk']
 # img_dirs = ['../../app/data/american-ash-2-white-specular','../../app/data/american-ash-1-white-specular-1wk', '../../app/data/sugar-maple-1-white-specular','../../app/data/sugar-maple-1-white-specular-1wk', '../../app/data/red-oak-1-white-specular', '../../app/data/red-oak-3-white-specular-1wk']
 
-# labels = ['DI - 98 %', 'DI - 95%']
-# img_dirs = ['../../app/data/di-3^3-white-diffuse','../../app/data/di-3^2-white-diffuse']
+labels = ['DI - 98 %', 'DI - 95%']
+img_dirs = ['../../app/data/di-3&3-white-diffuse','../../app/data/di-3&2-white-diffuse']
 #
 # labels = ['Devils Ivy']
 # img_dirs = ['../../app/data/di-3^2-white-diffuse']

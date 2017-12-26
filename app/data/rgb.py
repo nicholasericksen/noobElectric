@@ -17,9 +17,9 @@ def rgri(image):
     return rgri
 
 
-# for values, color, channel in zip((r,g,b), ('r','g','b'), (2,1,0)):
-#     testimg = np.zeros((values.shape[0], values.shape[1],3), dtype=np.int)
-#     testimg[:,:,channel] = values
-#     # cv2.imshow('test', testimg)
-#
+for values, color, channel in zip((r,g,b), ('r','g','b'), (2,1,0)):
+    testimg = np.zeros((values.shape[0], values.shape[1],3), dtype=np.int)
+    testimg[:,:,channel] = values
+    # cv2.imshow('test', testimg)
+
 #     # save image to current directory in rgb folder
