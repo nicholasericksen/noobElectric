@@ -5,7 +5,10 @@ import cv2
 import os
 from sklearn.feature_extraction import image
 import matplotlib.pyplot as plt
+
 from skimage.feature import greycomatrix, greycoprops
+plt.rcParams["font.family"] = "Helvetica"
+
 
 def extract_texture(samples):
     """
@@ -46,8 +49,8 @@ def extract_texture(samples):
 
 # official specular##################################
 
-# labels = ['Red Oak 0wk', 'Red Oak 1wk' ]
-# img_dirs = ['../../app/data/red-oak-3-white-specular', '../../app/data/red-oak-1-white-specular-1wk' ]
+labels = ['Red Oak 0wk', 'Red Oak 1wk' ]
+img_dirs = ['../../app/data/red-oak-3-white-specular', '../../app/data/red-oak-1-white-specular-1wk' ]
 
 # labels = ['American Ash', 'Sugar Maple',  'Red Oak', ]
 # img_dirs = ['../../app/data/american-ash-2-white-specular', '../../app/data/sugar-maple-2-white-specular', '../../app/data/red-oak-3-white-specular' ]
@@ -66,17 +69,17 @@ def extract_texture(samples):
 
 ###################################
 
-labels = ['Red Oak 0wk', 'Red Oak 1wk' ]
-img_dirs = ['../../app/data/sugar-maple-1-white-specular', '../../app/data/sugar-maple-1-white-specular-1wk' ]
+# labels = ['Red Oak 0wk', 'Red Oak 1wk' ]
+# img_dirs = ['../../app/data/sugar-maple-1-white-specular', '../../app/data/sugar-maple-1-white-specular-1wk' ]
 
 
 # markers = ['o', 'x', '*', 'o', 'x', '*', 'o', 'x', '*']
-markers = ['o', 'x', '*', 'o', 'x', '*', 'o', 'x', '*']
+markers = ['o', 'x', 'o', 'o', 'x', 'o', 'o', 'x', 'o']
 
-colors = ['r', 'b', 'g', 'c']
+colors = ['white', 'black', 'black', 'c']
 # colors = ['r', 'r', 'r', 'b', 'b', 'b', 'g', 'g', 'g']
 
-size = 9
+size = 75
 count = 100
 
 for index, img_dir in enumerate(img_dirs):
@@ -98,85 +101,109 @@ for index, img_dir in enumerate(img_dirs):
     M_b_texture, M_g_texture, M_r_texture = [extract_texture(samples) for samples in [M_b_samples.astype(np.uint8), M_g_samples.astype(np.uint8), M_r_samples.astype(np.uint8)]]
 
     plt.figure(1)
-    plt.suptitle('Texture Analysis of BGR Channels', fontsize=20)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('H Filter, Blue Channel Texture')
+    plt.suptitle('Texture Analysis of BGR Channels', fontsize=24)
+    plt.xlabel('Dissimilarity',fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation',fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('H Filter, Blue Channel Texture', fontsize=22)
     plt.subplot(131)
-    plt.scatter(H_b_texture[:,0], H_b_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('H Filter, Green Channel Texture')
+    plt.scatter(H_b_texture[:,0], H_b_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity',fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation',fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('H Filter, Green Channel Texture', fontsize=22)
     plt.subplot(132)
-    plt.scatter(H_g_texture[:,0], H_g_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('H Filter, Red Channel Texture')
+    plt.scatter(H_g_texture[:,0], H_g_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity',fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation',fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('H Filter, Red Channel Texture', fontsize=22)
     plt.subplot(133)
-    plt.scatter(H_r_texture[:,0], H_r_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.scatter(H_r_texture[:,0], H_r_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
     plt.legend()
 
     plt.figure(2)
-    plt.suptitle('Texture Analysis of BGR Channels', fontsize=20)
+    plt.suptitle('Texture Analysis of BGR Channels', fontsize=24)
     plt.subplot(131)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('V Filter, Blue Channel Texture')
-    plt.scatter(V_b_texture[:,0], V_b_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('V Filter, Blue Channel Texture', fontsize=22)
+    plt.scatter(V_b_texture[:,0], V_b_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
 
     plt.subplot(132)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('V Filter, Green Channel Texture')
-    plt.scatter(V_g_texture[:,0], V_g_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('V Filter, Green Channel Texture', fontsize=22)
+    plt.scatter(V_g_texture[:,0], V_g_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
 
     plt.subplot(133)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('V Filter, Red Channel Texture')
-    plt.scatter(V_r_texture[:,0], V_r_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('V Filter, Red Channel Texture', fontsize=22)
+    plt.scatter(V_r_texture[:,0], V_r_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
     plt.legend()
 
     plt.figure(3)
-    plt.suptitle('Texture Analysis of BGR Channels', fontsize=20)
+    plt.suptitle('Texture Analysis of BGR Channels', fontsize=24)
     plt.subplot(131)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('P Filter, Blue Channel Texture')
-    plt.scatter(P_b_texture[:,0], P_b_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('P Filter, Blue Channel Texture', fontsize=22)
+    plt.scatter(P_b_texture[:,0], P_b_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
 
     plt.subplot(132)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('P Filter, Green Channel Texture')
-    plt.scatter(P_g_texture[:,0], P_g_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('P Filter, Green Channel Texture', fontsize=22)
+    plt.scatter(P_g_texture[:,0], P_g_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
 
     plt.subplot(133)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('P Filter, Red Channel Texture')
-    plt.scatter(P_r_texture[:,0], P_r_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('P Filter, Red Channel Texture', fontsize=22)
+    plt.scatter(P_r_texture[:,0], P_r_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
     plt.legend()
 
     plt.figure(4)
-    plt.suptitle('Texture Analysis of BGR Channels', fontsize=20)
+    plt.suptitle('Texture Analysis of BGR Channels', fontsize=24)
     plt.subplot(131)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('M Filter, Blue Channel Texture')
-    plt.scatter(M_b_texture[:,0], M_b_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('M Filter, Blue Channel Texture', fontsize=22)
+    plt.scatter(M_b_texture[:,0], M_b_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
 
     plt.subplot(132)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('M Filter, Green Channel Texture')
-    plt.scatter(M_g_texture[:,0], M_g_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('M Filter, Green Channel Texture', fontsize=22)
+    plt.scatter(M_g_texture[:,0], M_g_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
 
     plt.subplot(133)
-    plt.xlabel('Dissimilarity')
-    plt.ylabel('Correlation')
-    plt.title('M Filter, Red Channel Texture')
-    plt.scatter(M_r_texture[:,0], M_r_texture[:,2], marker=markers[index], label=labels[index], color=colors[index])
+    plt.xlabel('Dissimilarity', fontsize=20)
+    plt.xticks(fontsize=16)
+    plt.ylabel('Correlation', fontsize=20)
+    plt.yticks(fontsize=16)
+    plt.title('M Filter, Red Channel Texture', fontsize=22)
+    plt.scatter(M_r_texture[:,0], M_r_texture[:,2],s=size, marker=markers[index], edgecolors='black', linewidths=2, label=labels[index], color=colors[index])
     plt.legend()
 
 plt.show()

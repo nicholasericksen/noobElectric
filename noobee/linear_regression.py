@@ -1,14 +1,13 @@
 from __future__ import division
 import numpy as np
 from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn import svm, linear_model
+from sklearn import linear_model
 from sklearn.decomposition import PCA as sklearnPCA
 import matplotlib.pyplot as plt
-from sklearn.model_selection import cross_val_score
-from sklearn.preprocessing import label_binarize, scale, normalize
+from sklearn.preprocessing import normalize
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score, explained_variance_score, mean_squared_error
-from sklearn.preprocessing import FunctionTransformer, robust_scale
+from sklearn.preprocessing import FunctionTransformer
 from sklearn.preprocessing import PolynomialFeatures
 # data = np.genfromtxt('rwc-raw.csv', skip_header=1, delimiter=',')
 # y = [data[0] for data in data]
@@ -18,8 +17,8 @@ from sklearn.preprocessing import PolynomialFeatures
 # print len(X)
 # rwc-specular is a measure of 50 75px x 75 px samples of each leaf
 transformer = FunctionTransformer(np.log1p)
-
-data = np.genfromtxt('rwc-specular-all-less-rwc-precision-75.csv', delimiter=',')
+data = np.genfromtxt('rwc-diffuse-more-bins.csv', delimiter=',')
+# data = np.genfromtxt('rwc-specular-all-less-rwc-precision-75.csv', delimiter=',')
 X = data[:,1:]
 
 # X = scale(X)

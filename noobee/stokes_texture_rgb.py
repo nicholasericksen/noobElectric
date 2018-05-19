@@ -83,13 +83,15 @@ S2 = calculate_stokes(P_grey, M_grey)
 S1_hist = S1[~(Hb == 0)]
 
 
-S1b = calculate_stokes(Hb, Vb)
-S1g = calculate_stokes(Hg, Vg)
-S1r = calculate_stokes(Hr, Vr)
+# S1b = calculate_stokes(Hb, Vb)
+# S1g = calculate_stokes(Hg, Vg)
+# S1r = calculate_stokes(Hr, Vr)
 
-S2b = calculate_stokes(Pb, Mb)
-S2g = calculate_stokes(Pg, Mg)
-S2r = calculate_stokes(Pr, Mr)
+# S2b = calculate_stokes(Pb, Mb)
+# S2g = calculate_stokes(Pg, Mg)
+# S2r = calculate_stokes(Pr, Mr)
+S1b, S1g, S1r = [calculate_stokes(P1, P2) for (P1, P2) in [(Hb, Vb), (Hg, Vg), (Hr, Vr)]]
+S2b, S2g, S2r = [calculate_stokes(P1, P2) for (P1, P2) in [(Pb, Mb), (Pg, Mg), (Pr, Mr)]]
 
 print '#####################'
 S1img = np.array(np.abs(np.dstack((S1b, S1g, S1r))))
@@ -97,7 +99,7 @@ S2img = np.array(np.abs(np.dstack((S2b, S2g, S2r))))
 
 print "S1", S1img
 plt.figure(1)
-plt.imshow(S1,  cmap='Greens')
+plt.imshow(S1)
 plt.colorbar()
 plt.figure(2)
 plt.hist(S1_hist.ravel(), bins=256)
