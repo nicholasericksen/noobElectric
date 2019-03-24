@@ -15,7 +15,7 @@ from sklearn.preprocessing import label_binarize, scale, normalize
 # X = data
 # print len(X)
 # rwc-specular is a measure of 50 75px x 75 px samples of each leaf
-data = np.genfromtxt('rwc-specular-all-less-rwc-precision-75.csv', delimiter=',')
+data = np.genfromtxt('TEST__rwc-specular-all-less-rwc-precision-75.csv', delimiter=',')
 X = data[:,1:]
 X = normalize(X)
 y = data[:,0]

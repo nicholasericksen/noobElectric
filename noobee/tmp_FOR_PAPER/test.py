@@ -22,10 +22,10 @@ for px1, px2 in zip(H, V):
     denom = px1 + px2
     if denom == 0:
         continue
-    if px1 == 0 or px2 == 0:
-        continue
-    elif px1 > 250 or px2 > 250:
-        continue
+    #elif px1 == 0 or px2 == 0:
+    #    continue
+    #elif px1 > 250 or px2 > 250:
+    #    continue
     else:
         S = (px1-px2) / (px1+px2)
         #S[~np.isfinite(S)] = 0

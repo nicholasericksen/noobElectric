@@ -13,11 +13,14 @@ from sklearn.model_selection import train_test_split, cross_val_score
 ######################
 
 ###### PCA IMports #####
-from sklearn.decomposition import PCA as sklearnPCA
-
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import classification_report
 #########################
 #Specular RWC samples
-# (imgs)     1_1 -> 98.4379
+# (imgs)     1_1 -> 99.0756
 # (imgs2)    31  -> 97.6573
 # (imgs3)    3^4 -> 96.6949
 # (imgs4)   2+1 -> 88.8809
@@ -45,12 +48,12 @@ def calc_stokes(P1, P2):
     for P1_px,P2_px in zip(P1,P2):
         denom = P1_px + P2_px
         # Filter out if values never change from 0
-        if denom == 0:
-            continue
+        #if denom == 0:
+        #    continue
         # Filter out if values are ever higher than 225
-        if P1_px < 10 or P2_px < 10:
+        if P1_px == 0 or P2_px == 0:
             continue
-        elif P1_px > 245 or P2_px > 245:
+        elif P1_px > 225 or P2_px > 225:
             continue
     #    elif P1 < 25 or P2 < 25:
     #        continue
@@ -98,7 +101,7 @@ def stokes_analysis(P1_img, P2_img):
     # Options
     show_images = False
     calc_stats = True
-    plot_hist = True
+    plot_hist = False
 
     # Convert image pixel intensity to flux values
     P1 = img_to_flux(P1_img)
@@ -106,7 +109,6 @@ def stokes_analysis(P1_img, P2_img):
 
     # Calculate the Stokes parameter
     S = calc_stokes(P1, P2)
-    print(S)
     results = {}
     results["S"] = S
 
@@ -143,32 +145,55 @@ def read_dat_file(pathname):
             data.append(value.rstrip('\n'))
     return float(data[0])
 #reshape since it is only one feature at the moment
-def linear_analysis(X, y):
-
+def linear_analysis(X, y, target_names):
+    # TODO TRY AND REMOVE THIS LINE
     X = np.array(X)
 #    y = np.array(y)
-    X = X.reshape(-1,1)
-    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=4)
+    # ONLY NEED THIS IF THERE IS ONE FEATURE
+    #X = X.reshape(-1,1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=4)
+    #steps = [
+    #        ('scale', StandardScaler()),
+    #        ('pca', PCA()),
+    #        ('estimator', LinearRegression())
+    #]
+    #pipe = Pipeline(steps)
+    #pca = pipe.set_params()
+    #pipe.fit(X_train, y_train)
+
+
+        # X_axis = np.linspace(0,100,1).T
+    pca = PCA(n_components=2).fit(X_train)
+    #X_train_pca = pca.transform(X_train)
+    #X_test_pca = pca.transform(X_test)
+
+    X_pca = pca.fit_transform(X)
+    print(X_pca)
+    #X_pca = X_pca.ravel()
+    # This is only needed if there is one sample
+    
+    #X_pca = X_pca.reshape(-1,1)
     regr = linear_model.LinearRegression()
+    #regr.fit(X_train_pca, y_train)
     regr.fit(X, y)
-
-    # X_axis = np.linspace(0,100,1).T
     y_pred = regr.predict(X)
-
+    print(y_pred)
+    print(y)
     # Calculate and print classifier metrics
+#    print(classification_report(y_test, y_pred, target_names=target_names))
     print("r2: ", r2_score(y, y_pred, multioutput='variance_weighted'))
-    print("explained_variance_score: ", explained_variance_score(y, y_pred))
+    #print("explained_variance_score: ", explained_variance_score(y, y_pred))
     print("root mean squared: ", mean_squared_error(y, y_pred))
-    scores = cross_val_score(regr, X, y, cv=2)
-    print("Accurcy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    #scores = cross_val_score(regr, X, y, cv=2)
+    #print("Accurcy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    plt.title('Linear Regression For Relative Water Content')
-    plt.xlabel('First Principal Component')
-    plt.ylabel('Relative Water Content')
-    plt.scatter(X[:,0], y)
-    plt.plot(X[:,0].reshape(-1, 1), y_pred)
-
-    plt.show()
+#    plt.title('Linear Regression For Relative Water Content')
+#    plt.xlabel('First Principal Component')
+#    plt.ylabel('Relative Water Content')
+#    plt.scatter(X[:,0], y)
+#    plt.plot(X[:,0].reshape(-1, 1), y_pred)
+#
+#    plt.show()
 ####################
 ####################
 def main():
@@ -185,25 +210,26 @@ def main():
 
     for directory in datasets:
         pathname = os.path.join(raw_data_path, directory)
-
         # Stokes analysis
-        P1_img = cv2.imread(os.path.join(pathname, P1_img_name), 1)
-        P2_img = cv2.imread(os.path.join(pathname, P2_img_name), 1)
-        data = stokes_analysis(P1_img[0], P2_img[0])
+        P1_img = cv2.imread(os.path.join(pathname, P1_img_name), 0)
+        P2_img = cv2.imread(os.path.join(pathname, P2_img_name), 0)
+        data = stokes_analysis(P1_img, P2_img)
 
         # RWC Infromation
         dat_file_path = os.path.join(pathname, "rwc.dat")
         data["rwc"] = read_dat_file(dat_file_path)
         #print(data["stats"])
         #print("RWC: {}".format(data["rwc"]))
-        X.append(data["stats"]["std"])
+        X.append([data["stats"]["std"], data["stats"]["mean"]])
+        #X.append([data["stats"]["mean"]])
         y.append(data["rwc"])
     # Linear Regression
-    print("X: {}".format(X))
-    print("y: {}".format(y))
-    pca = sklearnPCA(n_components=1)
-    X = pca.fit_transform(X)
-    linear_analysis(X,y)
+    #print("X: {}".format(X))
+    #print("y: {}".format(y))
+    #X = normalize(X)
+#    pca = sklearnPCA(n_components=2)
+ #   X = pca.fit_transform(X)
+    linear_analysis(X,y, datasets)
 
 if __name__ ==  '__main__':
     main()

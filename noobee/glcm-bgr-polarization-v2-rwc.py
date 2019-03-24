@@ -82,6 +82,7 @@ def calculate_stokes((P1, P2)):
 
 img_dirs = ['../app/data/di-11-white-specular','../app/data/di-12-white-specular', '../app/data/di-31-white-specular','../app/data/di-32-white-specular', '../app/data/di-1+1-white-specular', '../app/data/di-1+2-white-specular', '../app/data/di-3+1-white-specular', '../app/data/di-3+2-white-specular', '../app/data/di-1.1-white-specular', '../app/data/di-1.2-white-specular', '../app/data/di-3.1-white-specular', '../app/data/di-3.2-white-specular', '../app/data/di-1_1-white-specular', '../app/data/di-1_2-white-specular', '../app/data/di-3_1-white-specular', '../app/data/di-3_2-white-specular', '../app/data/di-3&1-white-specular', '../app/data/di-3&2-white-specular', '../app/data/di-3&3-white-specular', '../app/data/di-3&4-white-specular', '../app/data/di-3&5-white-specular', '../app/data/di-3^1-white-specular', '../app/data/di-3^2-white-specular', '../app/data/di-3^3-white-specular', '../app/data/di-3^4-white-specular', '../app/data/di-3^5-white-specular', '../app/data/di-3^6-white-specular']
 # rwc = [98.4379, 98.4411, 97.6573, 97.2130, 98.5491, 97.5689,95.4651, 97.6220, 98.2925,98.9892, 99.3056, 99.3005, 99.0756, 99.0307, 98.9441, 98.9633, 97.5427, 96.5724, 96.1018, 97.0763, 98.5286, 97.8863, 95.2165, 98.2290, 96.6949, 97.6974, 97.9446]
+#TODO: add two more demical places
 rwc = [98.44, 98.44, 97.66, 97.21, 98.55, 97.57,95.47, 97.62, 98.29,98.99, 99.31, 99.30, 99.08, 99.03, 98.94, 98.96, 97.54, 96.57, 96.10, 97.07, 98.52, 97.89, 95.22, 98.23, 96.69, 97.70, 97.94]
 
 size = 75
@@ -217,7 +218,7 @@ for index, img_dir in enumerate(img_dirs):
 
     print "feature", features
     list_feat = features.tolist()
-    with open('rwc-specular-all-less-rwc-precision-75.csv', 'a') as f:
+    with open('TEST__rwc-specular-all-less-rwc-precision-75.csv', 'a') as f:
         np.savetxt(f, [list_feat], delimiter=',', fmt="%g")
     f.close()
 # print np.std(S1_r)

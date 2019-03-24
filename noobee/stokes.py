@@ -22,6 +22,7 @@ Examples:
 """
 
 import numpy as np
+from __future__ import division
 
 def s(s0, s1, s2, s3):
     """
