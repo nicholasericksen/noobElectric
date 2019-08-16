@@ -1,25 +1,15 @@
 # noobElectric
-This is a project to build basic Electrical Engineering 
-Python modules for use by beginers and experienced pros a like!
+This is a package for Electrical Engineering principals.
+It is designed for aiding study, as well as practical application.  
 
-###Topics Covered (now or hopefully)
-* Ohms law
-* Receiver Operator Characteristics
-* Quantization error in ADC
-* Stokes Parameters
-* Gaussian Beams
+### Topics Covered
+* Mueller Matrices
 
-###Background
-Although there are many different scientific computing packages available
-for Python, none quite satisfy the more theoretical calculations associated
-with common EE investigations. For instance we will not try and recreate the 
-Fast Fourier Transform, which has been implemented numerous times, but rather
-create an ohms law function that can quickly give you the voltage off a resistor.
+### Background
+There are scientific computing packages for a wide variety of applications in Python,
+but none that attempt to host topics specifically related to Electrical Engineering.
+This package will attempt to cover most topics found during one's study at a university.
+Hopefully there are some practical applications as well.
 
-This is an attempt to create common modules that can be useful for either 
-simple or complex 'everyday' applications.  Starting from the classroom, and
-branching out into real world applications, this project aims to help the 
-creator (Nicholas Ericksen) and hopefully others learn about/solve EE
-related problems. 
 
-At the end of the day we are all noobs...with much more to learn.
+`from noobee.lmp import classical`

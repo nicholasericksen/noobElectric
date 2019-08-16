@@ -1,0 +1,7 @@
+*.pyc
+ADC.py
+main.js
+imgProcessing/
+dist/
+build/
+*.egg-info
